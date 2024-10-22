@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Split extends AbstractBasicOperation {
 
 
-  public HashMap<String, RGBPixel[][]> apply(HashMap<String, RGBPixel[][]> h1,RGBPixel[][] originalPixels,String key) {
+  public HashMap<String, RGBPixel[][]> apply(HashMap<String, RGBPixel[][]> h1,RGBPixel[][] originalPixels,String key, String saveKey1, String saveKey2, String saveKey3) {
 
     int height = originalPixels.length;
     int width = originalPixels[0].length;
@@ -35,9 +35,9 @@ public class Split extends AbstractBasicOperation {
     }
 
     // Store the channel arrays in the HashMap
-    channelsMap.put(key+"-Red", redChannel);
-    channelsMap.put(key+"-Green", greenChannel);
-    channelsMap.put(key+"-Blue", blueChannel);
+    channelsMap.put(saveKey1, redChannel);
+    channelsMap.put(saveKey2, greenChannel);
+    channelsMap.put(saveKey3, blueChannel);
 
     return channelsMap;
   }
