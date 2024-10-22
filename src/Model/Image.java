@@ -1,6 +1,17 @@
 package Model;
 
-import Model.Flip.Direction;
+import Model.ImageTransformation.Blur;
+import Model.ImageTransformation.Brighten;
+import Model.ImageTransformation.Combine;
+import Model.ImageTransformation.Flip;
+import Model.ImageTransformation.Flip.Direction;
+import Model.ImageFormat.JPGImage;
+import Model.ImageFormat.PNGImage;
+import Model.ImageFormat.PPMImage;
+import Model.ImageTransformation.GreyScale;
+import Model.ImageTransformation.Sepia;
+import Model.ImageTransformation.Sharpen;
+import Model.ImageTransformation.Split;
 import java.util.HashMap;
 
 public class Image {
@@ -103,6 +114,4 @@ public class Image {
     updatedPixel = sp1.apply(key,h1);
     h1.put(savekey, updatedPixel);
   }
-
-
 }

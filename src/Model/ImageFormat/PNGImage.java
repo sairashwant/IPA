@@ -1,11 +1,12 @@
-package Model;
+package Model.ImageFormat;
 
+import Model.RGBPixel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class JPGImage extends AbstractCompressedImageFormat{
+public class PNGImage extends AbstractCompressedImageFormat {
 
   @Override
   public void save(String filename, RGBPixel[][] pixels) {
@@ -23,7 +24,7 @@ public class JPGImage extends AbstractCompressedImageFormat{
       }
       try {
         File outputFile = new File(filename);
-        ImageIO.write(image, "jpg", outputFile);
+        ImageIO.write(image, "png", outputFile);
         System.out.println("Image saved as: " + outputFile.getAbsolutePath());
       } catch (IOException e) {
         System.out.println("Error saving the image: " + e.getMessage());

@@ -1,4 +1,6 @@
-package Model;
+package Model.ImageFormat;
+
+import Model.RGBPixel;
 
 public interface ImageFormat {
 

@@ -1,9 +1,10 @@
-package Model;
+package Model.ImageFormat;
 
+import Model.RGBPixel;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public class PPMImage extends AbstractRawImageFormat{
+public class PPMImage extends AbstractRawImageFormat {
 
   @Override
   public void save(String filename, RGBPixel[][] pixels) {

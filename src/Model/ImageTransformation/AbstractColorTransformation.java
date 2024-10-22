@@ -1,5 +1,6 @@
-package Model;
+package Model.ImageTransformation;
 
+import Model.RGBPixel;
 import java.util.HashMap;
 
 public abstract class AbstractColorTransformation implements Transformation {

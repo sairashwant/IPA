@@ -1,8 +1,6 @@
 package View;
 
 import Controller.ImageController;
-import Model.Flip.Direction;
-import Model.Image;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -13,6 +11,10 @@ public class ImageView {
   private ImageController controller;
   private Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
+
+  public Map<String, Consumer<String[]>> getCommandMap() {
+    return commandMap;
+  }
 
   public ImageView(ImageController controller) {
     this.controller = controller;
@@ -31,25 +33,35 @@ public class ImageView {
     commandMap.put("greyscale",this::handleOperation);
     commandMap.put("sepia",this::handleOperation);
     commandMap.put("exit", args -> System.exit(0));
+    commandMap.put("run-script", this::handleScript);
   }
 
 
   public void run() {
     boolean running = true;
     while (running) {
-      System.out.print("\nEnter command: ");
-      String input = scanner.nextLine().trim();
-      String[] parts = input.split("\\s+");
+      try {
+        System.out.print("\nEnter command: ");
+        String input = scanner.nextLine().trim();
 
-      if (parts.length == 0) continue;
+        if (input.isEmpty()) {
+          continue;
+        }
 
-      // Get the command and execute if it exists
-      String command = parts[0].toLowerCase();
-      Consumer<String[]> action = commandMap.get(command);
-      if (action != null) {
-        action.accept(parts);
-      } else {
-        System.out.println("Unknown command. Please try again.");
+        String[] parts = input.split("\\s+");
+        String command = parts[0].toLowerCase();
+
+        if (commandMap.containsKey(command)) {
+          commandMap.get(command).accept(parts);
+          if (command.equals("exit")) {
+            running = false;
+          }
+        } else {
+          System.out.println("Unknown command: " + command);
+        }
+
+      } catch (Exception e) {
+        System.out.println("Error processing command: " + e.getMessage());
       }
     }
   }
@@ -67,6 +79,7 @@ public class ImageView {
     System.out.println("\tsplit");
     System.out.println("\tcombine");
     System.out.println("\tbrighten");
+    System.out.println("\trun-script");
     System.out.println("\tExit Program");
   }
 
@@ -124,6 +137,14 @@ public class ImageView {
     }
   }
 
-
+  private void handleScript(String[] args) {
+    if (args.length < 2) {
+      System.out.println("Please provide a script file path");
+      return;
+    }
+    System.out.println("Loading script from " + args[1]);
+    ScriptReader scriptReader = new ScriptReader(this);
+    scriptReader.readScript(args[1]);
+  }
 
 }

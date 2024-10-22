@@ -1,4 +1,4 @@
-package Model;
+package Model.ImageTransformation;
 
 public class Sepia extends AbstractColorTransformation {
 

@@ -1,5 +1,5 @@
 package Model;
-import Model.Flip.Direction;
+import Model.ImageTransformation.Flip.Direction;
 import org.junit.Test;
 
 public class ImageTest {
@@ -38,7 +38,6 @@ public class ImageTest {
   i1.brighten("Thalapathy-Red",100,"Thalapathy-Red-Brighten");
   i1.sepia("Thalapathy-Red","Thalapathy-Red-Sepia");
   i1.savePixels("Thalapathy-Red-Brighten","thalapathy-RED-brighten.jpg");
-  i1.combine("Thalapathycombine","Thalapathy-Red-Brighten","Thalapathy-Green","Thalapathy-Blue");
   i1.savePixels("Thalapathycombine","thalapathycombine.jpg");
   i1.savePixels("Thalapathy-Red-Sepia","thalapathy-Red-Sepia.jpg");
   i1.flip("Thalapathy-Red-Sepia","Thalapathy-Red-Sepia-flip", Direction.VERTICAL);

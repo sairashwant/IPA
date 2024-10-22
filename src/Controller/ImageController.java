@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.Flip.Direction;
+import Model.ImageTransformation.Flip.Direction;
 import Model.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +30,7 @@ public class ImageController {
     operations.put("sharpen",(src,dest) -> image.sharpen(src,dest));
     operations.put("split", (src,dest) -> image.split(src,dest,dest,dest));
     operations.put("combine",(src,dest) -> image.combine(dest,src,src,src));
+//    operations.put("value",(src,dest) -> image.val)
 //    operations.put("brighten"(src,dest) -> image.brighten(src,factor,dest));
 
     bOperations.put("brighten", (src,factor,dest) -> image.brighten(src,factor,dest));

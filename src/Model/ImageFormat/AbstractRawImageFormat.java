@@ -1,10 +1,11 @@
-package Model;
+package Model.ImageFormat;
 
+import Model.RGBPixel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public abstract class AbstractRawImageFormat implements ImageFormat{
+public abstract class AbstractRawImageFormat implements ImageFormat {
 
   public RGBPixel[][] load(String fileName)
   {
