@@ -9,9 +9,12 @@ import Model.ImageFormat.JPGImage;
 import Model.ImageFormat.PNGImage;
 import Model.ImageFormat.PPMImage;
 import Model.ImageTransformation.GreyScale;
+import Model.ImageTransformation.Intensity;
 import Model.ImageTransformation.Sepia;
 import Model.ImageTransformation.Sharpen;
 import Model.ImageTransformation.Split;
+import Model.ImageTransformation.Value;
+import Model.ImageTransformation.luma;
 import java.util.HashMap;
 
 public class Image {
@@ -112,6 +115,24 @@ public class Image {
   {
     Sharpen sp1 = new Sharpen();
     updatedPixel = sp1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+  public void luma(String key,String savekey)
+  {
+    luma l1= new luma();
+    updatedPixel=l1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+  public void value(String key,String savekey)
+  {
+    Value l1= new Value();
+    updatedPixel=l1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+  public void intensity(String key,String savekey)
+  {
+    Intensity l1= new Intensity();
+    updatedPixel=l1.apply(key,h1);
     h1.put(savekey, updatedPixel);
   }
 }

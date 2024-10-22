@@ -44,5 +44,11 @@ public class ImageTest {
   i1.sepia("Thalapathy-org","thalapathy-org-sepia");
   i1.savePixels("thalapathy-org-sepia","thalapathy-org-sepia.jpg");
   i1.savePixels("Thalapathy-Red-Sepia-flip","thalapathy-RED-sepia-flip.jpg");
+  i1.luma("Thalapathy-org","Thalapathyluma");
+  i1.value("Thalapathy-org","Thalapathyvalue");
+  i1.intensity("Thalapathy-org","Thalapathyintensity");
+  i1.savePixels("Thalapathyluma","Thalapathyluma.jpg");
+  i1.savePixels("Thalapathyvalue","thalapathyvalue.jpg");
+  i1.savePixels("Thalapathyintensity","thalapathyintensity.jpg");
 }
 }
