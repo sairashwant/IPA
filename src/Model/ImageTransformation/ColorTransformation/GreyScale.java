@@ -1,4 +1,4 @@
-package Model.ImageTransformation;
+package Model.ImageTransformation.ColorTransformation;
 
 
 public class GreyScale extends AbstractColorTransformation{

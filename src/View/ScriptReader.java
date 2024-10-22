@@ -18,22 +18,17 @@ public class ScriptReader {
   }
 
   public void readScript(String scriptPath){
-    System.out.println("Before buffered Reader");
     try(BufferedReader reader = new BufferedReader(new FileReader(scriptPath))){
-      System.out.println("After buffered Reader");
-      String line = reader.readLine();
-      System.out.println(line + "Before while");
+      String line;
 
       while ((line = reader.readLine()) != null) {
         line = line.trim();
-        System.out.println(line + " After while");
 
-        // Skip empty lines and comments
         if (line.isEmpty() || line.startsWith("#")) {
           continue;
         }
 
-        String[] parts = line.split("\\s+"); // Fixed regex to split on whitespace
+        String[] parts = line.split("\\s+");
         String command = parts[0].toLowerCase();
 
         if (commandMap.containsKey(command)) {

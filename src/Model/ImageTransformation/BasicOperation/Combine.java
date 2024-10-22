@@ -1,4 +1,4 @@
-package Model.ImageTransformation;
+package Model.ImageTransformation.BasicOperation;
 
 import Model.RGBPixel;
 

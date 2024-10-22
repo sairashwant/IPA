@@ -1,5 +1,6 @@
-package Model.ImageTransformation;
+package Model.ImageTransformation.Filtering;
 
+import Model.ImageTransformation.Transformation;
 import Model.RGBPixel;
 import java.util.HashMap;
 

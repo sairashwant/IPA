@@ -1,4 +1,4 @@
-package Model.ImageTransformation;
+package Model.ImageTransformation.Filtering;
 
 public class Sharpen extends AbstractFiltering {
 

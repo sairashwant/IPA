@@ -1,20 +1,20 @@
 package Model;
 
-import Model.ImageTransformation.Blur;
-import Model.ImageTransformation.Brighten;
-import Model.ImageTransformation.Combine;
-import Model.ImageTransformation.Flip;
-import Model.ImageTransformation.Flip.Direction;
+import Model.ImageTransformation.BasicOperation.Split;
+import Model.ImageTransformation.Filtering.Blur;
+import Model.ImageTransformation.BasicOperation.Brighten;
+import Model.ImageTransformation.BasicOperation.Combine;
+import Model.ImageTransformation.BasicOperation.Flip;
+import Model.ImageTransformation.BasicOperation.Flip.Direction;
 import Model.ImageFormat.JPGImage;
 import Model.ImageFormat.PNGImage;
 import Model.ImageFormat.PPMImage;
-import Model.ImageTransformation.GreyScale;
-import Model.ImageTransformation.Intensity;
-import Model.ImageTransformation.Sepia;
-import Model.ImageTransformation.Sharpen;
-import Model.ImageTransformation.Split;
-import Model.ImageTransformation.Value;
-import Model.ImageTransformation.luma;
+import Model.ImageTransformation.ColorTransformation.GreyScale;
+import Model.ImageTransformation.BasicOperation.Intensity;
+import Model.ImageTransformation.ColorTransformation.Sepia;
+import Model.ImageTransformation.Filtering.Sharpen;
+import Model.ImageTransformation.BasicOperation.Value;
+import Model.ImageTransformation.BasicOperation.luma;
 import java.util.HashMap;
 
 public class Image {
@@ -24,7 +24,7 @@ public class Image {
 
 
   public RGBPixel[][] getPixels(String key,String filename) {
-    filename = "images/" + filename;
+    filename = filename;
     String fileExtension = filename.substring(filename.lastIndexOf("."));
     if (fileExtension.equals(".png")) {
       PNGImage imageFormat = new PNGImage();
@@ -41,7 +41,7 @@ public class Image {
   }
 
   public void savePixels(String key,String filename) {
-    String outputFile = "res/" + filename;
+    String outputFile = filename;
     String fileExtension = filename.substring(filename.lastIndexOf("."));
     RGBPixel[][] tosavepixels = h1.get(key);
     if (fileExtension.equals(".png")) {

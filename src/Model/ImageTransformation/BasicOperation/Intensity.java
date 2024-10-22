@@ -1,7 +1,4 @@
-package Model.ImageTransformation;
-
-import Model.Image;
-import Model.RGBPixel;
+package Model.ImageTransformation.BasicOperation;
 
 public class Intensity extends AbstractBasicOperation {
 

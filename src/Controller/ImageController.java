@@ -1,6 +1,6 @@
 package Controller;
 
-import Model.ImageTransformation.Flip.Direction;
+import Model.ImageTransformation.BasicOperation.Flip.Direction;
 import Model.Image;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,15 +29,15 @@ public class ImageController {
     operations.put("sepia",(src,dest) -> image.sepia(src,dest));
     operations.put("sharpen",(src,dest) -> image.sharpen(src,dest));
     operations.put("split", (src,dest) -> image.split(src,dest,dest,dest));
-    operations.put("combine",(src,dest) -> image.combine(dest,src,src,src));
-//    operations.put("value",(src,dest) -> image.val)
-//    operations.put("brighten"(src,dest) -> image.brighten(src,factor,dest));
-
+    operations.put("rgb-combine",(src,dest) -> image.combine(dest,src,"src2","src3"));
+    operations.put("value-component",(src,dest) -> image.value(src,dest));
+    operations.put("luma-component",(src,dest) -> image.luma(src,dest));
+    operations.put("intensity-component",(src,dest) -> image.intensity(src,dest));
     bOperations.put("brighten", (src,factor,dest) -> image.brighten(factor, src,dest));
   }
 
-  public void loadIMage(String key,String fileName){
-    image.getPixels(key,fileName);
+  public void loadIMage(String fileName,String key){
+    image.getPixels(fileName,key);
   }
 
   public void saveImage(String key,String fileName){

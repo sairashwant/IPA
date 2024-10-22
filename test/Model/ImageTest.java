@@ -1,5 +1,5 @@
 package Model;
-import Model.ImageTransformation.Flip.Direction;
+import Model.ImageTransformation.BasicOperation.Flip.Direction;
 import org.junit.Test;
 
 public class ImageTest {
