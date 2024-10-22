@@ -71,7 +71,7 @@ public class Image {
     h1.put(savekey, updatedPixel);
   }
 
-  public void brighten(String key, int brightenFactor, String savekey) {
+  public void brighten(int brightenFactor,String key, String savekey) {
     Brighten b1 = new Brighten(brightenFactor);
     updatedPixel = b1.apply(key,h1);
     h1.put(savekey, updatedPixel);

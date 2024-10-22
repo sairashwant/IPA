@@ -110,13 +110,13 @@ public class ImageView {
   private void handleBrighten(String[] args) {
     if (args.length == 4) {
       try {
-        int factor = Integer.parseInt(args[3]);
-        controller.brighten(args[1], args[2], factor);
+        int factor = Integer.parseInt(args[1]);
+        controller.brighten(factor,args[2], args[3] );
       } catch (NumberFormatException e) {
         System.out.println("Invalid brighten factor. Please enter an integer.");
       }
     } else {
-      System.out.println("Invalid brighten command. Usage: brighten <srcKey> <destKey> <factor>");
+      System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey> ");
     }
   }
 

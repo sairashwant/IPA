@@ -9,9 +9,9 @@ public class ImageTest {
   Image i1 = new Image();
   i1.getPixels("Thalapathy-org","thalapathy.jpg");
   i1.blur("Thalapathy-org","Thalapathyblur");
-  i1.brighten("Thalapathyblur",50,"ThalapathyBrighten");
-  i1.brighten("ThalapathyBrighten",20,"ThalapathyBrighten2");
-  i1.brighten("ThalapathyBrighten",-110,"ThalapathyBrighten3");
+  i1.brighten(50,"Thalapathyblur","ThalapathyBrighten");
+  i1.brighten(20,"ThalapathyBrighten","ThalapathyBrighten2");
+  i1.brighten(-110,"ThalapathyBrighten","ThalapathyBrighten3");
   i1.flip("Thalapathyblur","ThalapathyFlip",Direction.VERTICAL);
   i1.split("ThalapathyBrighten","ThalapathyBrighten-Red","ThalapathyBrighten-Green","ThalapathyBrighten-Blue");
   i1.combine("ThalapathyCombined","ThalapathyBrighten-Red","ThalapathyBrighten-Green","ThalapathyBrighten-Blue");
@@ -35,7 +35,7 @@ public class ImageTest {
   Image i1 = new Image();
   i1.getPixels("Thalapathy-org","thalapathy.jpg");
   i1.split("Thalapathy","Thalapathy-Red","Thalapathy-Greeen","Thalapathy-Blue");
-  i1.brighten("Thalapathy-Red",100,"Thalapathy-Red-Brighten");
+  i1.brighten(100,"Thalapathy-Red","Thalapathy-Red-Brighten");
   i1.sepia("Thalapathy-Red","Thalapathy-Red-Sepia");
   i1.savePixels("Thalapathy-Red-Brighten","thalapathy-RED-brighten.jpg");
   i1.savePixels("Thalapathycombine","thalapathycombine.jpg");

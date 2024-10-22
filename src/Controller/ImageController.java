@@ -33,7 +33,7 @@ public class ImageController {
 //    operations.put("value",(src,dest) -> image.val)
 //    operations.put("brighten"(src,dest) -> image.brighten(src,factor,dest));
 
-    bOperations.put("brighten", (src,factor,dest) -> image.brighten(src,factor,dest));
+    bOperations.put("brighten", (src,factor,dest) -> image.brighten(factor, src,dest));
   }
 
   public void loadIMage(String key,String fileName){
@@ -52,8 +52,8 @@ public class ImageController {
     }
   }
 
-  public void brighten(String srcKey, String destKey ,int factor){
-    image.brighten(srcKey,factor,destKey);
+  public void brighten(int factor, String srcKey, String destKey){
+    image.brighten(factor,srcKey,destKey);
   }
 
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
