@@ -1,16 +1,107 @@
 package Model;
 
+import static Model.Flip.Direction.VERTICAL;
+
+import Model.Flip.Direction;
+import java.util.HashMap;
+
 public class Image {
 
-  public void getPixels() {
-    String filename = "Images/manhattan-small.png";
+  RGBPixel[][] updatedPixel;
+  HashMap<String, RGBPixel[][]> h1= new HashMap<String, RGBPixel[][]>();
+
+
+  RGBPixel[][] getPixels(String key,String filename) {
+    filename = "images/" + filename;
     String fileExtension = filename.substring(filename.lastIndexOf("."));
-    if (fileExtension.equals(".png") || fileExtension.equals(".jpg")){
+    if (fileExtension.equals(".png")) {
       PNGImage imageFormat = new PNGImage();
-      RGBPixel[][] pixels = imageFormat.load(filename);}
-      else if(filename.substring(filename.lastIndexOf(".")).equals(".ppm")){
-        System.out.println("Failed to load image pixels.");
+      updatedPixel = imageFormat.load(filename);
+    } else if (fileExtension.equals(".jpg")) {
+      JPGImage imageFormat = new JPGImage();
+      updatedPixel = imageFormat.load(filename);
+    } else if (fileExtension.equals(".ppm")) {
+      PPMImage imageFormat = new PPMImage();
+      updatedPixel = imageFormat.load(filename);
+    }
+    h1.put(key, updatedPixel);
+    return updatedPixel;
+  }
+
+  public void savePixels(String key,String filename) {
+    String outputFile = "Images/Saves/" + filename;
+    String fileExtension = filename.substring(filename.lastIndexOf("."));
+    RGBPixel[][] tosavepixels = h1.get(key);
+    if (fileExtension.equals(".png")) {
+      PNGImage imageFormat = new PNGImage();
+      if (tosavepixels == null) {
+        System.out.println("Image has not been saved");
+        return;
       }
+      imageFormat.save(outputFile, tosavepixels);
+    } else if (fileExtension.equals(".jpg")) {
+      JPGImage imageFormat = new JPGImage();
+      if (tosavepixels == null) {
+        System.out.println("Image has not been saved");
+        return;
+      }
+      imageFormat.save(outputFile, tosavepixels);
+    } else if (fileExtension.equals(".ppm")) {
+      PPMImage imageFormat = new PPMImage();
+      if (tosavepixels == null) {
+        System.out.println("Image has not been saved");
+        return;
+      }
+      imageFormat.save(outputFile, updatedPixel);
+    }
+  }
+
+  void blur(String key, String savekey) {
+    Blur b1 = new Blur();
+    updatedPixel = b1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+
+  void brighten(String key, int brightenFactor, String savekey) {
+    Brighten b1 = new Brighten(brightenFactor);
+    updatedPixel = b1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+
+  void split(String key) {
+    Split s1=new Split();
+    HashMap<String, RGBPixel[][]> temp = s1.apply(h1,updatedPixel,key);
+    h1.putAll(temp);
+  }
+
+  void combine(String key, String key1,String key2, String key3)
+  {
+    Combine c1 = new Combine();
+    updatedPixel = c1.apply(h1.get(key1),h1.get(key2),h1.get(key3));
+    h1.put(key, updatedPixel);
+  }
+  void Flip(String key,String savekey, Direction d)
+  {
+    Flip f1 = new Flip();
+    updatedPixel = f1.apply(key,h1,d);
+    h1.put(savekey, updatedPixel);
+  }
+  void GreyScale(String key,String savekey)
+  {
+    GreyScale g1 = new GreyScale();
+    updatedPixel = g1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+  void sepia(String key,String savekey)
+  {
+    Sepia sp1 = new Sepia();
+    updatedPixel = sp1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
+  }
+  void Sharpen(String key,String savekey)
+  {
+    Sharpen sp1 = new Sharpen();
+    updatedPixel = sp1.apply(key,h1);
+    h1.put(savekey, updatedPixel);
   }
 }
-
