@@ -1,5 +1,4 @@
 import static org.junit.Assert.assertEquals;
-
 import Controller.ImageController;
 import Model.Image;
 import View.ImageView;
