@@ -4,18 +4,24 @@ import Model.ImageTransformation.Transformation;
 import Model.RGBPixel;
 import java.util.HashMap;
 
+/**
+ *
+ */
 public abstract class AbstractColorTransformation implements Transformation {
 
 
-
+  /**
+   * @param key
+   * @param h1
+   * @return
+   */
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1)
-  {
-    RGBPixel[][] input=h1.get(key);
+  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
+    RGBPixel[][] input = h1.get(key);
     int height = input.length;
     int width = input[0].length;
     double[][] MATRIX = getMatrix();
-    RGBPixel[][] transformedPixels= new RGBPixel[height][width];
+    RGBPixel[][] transformedPixels = new RGBPixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         if (input[i][j] instanceof RGBPixel) {
@@ -41,5 +47,5 @@ public abstract class AbstractColorTransformation implements Transformation {
     return transformedPixels;
   }
 
-  public abstract double[][] getMatrix();
+  protected abstract double[][] getMatrix();
 }

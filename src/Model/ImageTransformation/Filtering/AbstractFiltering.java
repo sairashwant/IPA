@@ -4,15 +4,22 @@ import Model.ImageTransformation.Transformation;
 import Model.RGBPixel;
 import java.util.HashMap;
 
+/**
+ *
+ */
 public abstract class AbstractFiltering implements Transformation {
 
+  /**
+   * @param key
+   * @param h1
+   * @return
+   */
   @Override
   public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
 
     RGBPixel[][] input = h1.get(key);
     int height = input.length;
     int width = input[0].length;
-
 
     if (height == 0 || width == 0) {
       System.out.println("Invalid pixel data.");
@@ -21,16 +28,7 @@ public abstract class AbstractFiltering implements Transformation {
 
     RGBPixel[][] blurredPixels = new RGBPixel[height][width];
 
-
     double[][] filter = getFilter();
-//        {
-//        {-1.0/8, -1.0/8, -1.0/8 , -1.0/8 , -1.0/8},
-//        {-1.0/8, 1.0/4, 1.0/4 , 1.0/4 , -1.0/8},
-//        {-1.0/8, 1.0/4, 1.0 , 1.0/4 , -1.0/8},
-//        {-1.0/8, 1.0/4, 1.0/4 , 1.0/4 , -1.0/8},
-//        {-1.0/8, -1.0/8, -1.0/8 , -1.0/8 , -1.0/8},
-//    };
-
 
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -52,11 +50,9 @@ public abstract class AbstractFiltering implements Transformation {
           }
         }
 
-
         int red = (int) Math.round(redSum);
         int green = (int) Math.round(greenSum);
         int blue = (int) Math.round(blueSum);
-
 
         red = Math.max(0, Math.min(255, red));
         green = Math.max(0, Math.min(255, green));
@@ -69,5 +65,8 @@ public abstract class AbstractFiltering implements Transformation {
     return blurredPixels;
   }
 
+  /**
+   * @return
+   */
   protected abstract double[][] getFilter();
 }

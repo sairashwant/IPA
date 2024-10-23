@@ -4,8 +4,17 @@ import Model.ImageTransformation.Transformation;
 import Model.RGBPixel;
 import java.util.HashMap;
 
+/**
+ *
+ */
 public abstract class AbstractBasicOperation implements Transformation {
 
+  /**
+   *
+   * @param key
+   * @param h1
+   * @return
+   */
   public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1){
     RGBPixel[][] pixels= h1.get(key);
     int height = pixels.length;

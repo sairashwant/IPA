@@ -1,0 +1,207 @@
+package com.vanarp.model;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+
+public class OperationsTest {
+
+    private Operations operations;
+    private Image testImagePng;
+    private String testImagePathPng = "test/com/vanarp/model/TestResources/Source/bird.png";
+    private String outputDirectory = "test/com/vanarp/model/TestResources/SampleOperations/";
+
+    @Before
+    public void setUp() throws IOException {
+        Transform transform = new Transform();
+        Filtering filter = new Filtering();
+        ImageFileIO compressedIO = new CompressedImageIO();
+        ImageFileIO uncompressedIO = new UncompressedImageIO();
+
+        operations = new Operations(transform, filter, compressedIO, uncompressedIO);
+        testImagePng = operations.loadImage(testImagePathPng);
+    }
+
+    @Test
+    public void testRedComponentForPng() throws IOException {
+        Image redImage = operations.redComponent(testImagePng);
+        Image expectedRedImage = operations.loadImage(outputDirectory + "redComponent.png");
+        assertEquals(expectedRedImage.getWidth(), redImage.getWidth());
+        assertEquals(expectedRedImage.getHeight(), redImage.getHeight());
+        for (int y = 0; y < expectedRedImage.getHeight(); y++) {
+            for (int x = 0; x < expectedRedImage.getWidth(); x++) {
+                assertEquals(expectedRedImage.getPixel(x, y).getRed(), redImage.getPixel(x, y).getRed());
+                assertEquals(expectedRedImage.getPixel(x, y).getGreen(), redImage.getPixel(x, y).getGreen());
+                assertEquals(expectedRedImage.getPixel(x, y).getBlue(), redImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testGreenComponentForPng() throws IOException {
+        Image greenImage = operations.greenComponent(testImagePng);
+        Image expectedGreenImage = operations.loadImage(outputDirectory + "greenComponent.png");
+        assertEquals(expectedGreenImage.getWidth(), greenImage.getWidth());
+        assertEquals(expectedGreenImage.getHeight(), greenImage.getHeight());
+        for (int y = 0; y < expectedGreenImage.getHeight(); y++) {
+            for (int x = 0; x < expectedGreenImage.getWidth(); x++) {
+                assertEquals(expectedGreenImage.getPixel(x, y).getRed(), greenImage.getPixel(x, y).getRed());
+                assertEquals(expectedGreenImage.getPixel(x, y).getGreen(), greenImage.getPixel(x, y).getGreen());
+                assertEquals(expectedGreenImage.getPixel(x, y).getBlue(), greenImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testBlueComponentForPng() throws IOException {
+        Image blueImage = operations.blueComponent(testImagePng);
+        Image expectedBlueImage = operations.loadImage(outputDirectory + "blueComponent.png");
+        assertEquals(expectedBlueImage.getWidth(), blueImage.getWidth());
+        assertEquals(expectedBlueImage.getHeight(), blueImage.getHeight());
+        for (int y = 0; y < expectedBlueImage.getHeight(); y++) {
+            for (int x = 0; x < expectedBlueImage.getWidth(); x++) {
+                assertEquals(expectedBlueImage.getPixel(x, y).getRed(), blueImage.getPixel(x, y).getRed());
+                assertEquals(expectedBlueImage.getPixel(x, y).getGreen(), blueImage.getPixel(x, y).getGreen());
+                assertEquals(expectedBlueImage.getPixel(x, y).getBlue(), blueImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testValueComponentForPng() throws IOException {
+        Image valueImage = operations.valueComponent(testImagePng);
+        Image expectedValueImage = operations.loadImage(outputDirectory + "valueComponent.png");
+        assertEquals(expectedValueImage.getWidth(), valueImage.getWidth());
+        assertEquals(expectedValueImage.getHeight(), valueImage.getHeight());
+        for (int y = 0; y < expectedValueImage.getHeight(); y++) {
+            for (int x = 0; x < expectedValueImage.getWidth(); x++) {
+                assertEquals(expectedValueImage.getPixel(x, y).getRed(), valueImage.getPixel(x, y).getRed());
+                assertEquals(expectedValueImage.getPixel(x, y).getGreen(), valueImage.getPixel(x, y).getGreen());
+                assertEquals(expectedValueImage.getPixel(x, y).getBlue(), valueImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testLumaComponentForPng() throws IOException {
+        Image lumaImage = operations.lumaComponent(testImagePng);
+        Image expectedLumaImage = operations.loadImage(outputDirectory + "lumaComponent.png");
+        assertEquals(expectedLumaImage.getWidth(), lumaImage.getWidth());
+        assertEquals(expectedLumaImage.getHeight(), lumaImage.getHeight());
+        for (int y = 0; y < expectedLumaImage.getHeight(); y++) {
+            for (int x = 0; x < expectedLumaImage.getWidth(); x++) {
+                assertEquals(expectedLumaImage.getPixel(x, y).getRed(), lumaImage.getPixel(x, y).getRed());
+                assertEquals(expectedLumaImage.getPixel(x, y).getGreen(), lumaImage.getPixel(x, y).getGreen());
+                assertEquals(expectedLumaImage.getPixel(x, y).getBlue(), lumaImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testIntensityComponentForPng() throws IOException {
+        Image intensityImage = operations.intensityComponent(testImagePng);
+        Image expectedIntensityImage = operations.loadImage(outputDirectory + "intensityComponent.png");
+        assertEquals(expectedIntensityImage.getWidth(), intensityImage.getWidth());
+        assertEquals(expectedIntensityImage.getHeight(), intensityImage.getHeight());
+        for (int y = 0; y < expectedIntensityImage.getHeight(); y++) {
+            for (int x = 0; x < expectedIntensityImage.getWidth(); x++) {
+                assertEquals(expectedIntensityImage.getPixel(x, y).getRed(), intensityImage.getPixel(x, y).getRed());
+                assertEquals(expectedIntensityImage.getPixel(x, y).getGreen(), intensityImage.getPixel(x, y).getGreen());
+                assertEquals(expectedIntensityImage.getPixel(x, y).getBlue(), intensityImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testFlipHorizontallyForPng() throws IOException {
+        Image flippedImage = operations.flipHorizontally(testImagePng);
+        Image expectedFlippedImage = operations.loadImage(outputDirectory + "flippedHorizontally.png");
+        assertEquals(expectedFlippedImage.getWidth(), flippedImage.getWidth());
+        assertEquals(expectedFlippedImage.getHeight(), flippedImage.getHeight());
+        for (int y = 0; y < expectedFlippedImage.getHeight(); y++) {
+            for (int x = 0; x < expectedFlippedImage.getWidth(); x++) {
+                assertEquals(expectedFlippedImage.getPixel(x, y).getRed(), flippedImage.getPixel(x, y).getRed());
+                assertEquals(expectedFlippedImage.getPixel(x, y).getGreen(), flippedImage.getPixel(x, y).getGreen());
+                assertEquals(expectedFlippedImage.getPixel(x, y).getBlue(), flippedImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testFlipVerticallyForPng() throws IOException {
+        Image flippedImage = operations.flipVertically(testImagePng);
+        Image expectedFlippedImage = operations.loadImage(outputDirectory + "flippedVertically.png");
+        assertEquals(expectedFlippedImage.getWidth(), flippedImage.getWidth());
+        assertEquals(expectedFlippedImage.getHeight(), flippedImage.getHeight());
+        for (int y = 0; y < expectedFlippedImage.getHeight(); y++) {
+            for (int x = 0; x < expectedFlippedImage.getWidth(); x++) {
+                assertEquals(expectedFlippedImage.getPixel(x, y).getRed(), flippedImage.getPixel(x, y).getRed());
+                assertEquals(expectedFlippedImage.getPixel(x, y).getGreen(), flippedImage.getPixel(x, y).getGreen());
+                assertEquals(expectedFlippedImage.getPixel(x, y).getBlue(), flippedImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testBrightenImageForPng() throws IOException {
+        Image brightenedImage = operations.brightenImage(testImagePng, 10);
+        Image expectedBrightenedImage = operations.loadImage(outputDirectory + "brightenedImage.png");
+        assertEquals(expectedBrightenedImage.getWidth(), brightenedImage.getWidth());
+        assertEquals(expectedBrightenedImage.getHeight(), brightenedImage.getHeight());
+        for (int y = 0; y < expectedBrightenedImage.getHeight(); y++) {
+            for (int x = 0; x < expectedBrightenedImage.getWidth(); x++) {
+                assertEquals(expectedBrightenedImage.getPixel(x, y).getRed(), brightenedImage.getPixel(x, y).getRed());
+                assertEquals(expectedBrightenedImage.getPixel(x, y).getGreen(), brightenedImage.getPixel(x, y).getGreen());
+                assertEquals(expectedBrightenedImage.getPixel(x, y).getBlue(), brightenedImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testDarkenImageForPng() throws IOException {
+        Image darkenedImage = operations.darkenImage(testImagePng, 10);
+        Image expectedDarkenedImage = operations.loadImage(outputDirectory + "darkenedImage.png");
+        assertEquals(expectedDarkenedImage.getWidth(), darkenedImage.getWidth());
+        assertEquals(expectedDarkenedImage.getHeight(), darkenedImage.getHeight());
+        for (int y = 0; y < expectedDarkenedImage.getHeight(); y++) {
+            for (int x = 0; x < expectedDarkenedImage.getWidth(); x++) {
+                assertEquals(expectedDarkenedImage.getPixel(x, y).getRed(), darkenedImage.getPixel(x, y).getRed());
+                assertEquals(expectedDarkenedImage.getPixel(x, y).getGreen(), darkenedImage.getPixel(x, y).getGreen());
+                assertEquals(expectedDarkenedImage.getPixel(x, y).getBlue(), darkenedImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testGrayscaleImageForPng() throws IOException {
+        Image grayscaleImage = operations.grayscaleImage(testImagePng);
+        Image expectedGrayscaleImage = operations.loadImage(outputDirectory + "grayscaleImage.png");
+        assertEquals(expectedGrayscaleImage.getWidth(), grayscaleImage.getWidth());
+        assertEquals(expectedGrayscaleImage.getHeight(), grayscaleImage.getHeight());
+        for (int y = 0; y < expectedGrayscaleImage.getHeight(); y++) {
+            for (int x = 0; x < expectedGrayscaleImage.getWidth(); x++) {
+                assertEquals(expectedGrayscaleImage.getPixel(x, y).getRed(), grayscaleImage.getPixel(x, y).getRed());
+                assertEquals(expectedGrayscaleImage.getPixel(x, y).getGreen(), grayscaleImage.getPixel(x, y).getGreen());
+                assertEquals(expectedGrayscaleImage.getPixel(x, y).getBlue(), grayscaleImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+
+    @Test
+    public void testSepiaImageForPng() throws IOException {
+        Image sepiaImage = operations.sepiaImage(testImagePng);
+        Image expectedSepiaImage = operations.loadImage(outputDirectory + "sepiaImage.png");
+        assertEquals(expectedSepiaImage.getWidth(), sepiaImage.getWidth());
+        assertEquals(expectedSepiaImage.getHeight(), sepiaImage.getHeight());
+        for (int y = 0; y < expectedSepiaImage.getHeight(); y++) {
+            for (int x = 0; x < expectedSepiaImage.getWidth(); x++) {
+                assertEquals(expectedSepiaImage.getPixel(x, y).getRed(), sepiaImage.getPixel(x, y).getRed());
+                assertEquals(expectedSepiaImage.getPixel(x, y).getGreen(), sepiaImage.getPixel(x, y).getGreen());
+                assertEquals(expectedSepiaImage.getPixel(x, y).getBlue(), sepiaImage.getPixel(x, y).getBlue());
+            }
+        }
+    }
+}

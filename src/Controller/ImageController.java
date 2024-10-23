@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+/**
+ *
+ */
 public class ImageController {
 
   private final Image image;
@@ -14,7 +17,10 @@ public class ImageController {
 
   private final Map<String, TriConsumer<String ,Integer ,String>> bOperations;
 
-
+  /**
+   *
+   * @param image
+   */
   public ImageController(Image image) {
     this.image = image;
     this.operations = new HashMap<>();
@@ -33,17 +39,36 @@ public class ImageController {
     operations.put("value-component",(src,dest) -> image.value(src,dest));
     operations.put("luma-component",(src,dest) -> image.luma(src,dest));
     operations.put("intensity-component",(src,dest) -> image.intensity(src,dest));
+    operations.put("red-component",(src,dest) -> image.getRed(src,dest));
+    operations.put("green-component",(src,dest) -> image.getGreen(src,dest));
+    operations.put("blue-component",(src,dest) -> image.getBlue(src,dest));
     bOperations.put("brighten", (src,factor,dest) -> image.brighten(factor, src,dest));
   }
 
+  /**
+   *
+   * @param fileName
+   * @param key
+   */
   public void loadIMage(String fileName,String key){
     image.getPixels(fileName,key);
   }
 
+  /**
+   *
+   * @param key
+   * @param fileName
+   */
   public void saveImage(String key,String fileName){
     image.savePixels(key,fileName);
   }
 
+  /**
+   *
+   * @param operationName
+   * @param srcKey
+   * @param destKey
+   */
   public void applyOperations(String operationName, String srcKey, String destKey){
     if(operations.containsKey(operationName)){
       operations.get(operationName).accept(srcKey,destKey);
@@ -52,14 +77,34 @@ public class ImageController {
     }
   }
 
+  /**
+   *
+   * @param factor
+   * @param srcKey
+   * @param destKey
+   */
   public void brighten(int factor, String srcKey, String destKey){
     image.brighten(factor,srcKey,destKey);
   }
 
+  /**
+   *
+   * @param key
+   * @param saveKey1
+   * @param saveKey2
+   * @param saveKey3
+   */
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
     image.split(key,saveKey1,saveKey2,saveKey3);
   }
 
+  /**
+   *
+   * @param key
+   * @param key1
+   * @param key2
+   * @param key3
+   */
   public void combine(String key, String key1,String key2, String key3){
     image.combine(key,key1,key2,key3);
   }

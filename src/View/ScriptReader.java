@@ -7,17 +7,28 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ScriptReader {
+/**
+ *
+ */
+ class ScriptReader {
 
   private final ImageView imageView;
   private final Map<String, Consumer<String[]>> commandMap;
 
-  public ScriptReader(ImageView imageView) {
+  /**
+   *
+   * @param imageView
+   */
+   ScriptReader(ImageView imageView) {
     this.imageView = imageView;
     this.commandMap = imageView.getCommandMap();
   }
 
-  public void readScript(String scriptPath){
+  /**
+   *
+   * @param scriptPath
+   */
+   void readScript(String scriptPath){
     try(BufferedReader reader = new BufferedReader(new FileReader(scriptPath))){
       String line;
 

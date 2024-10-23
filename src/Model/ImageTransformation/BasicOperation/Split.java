@@ -29,9 +29,9 @@ public class Split extends AbstractBasicOperation {
         RGBPixel currentPixel = originalPixels[i][j];
 
         // Set the individual channel values in each channel's array
-        redChannel[i][j] = new RGBPixel(currentPixel.getRed(), 0, 0);
-        greenChannel[i][j] = new RGBPixel(0, currentPixel.getGreen(), 0);
-        blueChannel[i][j] = new RGBPixel(0, 0, currentPixel.getBlue());
+        redChannel[i][j] = new RGBPixel(currentPixel.getRed(), currentPixel.getRed(), currentPixel.getRed());
+        greenChannel[i][j] = new RGBPixel(currentPixel.getGreen(), currentPixel.getGreen(), currentPixel.getGreen());
+        blueChannel[i][j] = new RGBPixel(currentPixel.getBlue(), currentPixel.getBlue(), currentPixel.getBlue());
       }
     }
 

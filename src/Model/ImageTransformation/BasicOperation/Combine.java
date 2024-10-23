@@ -18,19 +18,16 @@ public class Combine extends AbstractBasicOperation {
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        // Ensure all pixels are RGBPixel instances
         if (!(redPixels[i][j] instanceof RGBPixel) ||
             !(greenPixels[i][j] instanceof RGBPixel) ||
             !(bluePixels[i][j] instanceof RGBPixel)) {
           throw new IllegalArgumentException("Input images must contain RGBPixels.");
         }
 
-        // Correctly access the pixel values
-        int red = ((RGBPixel) redPixels[i][j]).getRed();
-        int green = ((RGBPixel) greenPixels[i][j]).getGreen();
-        int blue = ((RGBPixel) bluePixels[i][j]).getBlue();
+        int red = (redPixels[i][j]).getRed();
+        int green = (greenPixels[i][j]).getGreen();
+        int blue = (bluePixels[i][j]).getBlue();
 
-        // Create a new RGBPixel with the combined values
         combinedImage[i][j] = new RGBPixel(red, green, blue);
       }
     }

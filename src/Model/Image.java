@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class Image {
 
   RGBPixel[][] updatedPixel;
-  HashMap<String, RGBPixel[][]> h1= new HashMap<String, RGBPixel[][]>();
+  public HashMap<String, RGBPixel[][]> h1= new HashMap<String, RGBPixel[][]>();
 
 
   public RGBPixel[][] getPixels(String key,String filename) {
@@ -66,6 +66,27 @@ public class Image {
       }
       imageFormat.save(outputFile, updatedPixel);
     }
+  }
+
+  public void getRed(String key, String saveKey) {
+    Split s1 = new Split();
+    HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
+    RGBPixel[][] redChannel = temp.get(saveKey);
+    h1.put(saveKey, redChannel);
+  }
+
+  public void getGreen(String key, String saveKey) {
+    Split s1 = new Split();
+    HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", saveKey, "temp2");
+    RGBPixel[][] greenChannel = temp.get(saveKey);
+    h1.put(saveKey, greenChannel);
+  }
+
+  public void getBlue(String key, String saveKey) {
+    Split s1 = new Split();
+    HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", "temp2", saveKey);
+    RGBPixel[][] blueChannel = temp.get(saveKey);
+    h1.put(saveKey, blueChannel);
   }
 
   public void blur(String key, String savekey) {

@@ -2,9 +2,12 @@ package Model.ImageTransformation.ColorTransformation;
 
 public class Sepia extends AbstractColorTransformation {
 
-
+  /**
+   *
+   * @return
+   */
   @Override
-  public double[][] getMatrix() {
+  protected double[][] getMatrix() {
     return new double[][]{
         {0.393, 0.769, 0.189},
         {0.349, 0.686, 0.168},

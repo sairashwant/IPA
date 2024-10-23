@@ -1,0 +1,97 @@
+#Loading a jpg image
+load Images/Wildlife.jpg l1
+
+#getting just the Red-component
+red-component l1 l1-red-component
+
+#Saving the red component
+save res/jpg_op/Wildlife-red-component.jpg l1-red-component
+
+#getting just the Green-component
+green-component l1 l1-green-component
+
+#Saving the green component
+save res/jpg_op/Wildlife-green-component.jpg l1-green-component
+
+#getting just the Blue-component
+blue-component l1 l1-blue-component
+
+#Saving the blue component
+save res/jpg_op/Wildlife-blue-component.jpg l1-blue-component
+
+#Blurring the image
+blur l1 l1-blur
+
+#Savnig the blurred image
+save res/jpg_op/Wildlife-blur.jpg l1-blur
+
+#Sharpening the image
+sharpen l1 l1-sharper
+
+#save the sharper image
+save res/jpg_op/Wildlife-sharper.jpg l1-sharper
+
+#Brighten the image
+brighten 20 l1 l1-brighter
+
+#Saving the brighter image
+save res/jpg_op/Wildlife-brighter.jpg  l1-brighter
+
+#Splitting the image into three i.e. red green and blue components
+rgb-split l1 l1-red-split l1-green-split l1-blue-split
+
+#Save the 3 split images
+save res/jpg_op/Wildlife-red-split.jpg l1-red-split
+save res/jpg_op/Wildlife-green-split.jpg l1-green-split
+save res/jpg_op/Wildlife-blue-split.jpg l1-blue-split
+
+#Combine the 3 color components
+combine l1-combine l1-red-split l1-green-split l1-blue-split
+
+#Save the combined image
+save res/jpg_op/Wildlife-combine.jpg l1-combine
+
+#Flip the image vertically
+vertical-flip l1 l1-vertical-flip
+
+#Save the vertically flipped image
+save res/jpg_op/Wildlife-vertical-flip.jpg l1-vertical-flip
+
+#Flip the image horizontally
+horizontal-flip l1 l1-horizontal-flip
+
+#Save the vertically flipped image
+save res/jpg_op/Wildlife-horizontal-flip.jpg l1-horizontal-flip
+
+#Convert the image into greyscale
+greyscale l1 l1-greyscale
+
+#Save the greyscale
+save res/jpg_op/Wildlife-greyscale.jpg l1-greyscale
+
+#Convert the image into sepia
+sepia l1 l1-sepia
+
+#Save the greyscale
+save res/jpg_op/Wildlife-sepia.jpg l1-sepia
+
+#Convert the image into luma
+luma-component l1 l1-luma
+
+#Save the luma
+save res/jpg_op/Wildlife-luma.jpg l1-luma
+
+#Convert the image into value
+value-component l1 l1-value
+
+#Save the greyscale
+save res/jpg_op/Wildlife-value.jpg l1-value
+
+#Convert the image into intensity
+intensity-component l1 l1-intensity
+
+#Save the intensity
+save res/jpg_op/Wildlife-intensity.jpg l1-intensity
+
+
+

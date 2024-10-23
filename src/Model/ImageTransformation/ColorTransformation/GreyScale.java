@@ -3,8 +3,12 @@ package Model.ImageTransformation.ColorTransformation;
 
 public class GreyScale extends AbstractColorTransformation{
 
+  /**
+   *
+   * @return
+   */
   @Override
-  public double[][] getMatrix() {
+  protected double[][] getMatrix() {
     return new double[][]{
         {0.2126, 0.7152, 0.0722},
         {0.2126, 0.7152, 0.0722},
