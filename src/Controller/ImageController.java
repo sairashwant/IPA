@@ -51,7 +51,7 @@ public class ImageController {
    * @param key
    */
   public void loadIMage(String fileName,String key){
-    image.getPixels(fileName,key);
+    image.getPixels(key,fileName);
   }
 
   /**

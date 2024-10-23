@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import java.util.Arrays;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ImageControllerTest {
 
@@ -19,18 +20,18 @@ public class ImageControllerTest {
 
   @Test
   public void testLoadImage() {
-    // Load an image from resources
-    controller.loadIMage("test/Test_Image/Landscape.png", "testKey");
 
-    // Verify if the image was loaded correctly by checking pixel data
-    RGBPixel[][] loadedPixels = image.getPixels("testKey", "test/Test_Image/Landscape.png");
-    assertArrayEquals(image.h1.get("testKey"), loadedPixels);
-  }
+      controller.loadIMage("test/Test_Image/Landscape.png", "testKey");
+      assertNotNull("Image should be loaded and present in the map", image.h1.get("testKey"));
+      RGBPixel[][] loadedPixels = image.getPixels("testKey","test/Test_Image/Landscape.png");
+      assertNotNull("Loaded pixels should not be null", loadedPixels);
+      assertArrayEquals("Pixel data should match the expected pixels", image.h1.get("testKey"), loadedPixels);
+    }
 
   @Test
   public void testBlur() {
     // Load and blur the image
-    controller.loadIMage("testKey","test/Test_Image/Landscape.png" );
+    controller.loadIMage("test/Test_Image/Landscape.png","testKey" );
     controller.applyOperations("blur", "testKey", "blurredKey");
 
     // Verify the blurred image with the expected output
@@ -45,6 +46,7 @@ public class ImageControllerTest {
     // Load and apply horizontal flip
     controller.loadIMage("resources/images/testImage.png", "testKey");
     controller.applyOperations("horizontal-flip", "testKey", "flippedKey");
+    controller.saveImage("horizontal-flip", "testKey", "flippedKey");
 
     // Verify the flipped image with the expected output
     RGBPixel[][] flippedPixels = image.h1.get("flippedKey");
