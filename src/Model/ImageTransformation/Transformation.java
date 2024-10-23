@@ -1,6 +1,6 @@
 package Model.ImageTransformation;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.util.HashMap;
 
 public interface Transformation {

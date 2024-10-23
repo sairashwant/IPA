@@ -1,6 +1,6 @@
 package Model.ImageTransformation.BasicOperation;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.util.HashMap;
 
 public class Flip extends AbstractBasicOperation{

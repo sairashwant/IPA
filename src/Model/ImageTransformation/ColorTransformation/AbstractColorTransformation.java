@@ -1,7 +1,7 @@
 package Model.ImageTransformation.ColorTransformation;
 
 import Model.ImageTransformation.Transformation;
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.util.HashMap;
 
 /**

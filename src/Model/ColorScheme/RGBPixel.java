@@ -1,6 +1,6 @@
-package Model;
+package Model.ColorScheme;
 
-public class RGBPixel {
+public class RGBPixel extends AbstractPixel{
 
   private int r;
   private int g;

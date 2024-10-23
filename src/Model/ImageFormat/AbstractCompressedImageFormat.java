@@ -1,6 +1,6 @@
 package Model.ImageFormat;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

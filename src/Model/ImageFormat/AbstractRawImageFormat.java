@@ -1,6 +1,6 @@
 package Model.ImageFormat;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

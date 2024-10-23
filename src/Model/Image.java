@@ -1,5 +1,6 @@
 package Model;
 
+import Model.ColorScheme.RGBPixel;
 import Model.ImageTransformation.BasicOperation.Split;
 import Model.ImageTransformation.Filtering.Blur;
 import Model.ImageTransformation.BasicOperation.Brighten;
@@ -35,6 +36,8 @@ public class Image {
     } else if (fileExtension.equals(".ppm")) {
       PPMImage imageFormat = new PPMImage();
       updatedPixel = imageFormat.load(filename);
+    }else {
+      throw new IllegalArgumentException("Unsupported image format");
     }
     h1.put(key, updatedPixel);
     return updatedPixel;
@@ -65,24 +68,26 @@ public class Image {
         return;
       }
       imageFormat.save(outputFile, updatedPixel);
+    }else {
+      throw new IllegalArgumentException("Unsupported image format");
     }
   }
 
-  public void getRed(String key, String saveKey) {
+  public void getRedChannel(String key, String saveKey) {
     Split s1 = new Split();
     HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
     RGBPixel[][] redChannel = temp.get(saveKey);
     h1.put(saveKey, redChannel);
   }
 
-  public void getGreen(String key, String saveKey) {
+  public void getGreenChannel(String key, String saveKey) {
     Split s1 = new Split();
     HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", saveKey, "temp2");
     RGBPixel[][] greenChannel = temp.get(saveKey);
     h1.put(saveKey, greenChannel);
   }
 
-  public void getBlue(String key, String saveKey) {
+  public void getBlueChannel(String key, String saveKey) {
     Split s1 = new Split();
     HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", "temp2", saveKey);
     RGBPixel[][] blueChannel = temp.get(saveKey);

@@ -39,9 +39,9 @@ public class ImageController {
     operations.put("value-component",(src,dest) -> image.value(src,dest));
     operations.put("luma-component",(src,dest) -> image.luma(src,dest));
     operations.put("intensity-component",(src,dest) -> image.intensity(src,dest));
-    operations.put("red-component",(src,dest) -> image.getRed(src,dest));
-    operations.put("green-component",(src,dest) -> image.getGreen(src,dest));
-    operations.put("blue-component",(src,dest) -> image.getBlue(src,dest));
+    operations.put("red-component",(src,dest) -> image.getRedChannel(src,dest));
+    operations.put("green-component",(src,dest) -> image.getGreenChannel(src,dest));
+    operations.put("blue-component",(src,dest) -> image.getBlueChannel(src,dest));
     bOperations.put("brighten", (src,factor,dest) -> image.brighten(factor, src,dest));
   }
 
@@ -50,8 +50,8 @@ public class ImageController {
    * @param fileName
    * @param key
    */
-  public void loadIMage(String fileName,String key){
-    image.getPixels(fileName,key);
+  public void loadIMage(String key,String fileName){
+    image.getPixels(key,fileName);
   }
 
   /**

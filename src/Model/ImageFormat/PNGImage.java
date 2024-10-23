@@ -1,6 +1,6 @@
 package Model.ImageFormat;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class PNGImage extends AbstractCompressedImageFormat {
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
       for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-          RGBPixel pixel = (RGBPixel) pixels[y][x];
+          RGBPixel pixel = pixels[y][x];
           int rgb = (pixel.getRed() << 16) | (pixel.getGreen() << 8) | pixel.getBlue();
           image.setRGB(x, y, rgb);
         }

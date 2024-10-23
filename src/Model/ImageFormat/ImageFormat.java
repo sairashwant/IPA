@@ -1,6 +1,6 @@
 package Model.ImageFormat;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 
 /**
  * This interface represents all Image formats that will be processed by this app.

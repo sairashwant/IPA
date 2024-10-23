@@ -1,6 +1,6 @@
 package Model.ImageTransformation.BasicOperation;
 
-import Model.RGBPixel;
+import Model.ColorScheme.RGBPixel;
 
 public class Combine extends AbstractBasicOperation {
 
