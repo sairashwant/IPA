@@ -6,8 +6,19 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * This class handles PNG image format.
+ */
 public class PNGImage extends AbstractCompressedImageFormat {
 
+  /**
+   * This method handles save for the JPG Image format. We take the red, green and blue values from
+   * the pixels. We do bit-manipulation to get RGB values. We then store it using setRGB in buffered
+   * image class. Then the image is written as a file. The image is saved in png format.
+   *
+   * @param filename Name of the file to save.
+   * @param pixels   Pixels of the file to save.
+   */
   @Override
   public void save(String filename, RGBPixel[][] pixels) {
     {
