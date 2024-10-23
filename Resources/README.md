@@ -207,10 +207,11 @@ This application is built using the MVC (Model-View-Controller) architecture and
 ### Installation
 - Run Main class.
 - Type run-script and paste the script location.
+
 ### Script commands with examples:
-- load <filepath> <image-name>
+- load <file-path> <image-name>
 Eg: load Images/Landscape.png l1
-- save <filepath> <image-name>
+- save <file-path> <image-name>
 Eg: save res/landscape-red-component.png l1-red-component
 - brighten <factor> <image-name> <dest-image-name>
 Eg: brighten 20 l1 l1-brighter
