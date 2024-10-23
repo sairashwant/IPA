@@ -36,7 +36,7 @@ public class PNGImage extends AbstractCompressedImageFormat {
       try {
         File outputFile = new File(filename);
         ImageIO.write(image, "png", outputFile);
-        System.out.println("Image saved as: " + outputFile.getAbsolutePath());
+        System.out.println("Image saved as: " + outputFile.getPath());
       } catch (IOException e) {
         System.out.println("Error saving the image: " + e.getMessage());
       }
