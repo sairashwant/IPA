@@ -6,8 +6,20 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+/**
+ * This class represents compressed image formats such as jpg,png. The load function is common for
+ * both jpg and png so it's written in this class.
+ */
+
 public abstract class AbstractCompressedImageFormat implements ImageFormat {
 
+  /**
+   * Loads a file as RGB pixels. We use bufferedImage to load rgb values from the file. Then we use
+   * bit-manipulation to split red,green and blue values.
+   *
+   * @param filename Image file name.
+   * @returns RGBpixel type 2D Array.
+   */
   public RGBPixel[][] load(String filename) {
     try {
       File file = new File(filename);
@@ -33,7 +45,16 @@ public abstract class AbstractCompressedImageFormat implements ImageFormat {
     }
     return null;
   }
+
+  /**
+   * This function saves a given 2d Array of RGB values.
+   *
+   * @param filename Name of the file to save.
+   * @param pixels   Pixels of the file to save.
+   */
   public void save(String filename, RGBPixel[][] pixels) {
+
+
 
   }
 }
