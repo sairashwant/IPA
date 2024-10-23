@@ -1,9 +1,8 @@
 package Controller;
 
 /**
- * A functional interface representing an operation that accepts three input arguments
- * and returns no result. This is intended to be used as a target for lambda expressions
- * or method references.
+ * A functional interface representing an operation that accepts three input arguments and returns
+ * no result. This is intended to be used as a target for lambda expressions or method references.
  *
  * @param <T> the type of the first input argument
  * @param <U> the type of the second input argument
@@ -11,6 +10,7 @@ package Controller;
  */
 @FunctionalInterface
 public interface TriConsumer<T, U, V> {
+
   /**
    * Performs this operation on the given arguments.
    *

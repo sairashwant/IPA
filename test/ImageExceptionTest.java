@@ -7,10 +7,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * The ImageExceptionTest class contains unit tests for the ImageController
- * class to validate that appropriate exceptions are thrown when invalid
- * operations are performed on images, such as loading unsupported formats
- * or applying operations on null images.
+ * The ImageExceptionTest class contains unit tests for the ImageController class to validate that
+ * appropriate exceptions are thrown when invalid operations are performed on images, such as
+ * loading unsupported formats or applying operations on null images.
  */
 public class ImageExceptionTest {
 
@@ -23,7 +22,7 @@ public class ImageExceptionTest {
    * Asserts that the actual image pixels are equal to the expected pixels.
    *
    * @param expected the expected RGBPixel 2D array
-   * @param actual the actual RGBPixel 2D array to compare
+   * @param actual   the actual RGBPixel 2D array to compare
    */
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
     for (int i = 0; i < operationPixels.length; i++) {
@@ -36,8 +35,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Sets up the test environment before each test.
-   * Initializes the Image model and ImageController, and loads a test image.
+   * Sets up the test environment before each test. Initializes the Image model and ImageController,
+   * and loads a test image.
    */
   @Before
   public void setUp() {
@@ -47,8 +46,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that loading an image with an unsupported format throws
-   * an IllegalArgumentException.
+   * Tests that loading an image with an unsupported format throws an IllegalArgumentException.
    */
   @Test(expected = IllegalArgumentException.class)
   public void testLoadImageWithUnsupportedFormatThrowsIllegalArgumentException() {
@@ -56,8 +54,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the red component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the red component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testRedComponentWithNullImageThrowsIOException() {
@@ -66,8 +63,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the green component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the green component operation on a null image throws a
+   * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testGreenComponentWithNullImageThrowsIOException() {
@@ -76,8 +73,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the blue component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the blue component operation on a null image throws a
+   * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testBlueComponentWithNullImageThrowsIOException() {
@@ -86,8 +83,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the value component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the value component operation on a null image throws a
+   * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testValueComponentWithNullImageThrowsNullPointerException() {
@@ -96,8 +93,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the luma component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the luma component operation on a null image throws a
+   * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testLumaComponentWithNullImageThrowsNullPointerException() {
@@ -106,8 +103,8 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the intensity component operation on a null image
-   * throws a NullPointerException.
+   * Tests that applying the intensity component operation on a null image throws a
+   * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testIntensityComponentWithNullImageThrowsNullPointerException() {
@@ -116,8 +113,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that flipping an image horizontally when it is null throws
-   * a NullPointerException.
+   * Tests that flipping an image horizontally when it is null throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testFlipHorizontallyWithNullImageThrowsNullPointerException() {
@@ -126,8 +122,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that flipping an image vertically when it is null throws
-   * a NullPointerException.
+   * Tests that flipping an image vertically when it is null throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testFlipVerticallyWithNullImageThrowsNullPointerException() {
@@ -154,8 +149,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying a sepia effect on a null image throws a
-   * NullPointerException.
+   * Tests that applying a sepia effect on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testApplySepiaWithNullImageThrowsNullPointerException() {
@@ -164,8 +158,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying a blur effect on a null image throws a
-   * NullPointerException.
+   * Tests that applying a blur effect on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testBlurWithNullImageThrowsNullPointerException() {
@@ -174,8 +167,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying a sharpen effect on a null image throws a
-   * NullPointerException.
+   * Tests that applying a sharpen effect on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testSharpenWithNullImageThrowsNullPointerException() {
@@ -184,8 +176,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying a greyscale effect on a null image throws a
-   * NullPointerException.
+   * Tests that applying a greyscale effect on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testApplyGreyScaleWithNullImageThrowsNullPointerException() {
@@ -194,8 +185,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that combining RGB components with a null red component throws
-   * a NullPointerException.
+   * Tests that combining RGB components with a null red component throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullRedComponentThrowsNullPointerException() {
@@ -204,8 +194,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that combining RGB components with a null green component throws
-   * a NullPointerException.
+   * Tests that combining RGB components with a null green component throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullGreenComponentThrowsNullPointerException() {
@@ -214,8 +203,7 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that combining RGB components with a null blue component throws
-   * a NullPointerException.
+   * Tests that combining RGB components with a null blue component throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullBlueComponentThrowsNullPointerException() {

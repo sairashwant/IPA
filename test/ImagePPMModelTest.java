@@ -9,14 +9,14 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Unit tests for the {@link Image} model and the {@link ImageController} operations
- * specifically focused on handling PPM images. This class includes tests for various
- * image operations such as loading an image, applying filters (e.g., blur, greyscale, sepia),
- * flipping, brightness adjustment, and extracting intensity and luma components.
+ * Unit tests for the {@link Image} model and the {@link ImageController} operations specifically
+ * focused on handling PPM images. This class includes tests for various image operations such as
+ * loading an image, applying filters (e.g., blur, greyscale, sepia), flipping, brightness
+ * adjustment, and extracting intensity and luma components.
  *
  * <p>
- * The tests ensure that the output image pixels match the expected pixel values
- * after each operation is applied. Each test method is structured to:
+ * The tests ensure that the output image pixels match the expected pixel values after each
+ * operation is applied. Each test method is structured to:
  * <ul>
  *   <li>Setup necessary data and state before executing the test.</li>
  *   <li>Perform the image operation using the controller.</li>
@@ -61,11 +61,11 @@ public class ImagePPMModelTest {
    * Asserts that two images are equal by comparing their pixel values.
    *
    * @param expected The expected pixel values of the image.
-   * @param actual The actual pixel values of the image after an operation.
+   * @param actual   The actual pixel values of the image after an operation.
    */
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
-    for(int i = 0; i < operationPixels.length; i++) {
-      for(int j = 0; j < operationPixels[0].length; j++) {
+    for (int i = 0; i < operationPixels.length; i++) {
+      for (int j = 0; j < operationPixels[0].length; j++) {
         assertEquals(expectedPixels[i][j].getRed(), operationPixels[i][j].getRed());
         assertEquals(expectedPixels[i][j].getGreen(), operationPixels[i][j].getGreen());
         assertEquals(expectedPixels[i][j].getBlue(), operationPixels[i][j].getBlue());
@@ -74,8 +74,8 @@ public class ImagePPMModelTest {
   }
 
   /**
-   * Sets up the test environment by initializing the image and controller,
-   * and loading a test image before each test case is run.
+   * Sets up the test environment by initializing the image and controller, and loading a test image
+   * before each test case is run.
    */
   @Before
   public void setUp() {
@@ -115,7 +115,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("horizontal-flip", "testKey", "horizontal-flip-Key");
 
     operationPixels = image.h1.get("horizontal-flip-Key");
-    expectedPixels = image.getPixels("expected-horizontal-flip-Key", "test/Test_Image/ppm_op/P3-horizontal-flip.ppm");
+    expectedPixels = image.getPixels("expected-horizontal-flip-Key",
+        "test/Test_Image/ppm_op/P3-horizontal-flip.ppm");
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -127,7 +128,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("vertical-flip", "testKey", "vertical-flip-Key");
 
     operationPixels = image.h1.get("vertical-flip-Key");
-    expectedPixels = image.getPixels("expected-vertical-flip-Key", "test/Test_Image/ppm_op/P3-vertical-flip.ppm");
+    expectedPixels = image.getPixels("expected-vertical-flip-Key",
+        "test/Test_Image/ppm_op/P3-vertical-flip.ppm");
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -139,7 +141,8 @@ public class ImagePPMModelTest {
     controller.brighten(20, "testKey", "brightened-Key");
 
     operationPixels = image.h1.get("brightened-Key");
-    expectedPixels = image.getPixels("expected-BrightenedKey", "test/Test_Image/ppm_op/P3-brighter.ppm");
+    expectedPixels = image.getPixels("expected-BrightenedKey",
+        "test/Test_Image/ppm_op/P3-brighter.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -152,7 +155,8 @@ public class ImagePPMModelTest {
     controller.brighten(-20, "testKey", "darkened-Key");
 
     operationPixels = image.h1.get("darkened-Key");
-    expectedPixels = image.getPixels("expected-darkened-Key", "test/Test_Image/ppm_op/P3-darker.ppm");
+    expectedPixels = image.getPixels("expected-darkened-Key",
+        "test/Test_Image/ppm_op/P3-darker.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -165,7 +169,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("greyscale", "testKey", "greyscale-Key");
 
     operationPixels = image.h1.get("greyscale-Key");
-    expectedPixels = image.getPixels("expected-greyscale-Key", "test/Test_Image/ppm_op/P3-greyscale.ppm");
+    expectedPixels = image.getPixels("expected-greyscale-Key",
+        "test/Test_Image/ppm_op/P3-greyscale.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -178,7 +183,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("luma-component", "testKey", "luma-component-Key");
 
     operationPixels = image.h1.get("luma-component-Key");
-    expectedPixels = image.getPixels("expected-luma-component-Key", "test/Test_Image/ppm_op/P3-luma.ppm");
+    expectedPixels = image.getPixels("expected-luma-component-Key",
+        "test/Test_Image/ppm_op/P3-luma.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -191,7 +197,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("intensity-component", "testKey", "intensity-Key");
 
     operationPixels = image.h1.get("intensity-Key");
-    expectedPixels = image.getPixels("expected-intensity-key", "test/Test_Image/ppm_op/P3-intensity.ppm");
+    expectedPixels = image.getPixels("expected-intensity-key",
+        "test/Test_Image/ppm_op/P3-intensity.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -217,7 +224,8 @@ public class ImagePPMModelTest {
     controller.applyOperations("sharpen", "testKey", "sharpen-Key");
 
     operationPixels = image.h1.get("sharpen-Key");
-    expectedPixels = image.getPixels("expected-sharpen-key", "test/Test_Image/ppm_op/P3-sharper.ppm");
+    expectedPixels = image.getPixels("expected-sharpen-key",
+        "test/Test_Image/ppm_op/P3-sharper.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
@@ -230,14 +238,15 @@ public class ImagePPMModelTest {
     controller.applyOperations("value-component", "testKey", "value-component-Key");
 
     operationPixels = image.h1.get("value-component-Key");
-    expectedPixels = image.getPixels("expected-value-component-key", "test/Test_Image/ppm_op/P3-value.ppm");
+    expectedPixels = image.getPixels("expected-value-component-key",
+        "test/Test_Image/ppm_op/P3-value.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }
 
   /**
-   * Tests loading an image from an unsupported file format to ensure that an
-   * {@link IOException} is thrown.
+   * Tests loading an image from an unsupported file format to ensure that an {@link IOException} is
+   * thrown.
    *
    * @throws IOException if the image format is unsupported.
    */

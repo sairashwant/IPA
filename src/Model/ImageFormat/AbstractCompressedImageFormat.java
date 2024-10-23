@@ -54,7 +54,5 @@ public abstract class AbstractCompressedImageFormat implements ImageFormat {
    */
   public void save(String filename, RGBPixel[][] pixels) {
 
-
-
   }
 }

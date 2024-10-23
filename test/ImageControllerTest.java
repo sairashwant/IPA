@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+
 import Controller.ImageController;
 import Model.Image;
 import View.ImageView;
@@ -8,13 +9,34 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit tests for the {@link ImageController} class, specifically focused on verifying the behavior
+ * of the controller when running scripts that perform various image operations. This test class
+ * captures console output to validate that the expected messages are printed during the execution
+ * of the script.
+ *
+ * <p>
+ * The tests ensure that the controller correctly processes commands defined in a script file and
+ * provides the appropriate feedback in the console output.
+ * </p>
+ *
+ * @see ImageController
+ * @see Image
+ * @see ImageView
+ */
 public class ImageControllerTest {
-  Image image;
-  ImageController controller;
-  ImageView view;
+
+  private Image image;
+  private ImageController controller;
+  private ImageView view;
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
 
+  /**
+   * Sets up the test environment by initializing the Image, ImageController, and ImageView
+   * instances, and redirects standard output to capture console output for validation before each
+   * test case is run.
+   */
   @Before
   public void setUp() {
     System.setOut(new PrintStream(outputStreamCaptor));
@@ -24,6 +46,11 @@ public class ImageControllerTest {
     view = new ImageView(controller);
   }
 
+  /**
+   * Tests the execution of a script that performs various operations on the image. This test checks
+   * if the output messages from the script execution match the expected output, validating the
+   * correctness of the operations performed by the controller on the image.
+   */
   @Test
   public void testRunScript() {
     String[] command = {"run-script", "Images/PNGScript.txt"};
@@ -83,11 +110,16 @@ public class ImageControllerTest {
         + "Image saved as: res\\landscape-intensity.png";
 
     String normalizedExpectedOutput = expectedOutput.replaceAll("\\r\\n?", "\n").trim();
-    String normalizedCapturedOutput = outputStreamCaptor.toString().replaceAll("\\r\\n?", "\n").trim();
+    String normalizedCapturedOutput = outputStreamCaptor.toString().replaceAll("\\r\\n?", "\n")
+        .trim();
 
     assertEquals(normalizedExpectedOutput, normalizedCapturedOutput);
   }
 
+  /**
+   * Restores the original standard output after each test case is run to prevent interference with
+   * subsequent tests.
+   */
   @After
   public void tearDown() {
     System.setOut(originalOut);

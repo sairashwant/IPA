@@ -5,21 +5,21 @@ import Model.ColorScheme.RGBPixel;
 import java.util.HashMap;
 
 /**
- * AbstractColorTransformation is an abstract class that defines the structure
- * for applying a color transformation to an image. The transformation is
- * carried out using a transformation matrix that is applied to each pixel in
- * the image. Subclasses must implement the `getMatrix()` method to provide
- * the specific transformation matrix.
+ * AbstractColorTransformation is an abstract class that defines the structure for applying a color
+ * transformation to an image. The transformation is carried out using a transformation matrix that
+ * is applied to each pixel in the image. Subclasses must implement the `getMatrix()` method to
+ * provide the specific transformation matrix.
  */
 public abstract class AbstractColorTransformation implements Transformation {
 
 
   /**
-   * Applies a color transformation to the input image using a predefined matrix.
-   * The transformation is applied by multiplying each pixel's RGB values by the matrix.
+   * Applies a color transformation to the input image using a predefined matrix. The transformation
+   * is applied by multiplying each pixel's RGB values by the matrix.
    *
    * @param key the key to identify the input image in the HashMap
-   * @param h1  a HashMap containing the input images, where the key refers to the image to transform
+   * @param h1  a HashMap containing the input images, where the key refers to the image to
+   *            transform
    * @return a 2D array of RGBPixel objects, representing the transformed image
    * @throws IllegalArgumentException if the image pixels are not instances of RGBPixel
    */
@@ -56,8 +56,8 @@ public abstract class AbstractColorTransformation implements Transformation {
   }
 
   /**
-   * Abstract method to get the transformation matrix. Subclasses must override
-   * this method to provide the specific matrix for the color transformation.
+   * Abstract method to get the transformation matrix. Subclasses must override this method to
+   * provide the specific matrix for the color transformation.
    *
    * @return a 2D array representing the transformation matrix
    */

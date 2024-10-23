@@ -19,8 +19,8 @@ import Model.ImageTransformation.BasicOperation.luma;
 import java.util.HashMap;
 
 /**
- * Represents an image and provides methods for loading, saving, and manipulating
- * pixel data using various transformations.
+ * Represents an image and provides methods for loading, saving, and manipulating pixel data using
+ * various transformations.
  */
 public class Image {
 
@@ -30,7 +30,7 @@ public class Image {
   /**
    * Loads pixel data from an image file and stores it in the specified key.
    *
-   * @param key the key under which the pixel data will be stored
+   * @param key      the key under which the pixel data will be stored
    * @param filename the name of the image file to be loaded
    * @return a 2D array of RGBPixel representing the loaded image
    * @throws IllegalArgumentException if the image format is unsupported
@@ -57,7 +57,7 @@ public class Image {
   /**
    * Saves pixel data to an image file based on the specified key.
    *
-   * @param key the key used to retrieve the pixel data to save
+   * @param key      the key used to retrieve the pixel data to save
    * @param filename the name of the output image file
    * @throws IllegalArgumentException if the image format is unsupported
    */
@@ -92,10 +92,10 @@ public class Image {
   }
 
   /**
-   * Extracts the red channel from the image associated with the specified key
-   * and saves it under the specified save key.
+   * Extracts the red channel from the image associated with the specified key and saves it under
+   * the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param saveKey the key under which the red channel will be stored
    */
   public void getRedChannel(String key, String saveKey) {
@@ -106,10 +106,10 @@ public class Image {
   }
 
   /**
-   * Extracts the green channel from the image associated with the specified key
-   * and saves it under the specified save key.
+   * Extracts the green channel from the image associated with the specified key and saves it under
+   * the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param saveKey the key under which the green channel will be stored
    */
   public void getGreenChannel(String key, String saveKey) {
@@ -120,10 +120,10 @@ public class Image {
   }
 
   /**
-   * Extracts the blue channel from the image associated with the specified key
-   * and saves it under the specified save key.
+   * Extracts the blue channel from the image associated with the specified key and saves it under
+   * the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param saveKey the key under which the blue channel will be stored
    */
   public void getBlueChannel(String key, String saveKey) {
@@ -134,10 +134,10 @@ public class Image {
   }
 
   /**
-   * Applies a blur effect to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies a blur effect to the image associated with the specified key and saves the result under
+   * the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the blurred image will be stored
    */
   public void blur(String key, String savekey) {
@@ -147,12 +147,12 @@ public class Image {
   }
 
   /**
-   * Brightens the image associated with the specified key by a given factor
-   * and saves the result under the specified save key.
+   * Brightens the image associated with the specified key by a given factor and saves the result
+   * under the specified save key.
    *
    * @param brightenFactor the amount to brighten the image
-   * @param key the key used to retrieve the pixel data
-   * @param savekey the key under which the brightened image will be stored
+   * @param key            the key used to retrieve the pixel data
+   * @param savekey        the key under which the brightened image will be stored
    */
   public void brighten(int brightenFactor, String key, String savekey) {
     Brighten b1 = new Brighten(brightenFactor);
@@ -161,24 +161,25 @@ public class Image {
   }
 
   /**
-   * Splits the image associated with the specified key into three separate channels
-   * and stores them under the specified save keys.
+   * Splits the image associated with the specified key into three separate channels and stores them
+   * under the specified save keys.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key      the key used to retrieve the pixel data
    * @param saveKey1 the key under which the first split channel will be stored
    * @param saveKey2 the key under which the second split channel will be stored
    * @param saveKey3 the key under which the third split channel will be stored
    */
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
     Split s1 = new Split();
-    HashMap<String, RGBPixel[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2, saveKey3);
+    HashMap<String, RGBPixel[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2,
+        saveKey3);
     h1.putAll(temp);
   }
 
   /**
    * Combines three color channels into a single image based on the specified keys.
    *
-   * @param key the key under which the combined image will be stored
+   * @param key  the key under which the combined image will be stored
    * @param key1 the key for the first channel
    * @param key2 the key for the second channel
    * @param key3 the key for the third channel
@@ -190,12 +191,12 @@ public class Image {
   }
 
   /**
-   * Flips the image associated with the specified key in the given direction
-   * and saves the result under the specified save key.
+   * Flips the image associated with the specified key in the given direction and saves the result
+   * under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the flipped image will be stored
-   * @param d the direction in which to flip the image (horizontal or vertical)
+   * @param d       the direction in which to flip the image (horizontal or vertical)
    */
   public void flip(String key, String savekey, Direction d) {
     Flip f1 = new Flip();
@@ -204,10 +205,10 @@ public class Image {
   }
 
   /**
-   * Converts the image associated with the specified key to grayscale
-   * and saves the result under the specified save key.
+   * Converts the image associated with the specified key to grayscale and saves the result under
+   * the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the grayscale image will be stored
    */
   public void greyScale(String key, String savekey) {
@@ -217,10 +218,10 @@ public class Image {
   }
 
   /**
-   * Applies a sepia effect to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies a sepia effect to the image associated with the specified key and saves the result
+   * under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the sepia image will be stored
    */
   public void sepia(String key, String savekey) {
@@ -230,10 +231,10 @@ public class Image {
   }
 
   /**
-   * Applies a sharpening effect to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies a sharpening effect to the image associated with the specified key and saves the result
+   * under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the sharpened image will be stored
    */
   public void sharpen(String key, String savekey) {
@@ -243,10 +244,10 @@ public class Image {
   }
 
   /**
-   * Applies a luma transformation to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies a luma transformation to the image associated with the specified key and saves the
+   * result under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the luma image will be stored
    */
   public void luma(String key, String savekey) {
@@ -256,10 +257,10 @@ public class Image {
   }
 
   /**
-   * Applies a value transformation to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies a value transformation to the image associated with the specified key and saves the
+   * result under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the value image will be stored
    */
   public void value(String key, String savekey) {
@@ -269,10 +270,10 @@ public class Image {
   }
 
   /**
-   * Applies an intensity transformation to the image associated with the specified key
-   * and saves the result under the specified save key.
+   * Applies an intensity transformation to the image associated with the specified key and saves
+   * the result under the specified save key.
    *
-   * @param key the key used to retrieve the pixel data
+   * @param key     the key used to retrieve the pixel data
    * @param savekey the key under which the intensity image will be stored
    */
   public void intensity(String key, String savekey) {
