@@ -2,8 +2,25 @@ package Model.ImageTransformation.BasicOperation;
 
 import Model.ColorScheme.RGBPixel;
 
+/**
+ * The {@code Combine} class extends {@code AbstractBasicOperation} to provide a specific image transformation
+ * that combines three separate color channels (red, green, and blue) into a single RGB image.
+ * This class assumes that the input images represent individual color components and merges them
+ * to produce a full-color image.
+ */
 public class Combine extends AbstractBasicOperation {
 
+  /**
+   * Combines three separate color channel images (red, green, and blue) into a single RGB image.
+   * Each input image represents a color component and must have the same dimensions.
+   *
+   * @param redPixels   a 2D array of {@code RGBPixel} representing the red channel of the image
+   * @param greenPixels a 2D array of {@code RGBPixel} representing the green channel of the image
+   * @param bluePixels  a 2D array of {@code RGBPixel} representing the blue channel of the image
+   * @return a 2D array of {@code RGBPixel} representing the combined RGB image
+   * @throws IllegalArgumentException if the input images do not have the same dimensions
+   *                                  or if any of the pixels are not instances of {@code RGBPixel}
+   */
   public RGBPixel[][] apply(RGBPixel[][] redPixels, RGBPixel[][] greenPixels, RGBPixel[][] bluePixels) {
 
     int height = redPixels.length;

@@ -1,7 +1,22 @@
 package Model.ImageTransformation.BasicOperation;
 
+/**
+ * The {@code Intensity} class extends {@code AbstractBasicOperation} to calculate the intensity
+ * component of an image. The intensity is computed as the average of the red, green, and blue color
+ * values of each pixel, resulting in a grayscale representation of the image.
+ */
 public class Intensity extends AbstractBasicOperation {
 
+  /**
+   * Calculates the intensity value of a pixel based on its red, green, and blue color components.
+   * The intensity is computed as the average of the red, green, and blue values.
+   *
+   * @param r the red component of the pixel (0-255)
+   * @param g the green component of the pixel (0-255)
+   * @param b the blue component of the pixel (0-255)
+   * @return the calculated intensity value, which is the average of the red, green, and blue
+   * components
+   */
   @Override
   public int properties(int r, int g, int b) {
 

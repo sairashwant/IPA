@@ -4,8 +4,22 @@ import Model.ColorScheme.RGBPixel;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+/**
+ * The class handles the saving of images in the PPM format. Provides functionality specific to the
+ * PPM format. The class writes image data to a file using the P3 ASCII format, which is a
+ * human-readable format.
+ */
+
 public class PPMImage extends AbstractRawImageFormat {
 
+  /**
+   * Saves the given pixel data as a PPM file at the specified filename. The method outputs the
+   * image data in P3 format, including the header and pixel color values.
+   *
+   * @param filename the output file path where the PPM image will be saved
+   * @param pixels   a 2D array of {@code RGBPixel} representing the image pixel data (rows x
+   *                 columns). The pixel data must not be null or empty.
+   */
   @Override
   public void save(String filename, RGBPixel[][] pixels) {
     String outputPath = filename;
