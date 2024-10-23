@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public class ImagePPMControllerTest {
+public class ImagePPMModelTest {
 
   private Image image;
   private ImageController controller;

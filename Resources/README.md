@@ -188,7 +188,7 @@ This application is built using the MVC (Model-View-Controller) architecture and
 - Parameter validation
 - Boundary conditions
 
-### ImagePNGControllerTest.java
+### ImagePNGModelTest.java
 **Purpose:** Tests PNG-specific operations.  
 **Tests:**
 - PNG loading/saving
@@ -196,7 +196,7 @@ This application is built using the MVC (Model-View-Controller) architecture and
 - Color operations
 - Format conversions
 
-### ImagePPMControllerTest.java
+### ImagePPMModelTest.java
 **Purpose:** Tests PPM-specific operations.  
 **Tests:**
 - PPM loading/saving

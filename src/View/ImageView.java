@@ -52,7 +52,7 @@ public class ImageView {
   }
 
 
-  void run() {
+  public void run() {
     boolean running = true;
     while (running) {
       try {
@@ -175,7 +175,7 @@ public class ImageView {
     }
   }
 
-  private void handleScript(String[] args) {
+  public void handleScript(String[] args) {
     if (args.length < 2) {
       System.out.println("Please provide a script file path");
       return;
