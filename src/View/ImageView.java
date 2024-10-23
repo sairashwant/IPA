@@ -7,7 +7,8 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 
 /**
- *
+ * Represents the user interface for the image processing application,
+ * handling user commands and interacting with the ImageController.
  */
 public class ImageView {
 
@@ -16,14 +17,10 @@ public class ImageView {
   private final Map<String, Consumer<String[]>> commandMap;
 
   /**
-   * @return
-   */
-  public Map<String, Consumer<String[]>> getCommandMap() {
-    return commandMap;
-  }
-
-  /**
-   * @param controller
+   * Initializes the ImageView with a given ImageController and sets up
+   * the command mapping for user interactions.
+   *
+   * @param controller the ImageController to manage image operations
    */
   public ImageView(ImageController controller) {
     this.controller = controller;
@@ -51,7 +48,10 @@ public class ImageView {
     commandMap.put("run-script", this::handleScript);
   }
 
-
+  /**
+   * Starts the command processing loop, prompting the user for input
+   * and executing corresponding commands until the program is exited.
+   */
   void run() {
     boolean running = true;
     while (running) {
@@ -82,7 +82,7 @@ public class ImageView {
   }
 
   /**
-   *
+   * Displays the available commands in the image processing menu.
    */
   void printMenu() {
     System.out.println("\n========== Image Processing Menu ==========");
@@ -113,6 +113,12 @@ public class ImageView {
     System.out.println("============================================");
   }
 
+  /**
+   * Handles the loading of an image using the provided filename and key.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>load <filename> <key></code>
+   */
   private void handleLoad(String[] args) {
     if (args.length == 3) {
       System.out.println("Loaded Image " + args[2]);
@@ -122,15 +128,27 @@ public class ImageView {
     }
   }
 
+  /**
+   * Handles the saving of an image using the provided filename and key.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>save <filename> <key></code>
+   */
   private void handleSave(String[] args) {
     if (args.length == 3) {
-      System.out.println("Saved Image" + args[2]);
+      System.out.println("Saved Image " + args[2]);
       controller.saveImage(args[2], args[1]);
     } else {
-      System.out.println("Invalid save command. Usage: save <filename> <key> ");
+      System.out.println("Invalid save command. Usage: save <filename> <key>");
     }
   }
 
+  /**
+   * Handles operations on images based on the provided command.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>operation <srcKey> <destKey></code>
+   */
   private void handleOperation(String[] args) {
     if (args.length == 3) {
       System.out.println("Operation on " + args[1]);
@@ -140,6 +158,13 @@ public class ImageView {
     }
   }
 
+  /**
+   * Handles the brighten operation by parsing the factor and invoking
+   * the controller method.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>brighten <factor> <srcKey> <destKey></code>
+   */
   private void handleBrighten(String[] args) {
     if (args.length == 4) {
       try {
@@ -150,13 +175,20 @@ public class ImageView {
         System.out.println("Invalid brighten factor. Please enter an integer.");
       }
     } else {
-      System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey> ");
+      System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
     }
   }
 
+  /**
+   * Handles the RGB split operation, extracting the color components
+   * from the source key and saving them under specified keys.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>split <srcKey> <redKey> <greenKey> <blueKey></code>
+   */
   private void handleSplit(String[] args) {
     if (args.length == 5) {
-      System.out.println("Split Image " + args[1] + "into red , green and blue");
+      System.out.println("Split Image " + args[1] + " into red, green and blue");
       controller.split(args[1], args[2], args[3], args[4]);
     } else {
       System.out.println(
@@ -164,10 +196,16 @@ public class ImageView {
     }
   }
 
-
+  /**
+   * Handles the RGB combine operation, merging the color components
+   * from the specified keys into a destination key.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>combine <destKey> <redKey> <greenKey> <blueKey></code>
+   */
   private void handleCombine(String[] args) {
     if (args.length == 5) {
-      System.out.println("Combined Image " + args[2] + "," + args[3] + " and" + args[4]);
+      System.out.println("Combined Image " + args[2] + ", " + args[3] + " and " + args[4]);
       controller.combine(args[1], args[2], args[3], args[4]);
     } else {
       System.out.println(
@@ -175,6 +213,12 @@ public class ImageView {
     }
   }
 
+  /**
+   * Handles the script execution by reading commands from the specified file.
+   *
+   * @param args an array containing the command arguments; expects
+   *             <code>run-script <scriptFilePath></code>
+   */
   private void handleScript(String[] args) {
     if (args.length < 2) {
       System.out.println("Please provide a script file path");
@@ -184,5 +228,4 @@ public class ImageView {
     ScriptReader scriptReader = new ScriptReader(this);
     scriptReader.readScript(args[1]);
   }
-
 }
