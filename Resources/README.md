@@ -1,9 +1,9 @@
 # Image Processing Application
 
 ## Overview
-This application is built using the MVC (Model-View-Controller) architecture and supports various image processing operations, including format conversion, basic transformations, color adjustments, and filtering effects. Below is a detailed breakdown of each package and its components.
+This application is built using the MVC (model-view-controller) architecture and supports various image processing operations, including format conversion, basic transformations, color adjustments, and filtering effects. Below is a detailed breakdown of each package and its components.
 
-## Controller Package
+## controller Package
 
 ### ImageController.java
 **Purpose:** Main controller class implementing the command pattern.  
@@ -17,7 +17,7 @@ This application is built using the MVC (Model-View-Controller) architecture and
 **Purpose:** Functional interface for three-parameter operations.  
 **Usage:** Used for operations like `brighten` that require multiple inputs.
 
-## Model Package
+## model Package
 
 ### ColorScheme Package
 
@@ -140,7 +140,7 @@ This application is built using the MVC (Model-View-Controller) architecture and
 **Purpose:** Applies a sharpening effect to the image.  
 **Responsibilities:** Uses a sharpen kernel matrix for the effect.
 
-## Main Model Class
+## Main model Class
 
 ### Image.java
 **Purpose:** Core class for image processing.  
@@ -151,7 +151,7 @@ This application is built using the MVC (Model-View-Controller) architecture and
 - Maintains the image's state
 - Processes various image operations
 
-## View Package
+## view Package
 
 ### ImageView.java
 **Purpose:** Handles the user interface.  
@@ -209,33 +209,53 @@ This application is built using the MVC (Model-View-Controller) architecture and
 - Type run-script and paste the script location.
 
 ### Script commands with examples:
-- load <file-path> <image-name>
-Eg: load Images/Landscape.png l1
-- save <file-path> <image-name>
-Eg: save res/landscape-red-component.png l1-red-component
-- brighten <factor> <image-name> <dest-image-name>
-Eg: brighten 20 l1 l1-brighter
-- horizontal-flip <image-name> <dest-image-name>
-Eg: horizontal-flip l1 l1-horizontal-flip
-- vertical-flip <image-name> <dest-image-name>
-Eg: vertical-flip l1 l1-vertical-flip
-- rgb-split <image-name> <red-image> <green-image> <blue-image>
-Eg: rgb-split l1 l1-red-split l1-green-split l1-blue-split
-- rgb-combine <dest-image-name> <red-image> <green-image> <blue-image>
-Eg: combine l1-combine l1-red-split l1-green-split l1-blue-split
-- value-component <image-name> <dest-image-name>
-Eg: value-component l1 l1-value
-- luma-component <image-name> <dest-image-name>
-Eg: luma-component l1 l1-luma
-- intensity-component <image-name> <dest-image-name>
-Eg: intensity-component l1 l1-intensity
-- greyscale <image-name> <dest-image-name>
-Eg: greyscale l1 l1-greyscale
-- sepia <image-name> <dest-image-name>
-Eg: save res/landscape-sepia.png l1-sepia
-- blur <image-name> <dest-image-name>
-Eg: blur l1 l1-blur
-- sharpen <image-name> <dest-image-name>
-Eg: sharpen l1 l1-sharper
-- run-script <script-file-path>
+-       load 
+  -    Syntax : <file-path> <image-name>
+  - Eg: load Images/Landscape.png l1
+-     save 
+  - Syntax : <file-path> <image-name>
+  - Eg: save res/landscape-red-component.png l1-red-component
+-     brighten
+- Syntax :  <factor> <image-name> <dest-image-name>
+- Eg: brighten 20 l1 l1-brighter
+-     horizontal-flip
+- Syntax : <image-name> <dest-image-name>
+-  Eg: horizontal-flip l1 l1-horizontal-flip
+-     vertical-flip 
+- Syntax : <image-name> <dest-image-name>
+- Eg: vertical-flip l1 l1-vertical-flip
+-     rgb-split 
+- Syntax : <image-name> <red-image> <green-image> <blue-image>
+- Eg: rgb-split l1 l1-red-split l1-green-split l1-blue-split
+-     rgb-combine 
+- Syntax : <dest-image-name> <red-image> <green-image> <blue-image>
+- Eg: combine l1-combine l1-red-split l1-green-split l1-blue-split
+-     value-component
+- Syntax : <image-name> <dest-image-name>
+- Eg: value-component l1 l1-value
+-     luma-component 
+- Syntax : <image-name> <dest-image-name>
+- Eg: luma-component l1 l1-luma
+-     intensity-component 
+- Syntax : <image-name> <dest-image-name>
+- Eg: intensity-component l1 l1-intensity
+-     greyscale 
+- Syntax : <image-name> <dest-image-name>
+- Eg: greyscale l1 l1-greyscale
+-     sepia 
+- Syntax : <image-name> <dest-image-name>
+- Eg: save res/landscape-sepia.png l1-sepia
+-     blur 
+- Syntax : <image-name> <dest-image-name>
+- Eg: blur l1 l1-blur
+-     sharpen 
+- Syntax : <image-name> <dest-image-name>
+- Eg: sharpen l1 l1-sharper
+-     run-script 
+- Syntax : <script-file-path>
+- Eg: run-script Images/PNGScript.txt
+
+
+## IMAGE CITATION ##
+- Images taken by [Pranav Viswanathan](https://www.flickr.com/photos/199542081@N07/albums/with/72177720312735513)
 

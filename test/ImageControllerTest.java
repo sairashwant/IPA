@@ -1,8 +1,8 @@
 import static org.junit.Assert.assertEquals;
 
-import Controller.ImageController;
-import Model.Image;
-import View.ImageView;
+import controller.ImageController;
+import model.Image;
+import view.ImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.After;
@@ -26,8 +26,6 @@ import org.junit.Test;
  */
 public class ImageControllerTest {
 
-  private Image image;
-  private ImageController controller;
   private ImageView view;
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
@@ -41,8 +39,8 @@ public class ImageControllerTest {
   public void setUp() {
     System.setOut(new PrintStream(outputStreamCaptor));
 
-    image = new Image();
-    controller = new ImageController(image);
+    Image image = new Image();
+    ImageController controller = new ImageController(image);
     view = new ImageView(controller);
   }
 
@@ -100,8 +98,8 @@ public class ImageControllerTest {
         + "Saved Imagel1-sepia\n"
         + "Image saved as: res\\landscape-sepia.png\n"
         + "Operation on l1\n"
-        + "Saved Imagel1-luma\n"
-        + "Image saved as: res\\landscape-luma.png\n"
+        + "Saved Imagel1-Luma\n"
+        + "Image saved as: res\\landscape-Luma.png\n"
         + "Operation on l1\n"
         + "Saved Imagel1-value\n"
         + "Image saved as: res\\landscape-value.png\n"

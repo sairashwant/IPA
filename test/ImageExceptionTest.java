@@ -1,10 +1,10 @@
-import Model.Image;
-import Controller.ImageController;
-import Model.ColorScheme.RGBPixel;
+import static org.junit.Assert.assertEquals;
+
+import controller.ImageController;
+import model.Image;
+import model.colorscheme.RGBPixel;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * The ImageExceptionTest class contains unit tests for the ImageController class to validate that
@@ -13,10 +13,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class ImageExceptionTest {
 
-  private Image image; // The image model being tested
-  private ImageController controller; // The controller for managing image operations
-  RGBPixel[][] operationPixels; // Pixels for testing image operations
-  RGBPixel[][] expectedPixels; // Expected pixels for comparison in tests
+  private ImageController controller;
+  RGBPixel[][] operationPixels;
+  RGBPixel[][] expectedPixels;
 
   /**
    * Asserts that the actual image pixels are equal to the expected pixels.
@@ -40,7 +39,7 @@ public class ImageExceptionTest {
    */
   @Before
   public void setUp() {
-    image = new Image();
+    Image image = new Image();
     controller = new ImageController(image);
     controller.loadIMage("testKey", "test/Test_Image/Landscape.png");
   }
@@ -93,13 +92,13 @@ public class ImageExceptionTest {
   }
 
   /**
-   * Tests that applying the luma component operation on a null image throws a
+   * Tests that applying the Luma component operation on a null image throws a
    * NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testLumaComponentWithNullImageThrowsNullPointerException() {
     controller.loadIMage("nullKey", null);
-    controller.applyOperations("luma-component", "nullKey", "luma-component-Key");
+    controller.applyOperations("Luma-component", "nullKey", "Luma-component-Key");
   }
 
   /**

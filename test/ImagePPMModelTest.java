@@ -1,6 +1,6 @@
-import Controller.ImageController;
-import Model.ColorScheme.RGBPixel;
-import Model.Image;
+import controller.ImageController;
+import model.colorscheme.RGBPixel;
+import model.Image;
 import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
  * Unit tests for the {@link Image} model and the {@link ImageController} operations specifically
  * focused on handling PPM images. This class includes tests for various image operations such as
  * loading an image, applying filters (e.g., blur, greyscale, sepia), flipping, brightness
- * adjustment, and extracting intensity and luma components.
+ * adjustment, and extracting intensity and Luma components.
  *
  * <p>
  * The tests ensure that the output image pixels match the expected pixel values after each
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
  *   <li>Performing horizontal and vertical flips.</li>
  *   <li>Adjusting brightness (both brightening and darkening).</li>
  *   <li>Converting to greyscale.</li>
- *   <li>Calculating the luma component.</li>
+ *   <li>Calculating the Luma component.</li>
  *   <li>Calculating the intensity component.</li>
  *   <li>Applying a sepia effect.</li>
  *   <li>Sharpening the image.</li>
@@ -176,15 +176,15 @@ public class ImagePPMModelTest {
   }
 
   /**
-   * Tests extracting the luma component from the image.
+   * Tests extracting the Luma component from the image.
    */
   @Test
   public void testLuma() {
-    controller.applyOperations("luma-component", "testKey", "luma-component-Key");
+    controller.applyOperations("Luma-component", "testKey", "Luma-component-Key");
 
-    operationPixels = image.h1.get("luma-component-Key");
-    expectedPixels = image.getPixels("expected-luma-component-Key",
-        "test/Test_Image/ppm_op/P3-luma.ppm");
+    operationPixels = image.h1.get("Luma-component-Key");
+    expectedPixels = image.getPixels("expected-Luma-component-Key",
+        "test/Test_Image/ppm_op/P3-Luma.ppm");
 
     assertImageEquals(expectedPixels, operationPixels);
   }

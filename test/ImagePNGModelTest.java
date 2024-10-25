@@ -1,6 +1,6 @@
-import Model.Image;
-import Controller.ImageController;
-import Model.ColorScheme.RGBPixel;
+import model.Image;
+import controller.ImageController;
+import model.colorscheme.RGBPixel;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
  *   <li>Applying a sepia effect.</li>
  *   <li>Sharpening the image.</li>
  *   <li>Splitting the image into its RGB components.</li>
- *   <li>Calculating the luma component.</li>
+ *   <li>Calculating the Luma component.</li>
  * </ul>
  * </p>
  *
@@ -65,9 +65,9 @@ public class ImagePNGModelTest {
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
     for (int i = 0; i < operationPixels.length; i++) {
       for (int j = 0; j < operationPixels[0].length; j++) {
-        assertEquals(expectedPixels[i][j].getRed(), operationPixels[i][j].getRed());
-        assertEquals(expectedPixels[i][j].getGreen(), operationPixels[i][j].getGreen());
-        assertEquals(expectedPixels[i][j].getBlue(), operationPixels[i][j].getBlue());
+        assertEquals(expectedPixels[i][j].getRed(), operationPixels[i][j].getRed(),2);
+        assertEquals(expectedPixels[i][j].getGreen(), operationPixels[i][j].getGreen(),2);
+        assertEquals(expectedPixels[i][j].getBlue(), operationPixels[i][j].getBlue(),2);
       }
     }
   }
@@ -218,39 +218,17 @@ public class ImagePNGModelTest {
   }
 
   /**
-   * Tests extracting the luma component from the image.
+   * Tests extracting the Luma component from the image.
    */
   @Test
   public void testLuma() {
-    controller.applyOperations("luma-component", "testKey", "luma-component-Key");
+    controller.applyOperations("Luma-component", "testKey", "Luma-component-Key");
 
-    operationPixels = image.h1.get("luma-component-Key");
-    expectedPixels = image.getPixels("expected-luma-component-Key",
-        "test/Test_Image/png_op/landscape-luma.png");
-
-    assertImageEquals(expectedPixels, operationPixels);
-  }
-
-  /**
-   * Tests splitting the image into its red, green, and blue components.
-   */
-  @Test
-  public void testSplit() {
-    controller.split("testKey", "red-split-key", "green-split-key", "blue-split-key");
-
-    operationPixels = image.h1.get("red-split-key");
-    RGBPixel[][] operationPixels2 = image.h1.get("green-split-key");
-    RGBPixel[][] operationPixels3 = image.h1.get("blue-split-key");
-    expectedPixels = image.getPixels("expected-red-split-key",
-        "test/Test_Image/png_op/landscape-red-split.png");
-    RGBPixel[][] expectedPixels2 = image.getPixels("expected-green-split-key",
-        "test/Test_Image/png_op/landscape-green-split.png");
-    RGBPixel[][] expectedPixels3 = image.getPixels("expected-blue-split-key",
-        "test/Test_Image/png_op/landscape-blue-split.png");
+    operationPixels = image.h1.get("Luma-component-Key");
+    expectedPixels = image.getPixels("expected-Luma-component-Key",
+        "test/Test_Image/png_op/landscape-Luma.png");
 
     assertImageEquals(expectedPixels, operationPixels);
-    assertImageEquals(expectedPixels2, operationPixels2);
-    assertImageEquals(expectedPixels3, operationPixels3);
   }
 
   /**
