@@ -1,6 +1,7 @@
 package model;
 
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.basicoperation.Compression;
 import model.imagetransformation.basicoperation.Luma;
 import model.imagetransformation.basicoperation.Split;
 import model.imagetransformation.filtering.Blur;
@@ -277,6 +278,12 @@ public class Image {
    */
   public void intensity(String key, String savekey) {
     Intensity l1 = new Intensity();
+    updatedPixel = l1.apply(key, h1);
+    h1.put(savekey, updatedPixel);
+  }
+
+  public void compress(String key, String savekey, double compressionration) {
+    Compression l1 = new Compression(compressionration);
     updatedPixel = l1.apply(key, h1);
     h1.put(savekey, updatedPixel);
   }
