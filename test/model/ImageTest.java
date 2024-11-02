@@ -15,9 +15,9 @@ public class ImageTest {
   @Test
   public void testCompression() {
     image.getPixels("landscape", "test/Test_Image/Landscape.png");
-    image.compress("landscape", "compressed-landscape", 90.0);
-    assertNotNull(image.h1.get("compressed-landscape"));
-    image.savePixels("compressed-landscape", "test/Test_Image/TestingImageClass/Landscape-Compressed.png");
+    assertNotNull(image.h1.get("landscape"));
+    image.splitAndTransform("landscape","landscape-split-brighten",50,"Sepia");
+    image.savePixels("landscape-split-brighten", "test/Test_Image/TestingImageClass/Landscape-Split-Brighten.png");
 
 
   }

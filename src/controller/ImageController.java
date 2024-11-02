@@ -42,7 +42,7 @@ public class ImageController {
     operations.put("red-component", (src, dest) -> image.getRedChannel(src, dest));
     operations.put("green-component", (src, dest) -> image.getGreenChannel(src, dest));
     operations.put("blue-component", (src, dest) -> image.getBlueChannel(src, dest));
-    bOperations.put("brighten", (src, factor, dest) -> image.brighten(factor, src, dest));
+    //bOperations.put("brighten", (src, factor, dest) -> image.brighten(factor, src, dest));
   }
 
   /**
@@ -88,7 +88,7 @@ public class ImageController {
    * @param destKey the key to store the brightened image under
    */
   public void brighten(int factor, String srcKey, String destKey) {
-    image.brighten(factor, srcKey, destKey);
+    //image.brighten(factor, srcKey, destKey);
   }
 
   /**

@@ -1,5 +1,6 @@
 package model;
 
+import java.util.List;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Compression;
 import model.imagetransformation.basicoperation.Luma;
@@ -283,8 +284,73 @@ public class Image {
   }
 
   public void compress(String key, String savekey, double compressionration) {
+    if(compressionration<0 || compressionration>100)
+    {
+      throw new IllegalArgumentException("Compression level must be between 0 and 100");
+    }
     Compression l1 = new Compression(compressionration);
     updatedPixel = l1.apply(key, h1);
     h1.put(savekey, updatedPixel);
   }
+
+
+  /**
+   * Splits the image vertically into two parts based on the splitValue,
+   * applies transformations on each part, and combines them into a single image.
+   *
+   * @param key           the key to retrieve the original image pixel data
+   * @param saveKey       the key to store the combined image after transformations
+   * @param splitValue    the vertical split percentage for the image
+   * @param operation     apply transformation on the first part if true
+   */
+  public void splitAndTransform(String key, String saveKey, int splitValue,
+      String operation) {
+
+    String part1Key = "splitPart1";
+    String part2Key = "splitPart2";
+
+    RGBPixel[][] originalPixels = h1.get(key);
+    int height = originalPixels.length;
+    int width = originalPixels[0].length;
+    int splitIndex = (int) (width * (splitValue / 100.0));
+
+
+    RGBPixel[][] part1Pixels = new RGBPixel[height][splitIndex];
+    RGBPixel[][] part2Pixels = new RGBPixel[height][width - splitIndex];
+
+
+    for (int i = 0; i < height; i++) {
+      System.arraycopy(originalPixels[i], 0, part1Pixels[i], 0, splitIndex);
+      System.arraycopy(originalPixels[i], splitIndex, part2Pixels[i], 0, width - splitIndex);
+    }
+
+    h1.put(part1Key, part1Pixels);
+    h1.put(part2Key, part2Pixels);
+
+
+    if (operation=="Blur") {
+      blur(part1Key, part1Key);
+    }
+    if (operation=="Sharpen") {
+      sharpen(part2Key, part2Key);
+    }
+    if (operation=="Sepia") {
+      sepia(part1Key, part1Key);
+    }
+    if (operation=="GreyScale") {
+      greyScale(part2Key, part2Key);
+    }
+
+    RGBPixel[][] combinedPixels = new RGBPixel[height][width];
+
+    for (int i = 0; i < height; i++) {
+      System.arraycopy(h1.get(part1Key)[i], 0, combinedPixels[i], 0, splitIndex);
+      System.arraycopy(h1.get(part2Key)[i], 0, combinedPixels[i], splitIndex, width - splitIndex);
+    }
+
+    h1.put(saveKey, combinedPixels);
+  }
+
+
+
 }
