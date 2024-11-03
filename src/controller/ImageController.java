@@ -34,7 +34,7 @@ public class ImageController {
     operations.put("greyscale", (src, dest) -> image.greyScale(src, dest));
     operations.put("sepia", (src, dest) -> image.sepia(src, dest));
     operations.put("sharpen", (src, dest) -> image.sharpen(src, dest));
-    operations.put("split", (src, dest) -> image.split(src, dest, dest, dest));
+    operations.put("rgb-split", (src, dest) -> image.split(src, dest, dest, dest));
     operations.put("rgb-combine", (src, dest) -> image.combine(dest, src, "src2", "src3"));
     operations.put("value-component", (src, dest) -> image.value(src, dest));
     operations.put("Luma-component", (src, dest) -> image.luma(src, dest));
@@ -42,7 +42,11 @@ public class ImageController {
     operations.put("red-component", (src, dest) -> image.getRedChannel(src, dest));
     operations.put("green-component", (src, dest) -> image.getGreenChannel(src, dest));
     operations.put("blue-component", (src, dest) -> image.getBlueChannel(src, dest));
-    //bOperations.put("brighten", (src, factor, dest) -> image.brighten(factor, src, dest));
+    operations.put("color-correction", (src, dest) -> image.colorCorrection(src, dest));
+    operations.put("histogram", (src, dest) -> image.histogram(src, dest));
+    bOperations.put("brighten", (src, factor, dest) -> image.brighten(factor, src, dest));
+
+
   }
 
   /**
@@ -88,7 +92,7 @@ public class ImageController {
    * @param destKey the key to store the brightened image under
    */
   public void brighten(int factor, String srcKey, String destKey) {
-    //image.brighten(factor, srcKey, destKey);
+    image.brighten(factor, srcKey, destKey);
   }
 
   /**
@@ -114,6 +118,18 @@ public class ImageController {
    */
   public void combine(String key, String key1, String key2, String key3) {
     image.combine(key, key1, key2, key3);
+  }
+
+  public void applyLevelsAdjust(String srcKey, int black, int mid, int white, String destKey) {
+    image.adjustLevel(black, mid, white, srcKey, destKey);
+  }
+
+  public void applySplitAndTransform(String srcKey, String destKey, int splitValue,String operation) {
+    image.splitAndTransform(srcKey, destKey, splitValue, operation);
+  }
+
+  public void applyCompression(String srcKey, String destKey, double compressionRatio) {
+    image.compress(srcKey, destKey, compressionRatio);
   }
 
 }

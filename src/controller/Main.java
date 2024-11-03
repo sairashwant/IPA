@@ -1,7 +1,7 @@
-package view;
+package controller;
 
-import controller.ImageController;
 import model.Image;
+import view.ImageView;
 
 /**
  * The entry point of the image processing application. It initializes the model, controller, and

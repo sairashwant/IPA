@@ -1,10 +1,17 @@
 package model;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import model.colorscheme.RGBPixel;
-import model.imagetransformation.basicoperation.Compression;
+import model.imagetransformation.AdjustLevel;
+import model.imagetransformation.ColorCorrection;
+import model.imagetransformation.Compression;
 import model.imagetransformation.basicoperation.Luma;
 import model.imagetransformation.basicoperation.Split;
+import model.imagetransformation.ColorCorrection;
 import model.imagetransformation.filtering.Blur;
 import model.imagetransformation.basicoperation.Brighten;
 import model.imagetransformation.basicoperation.Combine;
@@ -293,6 +300,18 @@ public class Image {
     h1.put(savekey, updatedPixel);
   }
 
+  public void colorCorrection(String key, String savekey) {
+    ColorCorrection c1 = new ColorCorrection();
+    updatedPixel = c1.apply(key, h1);
+    h1.put(savekey, updatedPixel);
+  }
+
+  public void adjustLevel(int black, int mid, int white ,String key, String savekey ) {
+    AdjustLevel a1 = new AdjustLevel(black, mid, white);
+    updatedPixel = a1.apply(key, h1);
+    h1.put(savekey, updatedPixel);
+  }
+
 
   /**
    * Splits the image vertically into two parts based on the splitValue,
@@ -303,9 +322,7 @@ public class Image {
    * @param splitValue    the vertical split percentage for the image
    * @param operation     apply transformation on the first part if true
    */
-  public void splitAndTransform(String key, String saveKey, int splitValue,
-      String operation) {
-
+  public void splitAndTransform(String key, String saveKey, int splitValue, String operation, int... params) {
     String part1Key = "splitPart1";
     String part2Key = "splitPart2";
 
@@ -314,10 +331,8 @@ public class Image {
     int width = originalPixels[0].length;
     int splitIndex = (int) (width * (splitValue / 100.0));
 
-
     RGBPixel[][] part1Pixels = new RGBPixel[height][splitIndex];
     RGBPixel[][] part2Pixels = new RGBPixel[height][width - splitIndex];
-
 
     for (int i = 0; i < height; i++) {
       System.arraycopy(originalPixels[i], 0, part1Pixels[i], 0, splitIndex);
@@ -327,18 +342,30 @@ public class Image {
     h1.put(part1Key, part1Pixels);
     h1.put(part2Key, part2Pixels);
 
-
-    if (operation=="Blur") {
-      blur(part1Key, part1Key);
-    }
-    if (operation=="Sharpen") {
-      sharpen(part2Key, part2Key);
-    }
-    if (operation=="Sepia") {
-      sepia(part1Key, part1Key);
-    }
-    if (operation=="GreyScale") {
-      greyScale(part2Key, part2Key);
+    switch (operation) {
+      case "blur":
+        blur(part1Key, part1Key);
+        break;
+      case "sharpen":
+        sharpen(part2Key, part2Key);
+        break;
+      case "sepia":
+        sepia(part1Key, part1Key);
+        break;
+      case "greyscale":
+        greyScale(part2Key, part2Key);
+        break;
+      case "color-correction":
+        colorCorrection(part2Key, part2Key);
+        break;
+      case "levels-adjust":
+        if (params.length != 3) {
+          throw new IllegalArgumentException("Levels-adjust requires 3 parameters: black, mid, and white points");
+        }
+        adjustLevel(params[0], params[1], params[2], part2Key, part2Key);
+        break;
+      default:
+        System.out.println("Invalid operation");
     }
 
     RGBPixel[][] combinedPixels = new RGBPixel[height][width];
@@ -351,6 +378,115 @@ public class Image {
     h1.put(saveKey, combinedPixels);
   }
 
+  public void histogram(String key, String savekey) {
+    RGBPixel[][] pixels = h1.get(key);
+    if (pixels == null) {
+      throw new IllegalArgumentException("No image found for key: " + key);
+    }
 
+    // Initialize frequency arrays for each channel
+    int[] redFreq = new int[256];
+    int[] greenFreq = new int[256];
+    int[] blueFreq = new int[256];
+
+    // Count frequency of each intensity value
+    for (RGBPixel[] row : pixels) {
+      for (RGBPixel pixel : row) {
+        redFreq[pixel.getRed()]++;
+        greenFreq[pixel.getGreen()]++;
+        blueFreq[pixel.getBlue()]++;
+      }
+    }
+
+    // Find the maximum frequency for scaling
+    int maxFreq = 0;
+    for (int i = 0; i < 256; i++) {
+      maxFreq = Math.max(maxFreq, redFreq[i]);
+      maxFreq = Math.max(maxFreq, greenFreq[i]);
+      maxFreq = Math.max(maxFreq, blueFreq[i]);
+    }
+
+    // Create a new BufferedImage for the histogram
+    BufferedImage histogramImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g2d = histogramImage.createGraphics();
+
+    // Fill background with white
+    g2d.setColor(Color.WHITE);
+    g2d.fillRect(0, 0, 256, 256);
+
+    // Draw grid
+    drawGrid(g2d);
+
+    // Draw histogram lines
+    // Using thinner lines and full opacity for better visibility
+    drawHistogramLine(g2d, redFreq, maxFreq, Color.RED);
+    drawHistogramLine(g2d, greenFreq, maxFreq, Color.GREEN);
+    drawHistogramLine(g2d, blueFreq, maxFreq, Color.BLUE);
+
+    g2d.dispose();
+
+    // Convert BufferedImage to RGBPixel array
+    RGBPixel[][] histogramPixels = new RGBPixel[256][256];
+    for (int y = 0; y < 256; y++) {
+      for (int x = 0; x < 256; x++) {
+        int rgb = histogramImage.getRGB(x, y);
+        Color color = new Color(rgb);
+        histogramPixels[y][x] = new RGBPixel(color.getRed(), color.getGreen(), color.getBlue());
+      }
+    }
+
+    h1.put(savekey, histogramPixels);
+  }
+
+  /**
+   * Draws the grid pattern for the histogram background.
+   *
+   * @param g2d Graphics2D object to draw on
+   */
+  private void drawGrid(Graphics2D g2d) {
+    // Draw light grey grid lines
+    g2d.setColor(new Color(220, 220, 220));
+    g2d.setStroke(new BasicStroke(1.0f));
+
+    // Draw vertical grid lines with smaller increments (e.g., every 16 pixels)
+    for (int x = 0; x < 256; x += 16) { // Change 32 to 16 for smaller boxes
+      g2d.drawLine(x, 0, x, 255);
+    }
+
+    // Draw horizontal grid lines with smaller increments (e.g., every 16 pixels)
+    for (int y = 0; y < 256; y += 16) { // Change 32 to 16 for smaller boxes
+      g2d.drawLine(0, y, 255, y);
+    }
+  }
+
+  /**
+   * Draws a single histogram line for a color channel.
+   *
+   * @param g2d     Graphics2D object to draw on
+   * @param freq    frequency array for the channel
+   * @param maxFreq maximum frequency value for scaling
+   * @param color   color to draw the line with
+   */
+  private void drawHistogramLine(Graphics2D g2d, int[] freq, int maxFreq, Color color) {
+    g2d.setColor(color);
+    g2d.setStroke(new BasicStroke(1.0f)); // Thinner line for better visibility
+
+    int[] xPoints = new int[256];
+    int[] yPoints = new int[256];
+
+    // Prepare points for smoother line
+    for (int i = 0; i < 256; i++) {
+      xPoints[i] = i;
+      // Invert Y coordinates since (0,0) is at top-left
+      yPoints[i] = 255 - (int)((freq[i] * 255.0) / maxFreq);
+    }
+
+    // Draw the line connecting all points
+    for (int i = 1; i < 256; i++) {
+      g2d.drawLine(xPoints[i-1], yPoints[i-1], xPoints[i], yPoints[i]);
+    }
+  }
 
 }
+
+

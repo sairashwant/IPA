@@ -40,7 +40,7 @@ public class ImageView {
     commandMap.put("save", this::handleSave);
     commandMap.put("brighten", this::handleBrighten);
     commandMap.put("rgb-combine", this::handleCombine);
-    commandMap.put("rgb-split", this::handleSplit);
+    commandMap.put("rgb-split", this::handleRGBSplit);
     commandMap.put("blur", this::handleOperation);
     commandMap.put("sharpen", this::handleOperation);
     commandMap.put("horizontal-flip", this::handleOperation);
@@ -55,6 +55,11 @@ public class ImageView {
     commandMap.put("blue-component", this::handleOperation);
     commandMap.put("exit", args -> System.exit(0));
     commandMap.put("run-script", this::handleScript);
+    commandMap.put("compress", this::handleCompression);
+    commandMap.put("histogram", this::handleHistogram);
+    commandMap.put("color-correction", this::handleColorCorrection);
+    commandMap.put("levels-adjust", this::handleLevelsAdjust);
+    commandMap.put("split", this::handleSplit);
   }
 
   /**
@@ -93,7 +98,7 @@ public class ImageView {
   /**
    * Prints the menu options available to the user. Lists image operations and transformations.
    */
-  void printMenu() {
+  public void printMenu() {
     System.out.println("\n========== Image Processing Menu ==========");
     System.out.println("1. Load Image");
     System.out.println("2. Save Image");
@@ -116,9 +121,15 @@ public class ImageView {
     System.out.println("15. Red-Component");
     System.out.println("16. Green-Component");
     System.out.println("17. Blue-Component");
+    System.out.println("\n---- New Operations ----");
+    System.out.println("18. Compression");
+    System.out.println("19. Histogram");
+    System.out.println("20. Color-Correction");
+    System.out.println("21. Levels-Adjust");
+    System.out.println("22. Split-And-Transform");
     System.out.println("\n---- Additional Operations ----");
-    System.out.println("18. Run-Script");
-    System.out.println("19. Exit Program");
+    System.out.println("23. Run-Script");
+    System.out.println("24. Exit Program");
     System.out.println("============================================");
   }
 
@@ -188,7 +199,7 @@ public class ImageView {
    *
    * @param args the command arguments: split.
    */
-  private void handleSplit(String[] args) {
+  private void handleRGBSplit(String[] args) {
     if (args.length == 5) {
       System.out.println("Split Image " + args[1] + "into red , green and blue");
       controller.split(args[1], args[2], args[3], args[4]);
@@ -226,6 +237,68 @@ public class ImageView {
     System.out.println("Loading script from " + args[1]);
     ScriptReader scriptReader = new ScriptReader(this);
     scriptReader.readScript(args[1]);
+  }
+  private void handleCompression(String[] args) {
+    if (args.length == 4) {
+      try {
+        double compressionRatio = Double.parseDouble(args[1]);
+        System.out.println("Applying compression to " + args[2] + " with ratio " + compressionRatio);
+        controller.applyCompression(args[2], args[3], compressionRatio);
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid compression ratio. Please enter a number.");
+      }
+    } else {
+      System.out.println("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
+    }
+  }
+
+  private void handleHistogram(String[] args) {
+    if (args.length == 3) {
+      System.out.println("Generating histogram for " + args[1]);
+      controller.applyOperations(args[0], args[1], args[2]);
+    } else {
+      System.out.println("Invalid histogram command. Usage: histogram <srcKey> <destKey>");
+    }
+  }
+
+  private void handleColorCorrection(String[] args) {
+    if (args.length == 3) {
+      System.out.println("Applying color correction to " + args[1]);
+      controller.applyOperations(args[0], args[1], args[2]);
+    } else {
+      System.out.println("Invalid color-correction command. Usage: color-correction <srcKey> <destKey>");
+    }
+  }
+
+  private void handleLevelsAdjust(String[] args) {
+    if (args.length == 6) {
+      try {
+        int black = Integer.parseInt(args[1]);
+        int mid = Integer.parseInt(args[2]);
+        int white = Integer.parseInt(args[3]);
+        System.out.println("Adjusting levels for " + args[4]);
+        controller.applyLevelsAdjust(args[4], black, mid, white, args[5]);
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid level values. Please enter integers for black, mid, and white points.");
+      }
+    } else {
+      System.out.println("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+    }
+  }
+
+  private void handleSplit(String[] args) {
+    if (args.length == 5) {
+      try {
+        int splitValue = Integer.parseInt(args[4]);
+        String operation = args[3];
+        System.out.println("Splitting and transforming " + args[1]);
+        controller.applySplitAndTransform(args[1], args[2], splitValue, operation);
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid split value. Please enter an integer for the split percentage.");
+      }
+    } else {
+      System.out.println("Invalid split command. Usage: split <srcKey> <destKey <operation> <splitPercentage>");
+    }
   }
 
 }

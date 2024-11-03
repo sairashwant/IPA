@@ -1,7 +1,6 @@
-package model.imagetransformation.basicoperation;
+package model.imagetransformation;
 
 import model.colorscheme.RGBPixel;
-import model.imagetransformation.Transformation;
 import java.util.HashMap;
 import java.util.Arrays;
 
