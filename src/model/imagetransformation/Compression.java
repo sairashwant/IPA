@@ -23,18 +23,23 @@ public class Compression implements Transformation {
       throw new IllegalArgumentException("Invalid image data");
     }
 
-    int height = originalImage.length;
-    int width = originalImage[0].length;
+    int originalHeight = originalImage.length;
+    int originalWidth = originalImage[0].length;
+
+    // Pad the image to the nearest power of two
+    int paddedHeight = nextPowerOfTwo(originalHeight);
+    int paddedWidth = nextPowerOfTwo(originalWidth);
+    RGBPixel[][] paddedImage = padImage(originalImage, paddedHeight, paddedWidth);
 
     // Separate channels
-    int[][] redChannel = new int[height][width];
-    int[][] greenChannel = new int[height][width];
-    int[][] blueChannel = new int[height][width];
+    int[][] redChannel = new int[paddedHeight][paddedWidth];
+    int[][] greenChannel = new int[paddedHeight][paddedWidth];
+    int[][] blueChannel = new int[paddedHeight][paddedWidth];
 
     // Extract color channels
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        RGBPixel pixel = originalImage[i][j];
+    for (int i = 0; i < paddedHeight; i++) {
+      for (int j = 0; j < paddedWidth; j++) {
+        RGBPixel pixel = paddedImage[i][j];
         redChannel[i][j] = pixel.getRed();
         greenChannel[i][j] = pixel.getGreen();
         blueChannel[i][j] = pixel.getBlue();
@@ -46,10 +51,10 @@ public class Compression implements Transformation {
     greenChannel = compressChannel(greenChannel);
     blueChannel = compressChannel(blueChannel);
 
-    // Reconstruct the image
-    RGBPixel[][] compressedImage = new RGBPixel[height][width];
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
+    // Reconstruct the compressed image
+    RGBPixel[][] compressedImage = new RGBPixel[paddedHeight][paddedWidth];
+    for (int i = 0; i < paddedHeight; i++) {
+      for (int j = 0; j < paddedWidth; j++) {
         compressedImage[i][j] = new RGBPixel(
             Math.max(0, Math.min(255, redChannel[i][j])),
             Math.max(0, Math.min(255, greenChannel[i][j])),
@@ -58,7 +63,8 @@ public class Compression implements Transformation {
       }
     }
 
-    return compressedImage;
+    // Unpad the image to its original dimensions
+    return unpadImage(compressedImage, originalHeight, originalWidth);
   }
 
   private int[][] compressChannel(int[][] channel) {
@@ -186,5 +192,40 @@ public class Compression implements Transformation {
     }
 
     System.arraycopy(temp, 0, data, 0, data.length);
+  }
+
+  private int nextPowerOfTwo(int n) {
+    int power = 1;
+    while (power < n) {
+      power <<= 1;
+    }
+    return power;
+  }
+
+  private RGBPixel[][] padImage(RGBPixel[][] image, int newHeight, int newWidth) {
+    int originalHeight = image.length;
+    int originalWidth = image[0].length;
+    RGBPixel[][] paddedImage = new RGBPixel[newHeight][newWidth];
+
+    for (int i = 0; i < newHeight; i++) {
+      for (int j = 0; j < newWidth; j++) {
+        if (i < originalHeight && j < originalWidth) {
+          paddedImage[i][j] = image[i][j];
+        } else {
+          // Fill with black pixels (0,0,0)
+          paddedImage[i][j] = new RGBPixel(0, 0, 0);
+        }
+      }
+    }
+
+    return paddedImage;
+  }
+
+  private RGBPixel[][] unpadImage(RGBPixel[][] image, int originalHeight, int originalWidth) {
+    RGBPixel[][] unpaddedImage = new RGBPixel[originalHeight][originalWidth];
+    for (int i = 0; i < originalHeight; i++) {
+      System.arraycopy(image[i], 0, unpaddedImage[i], 0, originalWidth);
+    }
+    return unpaddedImage;
   }
 }
