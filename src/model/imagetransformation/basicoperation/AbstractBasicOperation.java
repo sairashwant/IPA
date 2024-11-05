@@ -22,8 +22,8 @@ public abstract class AbstractBasicOperation implements Transformation {
    * @return a 2D array of {@code RGBPixel} representing the transformed image
    * @throws IllegalArgumentException if a pixel is not an instance of {@code RGBPixel}
    */
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
-    RGBPixel[][] pixels = h1.get(key);
+  @Override
+  public RGBPixel[][] apply(RGBPixel[][] pixels) {
     int height = pixels.length;
     int width = pixels[0].length;
 

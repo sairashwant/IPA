@@ -12,11 +12,9 @@ public interface Transformation {
 
   /**
    * Applies the transformation to the image data associated with the specified key.
-   *
-   * @param key the key used to retrieve the input pixel data from the provided map
-   * @param h1  a map containing the RGB pixel data associated with various keys
+   * @param pixels  a map containing the RGB pixel data associated with various keys
    * @return a 2D array of RGBPixel representing the transformed image
    */
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1);
+  public RGBPixel[][] apply(RGBPixel[][] pixels);
 
 }

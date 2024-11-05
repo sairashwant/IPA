@@ -1,25 +1,22 @@
 package model;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.AdjustLevel;
 import model.imagetransformation.ColorCorrection;
 import model.imagetransformation.Compression;
 import model.imagetransformation.basicoperation.Luma;
 import model.imagetransformation.basicoperation.Split;
-import model.imagetransformation.ColorCorrection;
 import model.imagetransformation.filtering.Blur;
 import model.imagetransformation.basicoperation.Brighten;
 import model.imagetransformation.basicoperation.Combine;
 import model.imagetransformation.basicoperation.Flip;
 import model.imagetransformation.basicoperation.Flip.Direction;
-import model.imageformat.JPGImage;
-import model.imageformat.PNGImage;
-import model.imageformat.PPMImage;
+import controller.imageformat.JPGImage;
+import controller.imageformat.PNGImage;
+import controller.imageformat.PPMImage;
 import model.imagetransformation.colortransformation.GreyScale;
 import model.imagetransformation.basicoperation.Intensity;
 import model.imagetransformation.colortransformation.Sepia;
@@ -34,7 +31,7 @@ import java.util.HashMap;
 public class Image {
 
   RGBPixel[][] updatedPixel;
-  public HashMap<String, RGBPixel[][]> h1 = new HashMap<String, RGBPixel[][]>();
+  HashMap<String, RGBPixel[][]> h1 = new HashMap<String, RGBPixel[][]>();
 
   /**
    * Loads pixel data from an image file and stores it in the specified key.
@@ -108,6 +105,7 @@ public class Image {
    */
   public void getRedChannel(String key, String saveKey) {
     Split s1 = new Split();
+    RGBPixel[][] temp1 = h1.get(key);
     HashMap<String, RGBPixel[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
     RGBPixel[][] redChannel = temp.get(saveKey);
     h1.put(saveKey, redChannel);
@@ -150,7 +148,8 @@ public class Image {
    */
   public void blur(String key, String savekey) {
     Blur b1 = new Blur();
-    updatedPixel = b1.apply(key, h1);
+    RGBPixel[][] temp1= h1.get(key);
+    updatedPixel = b1.apply(temp1);
     h1.put(savekey, updatedPixel);
   }
 
@@ -164,7 +163,8 @@ public class Image {
    */
   public void brighten(int brightenFactor, String key, String savekey) {
     Brighten b1 = new Brighten(brightenFactor);
-    updatedPixel = b1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = b1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -208,7 +208,8 @@ public class Image {
    */
   public void flip(String key, String savekey, Direction d) {
     Flip f1 = new Flip();
-    updatedPixel = f1.apply(key, h1, d);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = f1.apply(temp, d);
     h1.put(savekey, updatedPixel);
   }
 
@@ -221,7 +222,8 @@ public class Image {
    */
   public void greyScale(String key, String savekey) {
     GreyScale g1 = new GreyScale();
-    updatedPixel = g1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = g1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -234,7 +236,8 @@ public class Image {
    */
   public void sepia(String key, String savekey) {
     Sepia sp1 = new Sepia();
-    updatedPixel = sp1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = sp1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -247,7 +250,8 @@ public class Image {
    */
   public void sharpen(String key, String savekey) {
     Sharpen sp1 = new Sharpen();
-    updatedPixel = sp1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = sp1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -260,7 +264,8 @@ public class Image {
    */
   public void luma(String key, String savekey) {
     Luma l1 = new Luma();
-    updatedPixel = l1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -273,7 +278,8 @@ public class Image {
    */
   public void value(String key, String savekey) {
     Value l1 = new Value();
-    updatedPixel = l1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -286,7 +292,8 @@ public class Image {
    */
   public void intensity(String key, String savekey) {
     Intensity l1 = new Intensity();
-    updatedPixel = l1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
@@ -296,19 +303,22 @@ public class Image {
       throw new IllegalArgumentException("Compression level must be between 0 and 100");
     }
     Compression l1 = new Compression(compressionration);
-    updatedPixel = l1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   public void colorCorrection(String key, String savekey) {
     ColorCorrection c1 = new ColorCorrection();
-    updatedPixel = c1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = c1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   public void adjustLevel(int black, int mid, int white ,String key, String savekey ) {
     AdjustLevel a1 = new AdjustLevel(black, mid, white);
-    updatedPixel = a1.apply(key, h1);
+    RGBPixel[][] temp= h1.get(key);
+    updatedPixel = a1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 

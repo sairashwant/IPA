@@ -24,8 +24,7 @@ public abstract class AbstractColorTransformation implements Transformation {
    * @throws IllegalArgumentException if the image pixels are not instances of RGBPixel
    */
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
-    RGBPixel[][] input = h1.get(key);
+  public RGBPixel[][] apply(RGBPixel[][] input) {
     int height = input.length;
     int width = input[0].length;
     double[][] matrix = getMatrix();

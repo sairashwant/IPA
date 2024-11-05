@@ -70,14 +70,12 @@ public class AdjustLevel {
   /**
    * Applies the levels adjustment transformation to an image.
    *
-   * @param key the key of the image to transform
-   * @param images the map containing all images
    * @return the transformed pixel array
    */
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> images) {
-    RGBPixel[][] pixels = images.get(key);
+  public RGBPixel[][] apply(RGBPixel[][] pixels) {
+
     if (pixels == null) {
-      throw new IllegalArgumentException("No image found for key: " + key);
+      throw new IllegalArgumentException("No image found for key: ");
     }
 
     int height = pixels.length;

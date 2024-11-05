@@ -17,16 +17,15 @@ public abstract class AbstractFiltering implements Transformation {
    * applied to each pixel by considering the neighboring pixels and applying the filter to
    * calculate the new color values.
    *
-   * @param key the key to identify the input image in the HashMap
-   * @param h1  a HashMap containing the input images, where the key refers to the image to filter
+   * @param input the key to identify the input image in the HashMap
+
    * @return a 2D array of RGBPixel objects, representing the filtered image
    * @throws IllegalArgumentException if the input image is invalid or contains non-RGBPixel
    *                                  objects
    */
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
+  public RGBPixel[][] apply(RGBPixel[][] input) {
 
-    RGBPixel[][] input = h1.get(key);
     int height = input.length;
     int width = input[0].length;
 

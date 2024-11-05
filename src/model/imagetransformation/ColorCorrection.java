@@ -62,10 +62,9 @@ public class ColorCorrection implements Transformation {
   }
 
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> images) {
-    RGBPixel[][] pixels = images.get(key);
+  public RGBPixel[][] apply(RGBPixel[][] pixels) {
     if (pixels == null) {
-      throw new IllegalArgumentException("No image found for key: " + key);
+      throw new IllegalArgumentException("No image found");
     }
 
     // Get histograms for each channel

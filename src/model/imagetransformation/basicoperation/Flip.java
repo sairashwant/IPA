@@ -31,8 +31,7 @@ public class Flip extends AbstractBasicOperation {
    * @return a 2D array of {@code RGBPixel} representing the flipped image
    * @throws IllegalArgumentException if the specified key is not found in the HashMap
    */
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1, Direction direction) {
-    RGBPixel[][] input = h1.get(key);
+  public RGBPixel[][] apply(RGBPixel[][] input, Direction direction) {
     int height = input.length;
     int width = input[0].length;
 

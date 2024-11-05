@@ -36,9 +36,9 @@ public class Brighten extends AbstractBasicOperation {
    * @throws IllegalArgumentException if the pixel data retrieved is not of type RGBPixel.
    */
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
+  public RGBPixel[][] apply(RGBPixel[][] pixels) {
 
-    RGBPixel[][] pixels = h1.get(key);
+
     int height = pixels.length;
     int width = pixels[0].length;
 

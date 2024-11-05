@@ -12,13 +12,9 @@ public class Compression implements Transformation {
   }
 
   @Override
-  public RGBPixel[][] apply(String key, HashMap<String, RGBPixel[][]> h1) {
+  public RGBPixel[][] apply(RGBPixel[][] originalImage) {
     // Add null check for input
-    if (h1 == null || !h1.containsKey(key)) {
-      throw new IllegalArgumentException("Invalid input: null or missing key");
-    }
 
-    RGBPixel[][] originalImage = h1.get(key);
     if (originalImage == null || originalImage.length == 0) {
       throw new IllegalArgumentException("Invalid image data");
     }
