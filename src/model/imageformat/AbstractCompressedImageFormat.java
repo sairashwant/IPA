@@ -1,4 +1,4 @@
-package controller.imageformat;
+package model.imageformat;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

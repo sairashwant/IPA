@@ -1,4 +1,4 @@
-package controller.imageformat;
+package model.imageformat;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,14 +7,14 @@ import javax.imageio.ImageIO;
 import model.colorscheme.RGBPixel;
 
 /**
- * This class handles PNG image format.
+ * This class represents a jpg format.
  */
-public class PNGImage extends AbstractCompressedImageFormat {
+public class JPGImage extends AbstractCompressedImageFormat {
 
   /**
    * This method handles save for the JPG Image format. We take the red, green and blue values from
    * the pixels. We do bit-manipulation to get RGB values. We then store it using setRGB in buffered
-   * image class. Then the image is written as a file. The image is saved in png format.
+   * image class. Then the image is written as a file. The image is saved in jpg format.
    *
    * @param filename Name of the file to save.
    * @param pixels   Pixels of the file to save.
@@ -35,7 +35,7 @@ public class PNGImage extends AbstractCompressedImageFormat {
       }
       try {
         File outputFile = new File(filename);
-        ImageIO.write(image, "png", outputFile);
+        ImageIO.write(image, "jpg", outputFile);
         System.out.println("Image saved as: " + outputFile.getPath());
       } catch (IOException e) {
         System.out.println("Error saving the image: " + e.getMessage());

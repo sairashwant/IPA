@@ -1,4 +1,4 @@
-package controller.imageformat;
+package model.imageformat;
 
 import model.colorscheme.RGBPixel;
 
