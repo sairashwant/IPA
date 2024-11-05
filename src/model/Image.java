@@ -30,7 +30,7 @@ import java.util.HashMap;
  */
 public class Image {
 
-  RGBPixel[][] updatedPixel;
+  private RGBPixel[][] updatedPixel;
   HashMap<String, RGBPixel[][]> h1 = new HashMap<String, RGBPixel[][]>();
 
   /**

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.IOException;
+import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -105,6 +106,15 @@ public class ImageTest {
     image.getPixels("m1","Images/manhattan-small.png");
     image.splitAndTransform("m1","m1-split-levels-adjust",50,"levels-adjust",20,100,255);
     image.savePixels("m1-split-levels-adjust", "test/Test_Image/TestingImageClass/m1-split-levels-adjust.png");
+  }
+
+  @Test
+  public void testimage()
+  {
+    image.getPixels("m1","Images/manhattan-small.png");
+    image.brighten(90,"m1","m1-brighten");
+    image.flip("m1-brighten","m1-flip", Direction.VERTICAL);
+    image.savePixels("m1-brighten", "test/Test_Image/m1-brightennew.png");
   }
 
 }
