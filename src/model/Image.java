@@ -90,7 +90,7 @@ public class Image {
         System.out.println("Image has not been saved");
         return;
       }
-      imageFormat.save(outputFile, updatedPixel);
+      imageFormat.save(outputFile, tosavepixels);
     } else {
       throw new IllegalArgumentException("Unsupported image format");
     }
