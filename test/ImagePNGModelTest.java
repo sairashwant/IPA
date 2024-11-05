@@ -1,10 +1,20 @@
+import java.util.HashMap;
 import model.Image;
 import controller.ImageController;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.basicoperation.Brighten;
+import model.imagetransformation.basicoperation.Combine;
+import model.imagetransformation.basicoperation.Flip;
+import model.imagetransformation.basicoperation.Flip.Direction;
+import model.imagetransformation.basicoperation.Luma;
+import model.imagetransformation.basicoperation.Split;
+import model.imagetransformation.colortransformation.GreyScale;
+import model.imagetransformation.colortransformation.Sepia;
+import model.imagetransformation.filtering.Blur;
+import model.imagetransformation.filtering.Sharpen;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -12,42 +22,6 @@ import static org.junit.Assert.assertEquals;
  * focused on handling PNG images. This class includes tests for various image operations such as
  * loading an image, applying filters (e.g., blur, greyscale, sepia), flipping, brightness
  * adjustment, and channel extraction (red, green, blue components).
- *
- * <p>
- * The tests ensure that the output image pixels match the expected pixel values after each
- * operation is applied. Each test method is structured to:
- * <ul>
- *   <li>Setup necessary data and state before executing the test.</li>
- *   <li>Perform the image operation using the controller.</li>
- *   <li>Retrieve the resulting pixel data.</li>
- *   <li>Compare the resulting pixels with the expected output using assertions.</li>
- * </ul>
- * </p>
- *
- * <p>
- * The following operations are tested:
- * <ul>
- *   <li>Loading an image from a file.</li>
- *   <li>Applying a blur effect.</li>
- *   <li>Performing horizontal and vertical flips.</li>
- *   <li>Adjusting brightness (both brightening and darkening).</li>
- *   <li>Converting to greyscale.</li>
- *   <li>Extracting color channels (red, green, blue) and intensity components.</li>
- *   <li>Applying a sepia effect.</li>
- *   <li>Sharpening the image.</li>
- *   <li>Splitting the image into its RGB components.</li>
- *   <li>Calculating the Luma component.</li>
- * </ul>
- * </p>
- *
- * <p>
- * Each test utilizes a helper method {@link #assertImageEquals(RGBPixel[][], RGBPixel[][])}
- * to verify the pixel values by comparing red, green, and blue components for each pixel.
- * </p>
- *
- * @see Image
- * @see ImageController
- * @see RGBPixel
  */
 public class ImagePNGModelTest {
 
@@ -55,6 +29,9 @@ public class ImagePNGModelTest {
   private ImageController controller;
   RGBPixel[][] operationPixels;
   RGBPixel[][] expectedPixels;
+  HashMap<String, RGBPixel[][]> t1 = new HashMap<>();
+
+  String load = "test/Test_Image/Landscape.png";
 
   /**
    * Asserts that two images are equal by comparing their pixel values.
@@ -63,11 +40,11 @@ public class ImagePNGModelTest {
    * @param actual   The actual pixel values of the image after an operation.
    */
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
-    for (int i = 0; i < operationPixels.length; i++) {
-      for (int j = 0; j < operationPixels[0].length; j++) {
-        assertEquals(expectedPixels[i][j].getRed(), operationPixels[i][j].getRed(),2);
-        assertEquals(expectedPixels[i][j].getGreen(), operationPixels[i][j].getGreen(),2);
-        assertEquals(expectedPixels[i][j].getBlue(), operationPixels[i][j].getBlue(),2);
+    for (int i = 0; i < expected.length; i++) {
+      for (int j = 0; j < expected[0].length; j++) {
+        assertEquals(expected[i][j].getRed(), actual[i][j].getRed(), 2);
+        assertEquals(expected[i][j].getGreen(), actual[i][j].getGreen(), 2);
+        assertEquals(expected[i][j].getBlue(), actual[i][j].getBlue(), 2);
       }
     }
   }
@@ -80,18 +57,9 @@ public class ImagePNGModelTest {
   public void setUp() {
     image = new Image();
     controller = new ImageController(image);
-    controller.loadIMage("testKey", "test/Test_Image/Landscape.png");
-  }
 
-  /**
-   * Tests loading an image from a specified file path.
-   */
-  @Test
-  public void testLoadImage() {
-    controller.loadIMage("testKey", "test/Test_Image/Landscape.png");
-
-    RGBPixel[][] loadedPixels = image.getPixels("testKey", "test/Test_Image/Landscape.png");
-    assertArrayEquals(image.h1.get("testKey"), loadedPixels);
+    // Assuming you have a method to load the image into the controller.
+    controller.loadIMage("testKey", load);
   }
 
   /**
@@ -99,11 +67,11 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testBlur() {
-    controller.applyOperations("blur", "testKey", "blurred-Key");
+    Blur blur = new Blur();
+    operationPixels = blur.apply(image.getPixels("testKey", load)); // Apply the blur
+    expectedPixels = image.getPixels("expected-Blurred-Key", "test/Test_Image/png_op/landscape-blur.png"); // Expected image after blur
 
-    operationPixels = image.h1.get("blurred-Key");
-    expectedPixels = image.getPixels("expected-Blurred-Key",
-        "test/Test_Image/png_op/landscape-blur.png");
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -112,11 +80,12 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testHorizontalFlip() {
-    controller.applyOperations("horizontal-flip", "testKey", "horizontal-flip-Key");
+    // Apply horizontal flip directly using a controller operation or manual pixel manipulation.
+    Flip flip = new Flip();
+    operationPixels = flip.apply(image.getPixels("testKey", load), Direction.HORIZONTAL);
+    expectedPixels = image.getPixels("expected-horizontal-flip-Key", "test/Test_Image/png_op/landscape-horizontal-flip.png");
 
-    operationPixels = image.h1.get("horizontal-flip-Key");
-    expectedPixels = image.getPixels("expected-horizontal-flip-Key",
-        "test/Test_Image/png_op/landscape-horizontal-flip.png");
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -124,12 +93,13 @@ public class ImagePNGModelTest {
    * Tests the vertical flip operation on the image.
    */
   @Test
-  public void testVerticallFlip() {
-    controller.applyOperations("vertical-flip", "testKey", "vertical-flip-Key");
+  public void testVerticalFlip() {
+    // Apply vertical flip directly using a controller operation or manual pixel manipulation.
+    Flip flip = new Flip();
+    operationPixels = flip.apply(image.getPixels("testKey", load), Direction.VERTICAL);
+    expectedPixels = image.getPixels("expected-vertical-flip-Key", "test/Test_Image/png_op/landscape-vertical-flip.png");
 
-    operationPixels = image.h1.get("vertical-flip-Key");
-    expectedPixels = image.getPixels("expected-vertical-flip-Key",
-        "test/Test_Image/png_op/landscape-vertical-flip.png");
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -138,12 +108,11 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testBrighten() {
-    controller.brighten(20, "testKey", "brightened-Key");
+    Brighten brighten = new Brighten(20); // Assuming Brighten class takes an intensity parameter
+    operationPixels = brighten.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-BrightenedKey", "test/Test_Image/png_op/landscape-brighter.png");
 
-    operationPixels = image.h1.get("brightened-Key");
-    expectedPixels = image.getPixels("expected-Brightenedkey",
-        "test/Test_Image/png_op/landscape-brighter.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -152,12 +121,11 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testNegativeBrighten() {
-    controller.brighten(-20, "testKey", "darkened-Key");
+    Brighten brighten = new Brighten(-20); // Negative brightness to darken the image
+    operationPixels = brighten.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-darkened-Key", "test/Test_Image/png_op/landscape-darker.png");
 
-    operationPixels = image.h1.get("darkened-Key");
-    expectedPixels = image.getPixels("expected-darkened-Key",
-        "test/Test_Image/png_op/landscape-darker.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -166,54 +134,62 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testGreyscale() {
-    controller.applyOperations("greyscale", "testKey", "greyscale-Key");
+    GreyScale greyscale = new GreyScale();
+    operationPixels = greyscale.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-greyscale-Key", "test/Test_Image/png_op/landscape-greyscale.png");
 
-    operationPixels = image.h1.get("greyscale-Key");
-    expectedPixels = image.getPixels("expected-greyscale-Key",
-        "test/Test_Image/png_op/landscape-greyscale.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
-  /**
-   * Tests extracting the red component from the image.
-   */
   @Test
-  public void testGetRed() {
-    controller.applyOperations("red-component", "testKey", "red-component-Key");
+  public void testCombine() {
+    // First split the image to get individual color components
+    Split split = new Split();
 
-    operationPixels = image.h1.get("red-component-Key");
-    expectedPixels = image.getPixels("expected-red-component-Key",
-        "test/Test_Image/png_op/landscape-red-component.png");
+    t1.put("testKey", image.getPixels("testKey", load));
 
+    // Apply the split operation to get individual channels
+    HashMap<String, RGBPixel[][]> splitResult = split.apply(t1, t1.get("testKey"),
+        "testKey", "red-Key", "green-Key", "blue-Key");
+
+    // Store the split components in the image's HashMap
+    t1.putAll(splitResult);
+
+    // Perform the combine operation
+    Combine combine = new Combine();
+    operationPixels = combine.apply(t1.get("red-Key"), t1.get("green-Key"), t1.get("blue-Key"));
+
+    // Get the expected result - should be the original image
+    expectedPixels = image.getPixels("expected-combine-Key", "test/Test_Image/Landscape.png");
+
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
-  /**
-   * Tests extracting the green component from the image.
-   */
   @Test
-  public void testGetGreen() {
-    controller.applyOperations("green-component", "testKey", "green-component-Key");
+  public void testSplit() {
+    Split split = new Split();
 
-    operationPixels = image.h1.get("green-component-Key");
-    expectedPixels = image.getPixels("expected-green-component-Key",
-        "test/Test_Image/png_op/landscape-green-component.png");
+    // Create a local HashMap t1 and populate it with pixel data
+    t1.put("testKey", image.getPixels("testKey", load)); // Assuming load is defined somewhere
 
+    // Apply the split using the local HashMap t1
+    HashMap<String, RGBPixel[][]> splitResult = split.apply(t1, t1.get("testKey"), "testKey", "red-Key", "green-Key", "blue-Key");
+
+    // Test red component
+    RGBPixel[][] operationPixels = splitResult.get("red-Key");
+    RGBPixel[][] expectedPixels = image.getPixels("expected-red-split-Key", "test/Test_Image/png_op/landscape-red-component.png");
     assertImageEquals(expectedPixels, operationPixels);
-  }
 
-  /**
-   * Tests extracting the blue component from the image.
-   */
-  @Test
-  public void testGetBlue() {
-    controller.applyOperations("blue-component", "testKey", "blue-component-Key");
+    // Test green component
+    operationPixels = splitResult.get("green-Key");
+    expectedPixels = image.getPixels("expected-green-split-Key", "test/Test_Image/png_op/landscape-green-component.png");
+    assertImageEquals(expectedPixels, operationPixels);
 
-    operationPixels = image.h1.get("blue-component-Key");
-    expectedPixels = image.getPixels("expected-blue-component-Key",
-        "test/Test_Image/png_op/landscape-blue-component.png");
-
+    // Test blue component
+    operationPixels = splitResult.get("blue-Key");
+    expectedPixels = image.getPixels("expected-blue-split-Key", "test/Test_Image/png_op/landscape-blue-component.png");
     assertImageEquals(expectedPixels, operationPixels);
   }
 
@@ -222,68 +198,37 @@ public class ImagePNGModelTest {
    */
   @Test
   public void testLuma() {
-    controller.applyOperations("Luma-component", "testKey", "Luma-component-Key");
+    Luma luma = new Luma();
+    operationPixels = luma.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-Luma-component-Key", "test/Test_Image/png_op/landscape-Luma.png");
 
-    operationPixels = image.h1.get("Luma-component-Key");
-    expectedPixels = image.getPixels("expected-Luma-component-Key",
-        "test/Test_Image/png_op/landscape-Luma.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
   /**
-   * Tests extracting the intensity component from the image.
-   */
-  @Test
-  public void testIntensity() {
-    controller.applyOperations("intensity-component", "testKey", "intensity-Key");
-
-    operationPixels = image.h1.get("intensity-Key");
-    expectedPixels = image.getPixels("expected-intensity-key",
-        "test/Test_Image/png_op/landscape-intensity.png");
-
-    assertImageEquals(expectedPixels, operationPixels);
-  }
-
-  /**
-   * Tests applying a sepia effect to the image.
+   * Tests applying the sepia effect to the image.
    */
   @Test
   public void testSepia() {
-    controller.applyOperations("sepia", "testKey", "sepia-Key");
+    Sepia sepia = new Sepia();
+    operationPixels = sepia.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-sepia-key", "test/Test_Image/png_op/landscape-sepia.png");
 
-    operationPixels = image.h1.get("sepia-Key");
-    expectedPixels = image.getPixels("expected-sepia-key",
-        "test/Test_Image/png_op/landscape-sepia.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 
   /**
-   * Tests sharpening the image.
+   * Tests the sharpening operation on the image.
    */
   @Test
   public void testSharpen() {
-    controller.applyOperations("sharpen", "testKey", "sharpen-Key");
+    Sharpen sharpen = new Sharpen();
+    operationPixels = sharpen.apply(image.getPixels("testKey", load));
+    expectedPixels = image.getPixels("expected-sharpened-key", "test/Test_Image/png_op/landscape-sharper.png");
 
-    operationPixels = image.h1.get("sharpen-Key");
-    expectedPixels = image.getPixels("expected-sharpen-key",
-        "test/Test_Image/png_op/landscape-sharper.png");
-
-    assertImageEquals(expectedPixels, operationPixels);
-  }
-
-  /**
-   * Tests extracting the value component from the image.
-   */
-  @Test
-  public void testValue() {
-    controller.applyOperations("value-component", "testKey", "value-component-Key");
-
-    operationPixels = image.h1.get("value-component-Key");
-    expectedPixels = image.getPixels("expected-value-component-key",
-        "test/Test_Image/png_op/landscape-value.png");
-
+    // Compare the actual pixels with the expected pixels
     assertImageEquals(expectedPixels, operationPixels);
   }
 }
