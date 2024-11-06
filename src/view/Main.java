@@ -19,7 +19,9 @@ public class Main {
    */
   public static void main(String[] args) {
     ImageModel model =  new Image(); // Create an instance of the image model
-    ImageControllerInterface controller = new ImageController(model); // Create the controller with model and view
+    ImageControllerInterface controller = new ImageController(model);
+    controller.printMenu();
+// Create the controller with model and view
     controller.run(); // Start the application
   }
 }

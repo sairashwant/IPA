@@ -16,6 +16,8 @@ public class ImageControllerTest {
   private Readable in;
   private ImageController controller;
   private Image image;
+  Pixels[][] operationPixels;
+  Pixels[][] expectedPixels;
 
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
     for (int i = 0; i < expected.length; i++) {
@@ -33,17 +35,17 @@ public class ImageControllerTest {
     image = new Image();
     in = new StringReader("");
     controller = new ImageController(image, in, output);
-    String input = "load test/Test_Image/Landscape.png testKey\n";
-    runControllerWithInput(input);
   }
 
 
   @Test
   public void testBlur() {
-    String input = "blur testKey blurred-test";
-
+    String input = "load test/Test_Image/Landscape.png testKey\nblur testKey blurred-test\nexit";
     runControllerWithInput(input);
-    assertTrue(new File("test/Test_Image/blurred.png").exists());
+    operationPixels = image.getStoredPixels("blurred-test");
+    image.storePixels("expected-Blurred-Key", ImageUtil.loadImage("test/Test_Image/png_op/landscape-blur.png"));
+    expectedPixels = image.getStoredPixels("expected-Blurred-Key");
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
   }
 
   @Test

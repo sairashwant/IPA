@@ -106,7 +106,6 @@ public class ImageController implements ImageControllerInterface{
   }
 
   public void run() {
-    printMenu();
     while (!exitFlag) {  // Use the exitFlag instead of System.exit
       System.out.print("\nEnter command: ");
       String input = scanner.nextLine().trim();
@@ -267,7 +266,7 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
-  private void printMenu() {
+  public void printMenu() {
     System.out.println("\n========== Image Processing Menu ==========");
     System.out.println("1. Load Image");
     System.out.println("2. Save Image");

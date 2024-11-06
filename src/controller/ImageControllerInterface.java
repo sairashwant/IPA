@@ -86,4 +86,6 @@ public interface ImageControllerInterface {
   void handleScript(String[] args);
 
   void applyOperation(String[] args);
+
+  void printMenu();
 }
