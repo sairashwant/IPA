@@ -4,7 +4,6 @@ import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.Image;
 import model.ImageModel;
-
 /**
  * The entry point of the image processing application. It initializes the model, controller, and
  * view, and starts the application by displaying the menu and processing user commands.
@@ -19,7 +18,7 @@ public class Main {
    * @param args command-line arguments (not used in this application)
    */
   public static void main(String[] args) {
-    ImageModel model = new Image(); // Create an instance of the image model
+    ImageModel model =  new Image(); // Create an instance of the image model
     ImageControllerInterface controller = new ImageController(model); // Create the controller with model and view
     controller.run(); // Start the application
   }

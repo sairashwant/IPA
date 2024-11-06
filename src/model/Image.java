@@ -246,12 +246,12 @@ public class Image implements ImageModel{
     h1.put(savekey, updatedPixel);
   }
 
-  public void compress(String key, String savekey, double compressionration) {
-    if(compressionration<0 || compressionration>100)
+  public void compress(String key, String savekey, double compressionratio) {
+    if(compressionratio<0 || compressionratio>100)
     {
       throw new IllegalArgumentException("Compression level must be between 0 and 100");
     }
-    Compression l1 = new Compression(compressionration);
+    Compression l1 = new Compression(compressionratio);
     Pixels[][] temp= h1.get(key);
     updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
@@ -350,13 +350,13 @@ public class Image implements ImageModel{
 
     // Count frequency of each intensity value
     if(pixels instanceof RGBPixel[][])
-    for (Pixels[] row : pixels) {
-      for (Pixels pixel : row) {
-        redFreq[((RGBPixel) pixel).getRed()]++;
-        greenFreq[((RGBPixel) pixel).getGreen()]++;
-        blueFreq[((RGBPixel) pixel).getBlue()]++;
+      for (Pixels[] row : pixels) {
+        for (Pixels pixel : row) {
+          redFreq[((RGBPixel) pixel).getRed()]++;
+          greenFreq[((RGBPixel) pixel).getGreen()]++;
+          blueFreq[((RGBPixel) pixel).getBlue()]++;
+        }
       }
-    }
 
     // Find the maximum frequency for scaling
     int maxFreq = 0;

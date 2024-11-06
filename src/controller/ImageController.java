@@ -16,12 +16,27 @@ public class ImageController implements ImageControllerInterface{
   private final Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
   private final Map<String, BiConsumer<String, String>> operationsMap;
+  private final Appendable out;
+  boolean exitFlag;
+
+  public ImageController(ImageModel image, Readable in, Appendable out) {
+    this.imageModel = image;
+    this.scanner = new Scanner(in);
+    this.out = out;
+    this.commandMap = new HashMap<>();
+    this.operationsMap = new HashMap<>();
+    initializeOperationsMap();
+    initializeCommandMap();
+    boolean exitFlag = false;
+  }
 
   public ImageController(ImageModel image) {
     this.imageModel = image;
+    this.out = null;
     this.scanner = new Scanner(System.in);
     this.commandMap = new HashMap<>();
     this.operationsMap = new HashMap<>();
+    boolean exitFlag = false;
 
     initializeOperationsMap();
     initializeCommandMap();
@@ -70,23 +85,22 @@ public class ImageController implements ImageControllerInterface{
     commandMap.put("levels-adjust", this::handleLevelsAdjust);
     commandMap.put("split", this::handleSplit);
     commandMap.put("run-script", this::handleScript);
-    commandMap.put("exit", args -> System.exit(0));
+    commandMap.put("exit", args -> exitFlag = true);
   }
 
   public void applyOperation(String operationName, String srcKey, String destKey) {
     BiConsumer<String, String> operation = operationsMap.get(operationName);
     if (operation != null) {
       operation.accept(srcKey, destKey);
-      System.out.println("Operation on " + srcKey);
+      System.out.println("Operation "+ operationName +"on " + srcKey);
     } else {
       System.out.println("No such operation: " + operationName);
-    }
-  }
-
+}
+}
 
   public void run() {
     printMenu();
-    while (true) {
+    while (!exitFlag) {  // Use the exitFlag instead of System.exit
       System.out.print("\nEnter command: ");
       String input = scanner.nextLine().trim();
       if (input.isEmpty()) continue;
@@ -105,6 +119,7 @@ public class ImageController implements ImageControllerInterface{
       }
     }
   }
+
 
   public void handleLoad(String[] args) {
     if (args.length == 3) {

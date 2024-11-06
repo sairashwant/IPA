@@ -121,7 +121,7 @@ public class Compression implements Transformation {
     int height = data.length;
     int width = data[0].length;
     int totalElements = height * width;
-    int elementsToZero = (int)(totalElements * compressionRatio / 100.0);
+    int elementsToZero = (int)(totalElements * (compressionRatio / 100.0));
 
     // Collect all values
     int[] allValues = new int[totalElements];
@@ -209,7 +209,7 @@ public class Compression implements Transformation {
           if (!(image[i][j] instanceof RGBPixel)) {
             throw new IllegalArgumentException("Expected an instance of RGBPixel.");
           }
-          paddedImage[i][j] = image[i][j]; // No cast needed since we use Pixels
+          paddedImage[i][j] = image[i][j];
         } else {
           // Fill with black pixels (0,0,0)
           paddedImage[i][j] = new RGBPixel(0, 0, 0);
