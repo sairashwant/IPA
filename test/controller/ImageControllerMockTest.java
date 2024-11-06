@@ -7,7 +7,7 @@ import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ImageControllerTest {
+public class ImageControllerMockTest {
 
   private StringBuilder output;
   private Readable in;
