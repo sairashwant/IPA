@@ -1,7 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import model.Image;
+import model.ImageModel;
+import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
 import java.util.HashMap;
@@ -10,14 +11,14 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.BiConsumer;
 
-public class ImageController {
-  private final Image image;
+public class ImageController implements ImageControllerInterface{
+  private final ImageModel imageModel;
   private final Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
   private final Map<String, BiConsumer<String, String>> operationsMap;
 
-  public ImageController(Image image) {
-    this.image = image;
+  public ImageController(ImageModel image) {
+    this.imageModel = image;
     this.scanner = new Scanner(System.in);
     this.commandMap = new HashMap<>();
     this.operationsMap = new HashMap<>();
@@ -31,18 +32,18 @@ public class ImageController {
   }
 
   private void initializeOperationsMap() {
-    operationsMap.put("blur", image::blur);
-    operationsMap.put("sharpen", image::sharpen);
-    operationsMap.put("greyscale", image::greyScale);
-    operationsMap.put("sepia", image::sepia);
-    operationsMap.put("value-component", image::value);
-    operationsMap.put("luma-component", image::luma);
-    operationsMap.put("intensity-component", image::intensity);
-    operationsMap.put("red-component", image::getRedChannel);
-    operationsMap.put("green-component", image::getGreenChannel);
-    operationsMap.put("blue-component", image::getBlueChannel);
-    operationsMap.put("color-correction", image::colorCorrection);
-    operationsMap.put("histogram", image::histogram);
+    operationsMap.put("blur", imageModel::blur);
+    operationsMap.put("sharpen", imageModel::sharpen);
+    operationsMap.put("greyscale", imageModel::greyScale);
+    operationsMap.put("sepia", imageModel::sepia);
+    operationsMap.put("value-component", imageModel::value);
+    operationsMap.put("luma-component", imageModel::luma);
+    operationsMap.put("intensity-component", imageModel::intensity);
+    operationsMap.put("red-component", imageModel::getRedChannel);
+    operationsMap.put("green-component", imageModel::getGreenChannel);
+    operationsMap.put("blue-component", imageModel::getBlueChannel);
+    operationsMap.put("color-correction", imageModel::colorCorrection);
+    operationsMap.put("histogram", imageModel::histogram);
   }
 
   private void initializeCommandMap() {
@@ -55,8 +56,8 @@ public class ImageController {
     commandMap.put("sharpen", args -> applyOperation("sharpen", args[1], args[2]));
     commandMap.put("greyscale", args -> applyOperation("greyscale", args[1], args[2]));
     commandMap.put("sepia", args -> applyOperation("sepia", args[1], args[2]));
-    commandMap.put("horizontal-flip", args -> image.flip(args[1], args[2], Direction.HORIZONTAL));
-    commandMap.put("vertical-flip", args -> image.flip(args[1], args[2], Direction.VERTICAL));
+    commandMap.put("horizontal-flip", args -> imageModel.flip(args[1], args[2], Direction.HORIZONTAL));
+    commandMap.put("vertical-flip", args -> imageModel.flip(args[1], args[2], Direction.VERTICAL));
     commandMap.put("value-component", args -> applyOperation("value-component", args[1], args[2]));
     commandMap.put("luma-component", args -> applyOperation("luma-component", args[1], args[2]));
     commandMap.put("intensity-component", args -> applyOperation("intensity-component", args[1], args[2]));
@@ -72,7 +73,7 @@ public class ImageController {
     commandMap.put("exit", args -> System.exit(0));
   }
 
-  private void applyOperation(String operationName, String srcKey, String destKey) {
+  public void applyOperation(String operationName, String srcKey, String destKey) {
     BiConsumer<String, String> operation = operationsMap.get(operationName);
     if (operation != null) {
       operation.accept(srcKey, destKey);
@@ -81,7 +82,6 @@ public class ImageController {
     }
   }
 
-  // ... rest of the methods remain the same ...
 
   public void run() {
     printMenu();
@@ -105,30 +105,44 @@ public class ImageController {
     }
   }
 
-  private void handleLoad(String[] args) {
+  public void handleLoad(String[] args) {
     if (args.length == 3) {
-      System.out.println("Loaded Image " + args[2]);
-      image.getPixels(args[2], args[1]);
+      try {
+        Pixels[][] pixels = ImageUtil.loadImage(args[1]);
+        imageModel.storePixels(args[2], pixels);
+        System.out.println("Loaded Image " + args[2]);
+      } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+      }
     } else {
       System.out.println("Invalid load command. Usage: load <filename> <key>");
     }
   }
 
-  private void handleSave(String[] args) {
+  public void handleSave(String[] args) {
     if (args.length == 3) {
-      System.out.println("Saved Image " + args[2]);
-      image.savePixels(args[2], args[1]);
+      try {
+        Pixels[][] pixels = imageModel.getStoredPixels(args[2]);
+        if (pixels != null) {
+          ImageUtil.saveImage(args[1], pixels);
+          System.out.println("Saved Image " + args[2]);
+        } else {
+          System.out.println("No imageModel found with key: " + args[2]);
+        }
+      } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+      }
     } else {
       System.out.println("Invalid save command. Usage: save <filename> <key>");
     }
   }
 
-  private void handleBrighten(String[] args) {
+  public void handleBrighten(String[] args) {
     if (args.length == 4) {
       try {
         int factor = Integer.parseInt(args[1]);
         System.out.println("Brightened Image " + args[2] + " by " + factor);
-        image.brighten(factor, args[2], args[3]);
+        imageModel.brighten(factor, args[2], args[3]);
       } catch (NumberFormatException e) {
         System.out.println("Invalid brighten factor. Please enter an integer.");
       }
@@ -137,30 +151,30 @@ public class ImageController {
     }
   }
 
-  private void handleRGBSplit(String[] args) {
+  public void handleRGBSplit(String[] args) {
     if (args.length == 5) {
       System.out.println("Split Image " + args[1] + " into red, green and blue");
-      image.split(args[1], args[2], args[3], args[4]);
+      imageModel.split(args[1], args[2], args[3], args[4]);
     } else {
       System.out.println("Invalid split command. Usage: rgb-split <srcKey> <redKey> <greenKey> <blueKey>");
     }
   }
 
-  private void handleCombine(String[] args) {
+  public void handleCombine(String[] args) {
     if (args.length == 5) {
       System.out.println("Combined Image " + args[2] + "," + args[3] + " and " + args[4]);
-      image.combine(args[1], args[2], args[3], args[4]);
+      imageModel.combine(args[1], args[2], args[3], args[4]);
     } else {
       System.out.println("Invalid combine command. Usage: rgb-combine <destKey> <redKey> <greenKey> <blueKey>");
     }
   }
 
-  private void handleCompression(String[] args) {
+  public void handleCompression(String[] args) {
     if (args.length == 4) {
       try {
         double compressionRatio = Double.parseDouble(args[1]);
         System.out.println("Applying compression to " + args[2] + " with ratio " + compressionRatio);
-        image.compress(args[2], args[3], compressionRatio);
+        imageModel.compress(args[2], args[3], compressionRatio);
       } catch (NumberFormatException e) {
         System.out.println("Invalid compression ratio. Please enter a number.");
       }
@@ -169,14 +183,14 @@ public class ImageController {
     }
   }
 
-  private void handleLevelsAdjust(String[] args) {
+  public void handleLevelsAdjust(String[] args) {
     if (args.length == 6) {
       try {
         int black = Integer.parseInt(args[1]);
         int mid = Integer.parseInt(args[2]);
         int white = Integer.parseInt(args[3]);
         System.out.println("Adjusting levels for " + args[4]);
-        image.adjustLevel(black, mid, white, args[4], args[5]);
+        imageModel.adjustLevel(black, mid, white, args[4], args[5]);
       } catch (NumberFormatException e) {
         System.out.println("Invalid level values. Please enter integers for black, mid, and white points.");
       }
@@ -185,13 +199,13 @@ public class ImageController {
     }
   }
 
-  private void handleSplit(String[] args) {
+  public void handleSplit(String[] args) {
     if (args.length == 5) {
       try {
         int splitValue = Integer.parseInt(args[4]);
         String operation = args[3];
         System.out.println("Splitting and transforming " + args[1]);
-        image.splitAndTransform(args[1], args[2], splitValue, operation);
+        imageModel.splitAndTransform(args[1], args[2], splitValue, operation);
       } catch (NumberFormatException e) {
         System.out.println("Invalid split value. Please enter an integer for the split percentage.");
       }
@@ -200,7 +214,7 @@ public class ImageController {
     }
   }
 
-  private void handleScript(String[] args) {
+  public void handleScript(String[] args) {
     if (args.length != 2) {
       System.out.println("Invalid script command. Usage: script <filename>");
       return;

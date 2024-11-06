@@ -179,7 +179,7 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## Testing Package
 
-### ImageExceptionTest.java
+### model.ImageExceptionTest.java
 **Purpose:** Tests error handling in the application.  
 **Tests:**
 - Invalid file formats
@@ -188,7 +188,7 @@ This application is built using the MVC (model-view-controller) architecture and
 - Parameter validation
 - Boundary conditions
 
-### ImagePNGModelTest.java
+### model.ImagePNGModelTest.java
 **Purpose:** Tests PNG-specific operations.  
 **Tests:**
 - PNG loading/saving
@@ -196,7 +196,7 @@ This application is built using the MVC (model-view-controller) architecture and
 - Color operations
 - Format conversions
 
-### ImagePPMModelTest.java
+### model.ImagePPMModelTest.java
 **Purpose:** Tests PPM-specific operations.  
 **Tests:**
 - PPM loading/saving

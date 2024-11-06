@@ -1,4 +1,4 @@
-package model.imageformat;
+package controller.imageformat;
 
 import java.io.File;
 import java.io.FileNotFoundException;

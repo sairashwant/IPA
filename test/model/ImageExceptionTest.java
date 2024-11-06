@@ -1,22 +1,27 @@
+package model;
+
 import static org.junit.Assert.assertEquals;
 
 import controller.ImageController;
-import model.Image;
+import controller.ImageUtil;
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * The ImageExceptionTest class contains unit tests for the ImageController class to validate that
+ * The model.ImageExceptionTest class contains unit tests for the ImageController class to validate that
  * appropriate exceptions are thrown when invalid operations are performed on images, such as
  * loading unsupported formats or applying operations on null images.
  */
 public class ImageExceptionTest {
 
   private Image image;
+  private ImageController controller;
   RGBPixel[][] operationPixels;
   RGBPixel[][] expectedPixels;
+  String load = "test/Test_Image/Landscape.png";
 
   /**
    * Asserts that the actual image pixels are equal to the expected pixels.
@@ -41,7 +46,8 @@ public class ImageExceptionTest {
   @Before
   public void setUp() {
     image = new Image();
-    image.getPixels("testKey", "test/Test_Image/Landscape.png");
+    controller = new ImageController(image);
+    Pixels[][] pixels = ImageUtil.loadImage(load);
   }
 
   /**
@@ -49,7 +55,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testLoadImageWithUnsupportedFormatThrowsIllegalArgumentException() {
-    image.getPixels("testKey", "test/Test_Image/unsupported.xyz");
+    ImageUtil.loadImage( "test/Test_Image/unsupported.xyz");
   }
 
   /**
@@ -57,7 +63,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testRedComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.getRedChannel("nullKey", "red-component-Key");
   }
 
@@ -66,7 +72,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testGreenComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.getGreenChannel("nullKey", "green-component-Key");
   }
 
@@ -75,7 +81,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testBlueComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.getBlueChannel("nullKey", "blue-component-Key");
   }
 
@@ -84,7 +90,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testValueComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.value("nullKey", "value-component-Key");
   }
 
@@ -93,7 +99,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testLumaComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.luma("nullKey", "luma-component-Key");
   }
 
@@ -102,7 +108,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testIntensityComponentWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.intensity("nullKey", "intensity-component-Key");
   }
 
@@ -111,7 +117,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testFlipHorizontallyWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.flip("nullKey", "horizontal-flip-Key", Direction.HORIZONTAL);
   }
 
@@ -120,7 +126,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testFlipVerticallyWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.flip("nullKey", "vertical-flip-Key",Direction.VERTICAL);
   }
 
@@ -129,7 +135,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testBrightenImageWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.brighten(20, "nullKey", "brightened-Key");
   }
 
@@ -138,7 +144,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testRgbSplitWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.split("nullKey", "red-Key", "green-Key", "blue-Key");
   }
 
@@ -147,7 +153,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testApplySepiaWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.sepia("nullKey", "sepia-Key");
   }
 
@@ -156,7 +162,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testBlurWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.blur("nullKey", "blur-Key");
   }
 
@@ -165,7 +171,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testSharpenWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.sharpen("nullKey", "sharpen-Key");
   }
 
@@ -174,7 +180,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testApplyGreyScaleWithNullImageThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.greyScale("nullKey", "greyscale-Key");
   }
 
@@ -183,7 +189,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullRedComponentThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.combine("nullKey", "nullRedKey", "green-Key", "blue-Key");
   }
 
@@ -192,7 +198,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullGreenComponentThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.combine("nullKey", "red-Key", "nullGreenKey", "blue-Key");
   }
 
@@ -201,7 +207,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullBlueComponentThrowsNullPointerException() {
-    image.getPixels("nullKey", null);
+    image.storePixels("nullKey", null);
     image.combine("nullKey", "red-Key", "green-Key", "nullBlueKey");
   }
 }

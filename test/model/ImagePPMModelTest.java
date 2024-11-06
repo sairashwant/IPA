@@ -1,7 +1,9 @@
+package model;
+
 import controller.ImageController;
+import controller.ImageUtil;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import model.Image;
 import model.imagetransformation.filtering.Blur;
 import model.imagetransformation.basicoperation.Flip;
 import model.imagetransformation.basicoperation.Brighten;
@@ -33,9 +35,10 @@ public class ImagePPMModelTest {
   private Image image;
   Pixels[][] operationPixels;
   Pixels[][] expectedPixels;
-  HashMap<String, Pixels[][]> t1 = new HashMap<String, Pixels[][]>();
+  HashMap<String, Pixels[][]> t1 = new HashMap<>();
 
-  String load = "test/Test_Image/P3.ppm";  // The test PPM file path
+  String load = "test/Test_Image/P3.ppm";
+  Pixels[][] pixels = ImageUtil.loadImage(load); // The test PPM file path
 
   /**
    * Asserts that two images are equal by comparing their pixel values.
@@ -60,9 +63,7 @@ public class ImagePPMModelTest {
   @Before
   public void setUp() {
     image = new Image();
-
-    // Load the PPM image for the test
-    image.getPixels("testKey", load);
+    image.storePixels("testKey", pixels);
   }
 
   /**
@@ -71,8 +72,9 @@ public class ImagePPMModelTest {
   @Test
   public void testBlur() {
     Blur blur = new Blur();
-    operationPixels = blur.apply(image.getPixels("testKey", load)); // Apply the blur operation
-    expectedPixels = image.getPixels("expected-Blurred-Key", "test/Test_Image/ppm_op/P3-blur.ppm"); // Expected image
+    operationPixels = blur.apply(image.getStoredPixels("testKey")); // Apply the blur operation
+    image.storePixels("expected-Blurred-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-blur.ppm"));
+    expectedPixels = image.getStoredPixels("expected-Blurred-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][])operationPixels);
@@ -84,8 +86,9 @@ public class ImagePPMModelTest {
   @Test
   public void testHorizontalFlip() {
     Flip flip = new Flip();
-    operationPixels = flip.apply(image.getPixels("testKey", load), Flip.Direction.HORIZONTAL);
-    expectedPixels = image.getPixels("expected-horizontal-flip-Key", "test/Test_Image/ppm_op/P3-horizontal-flip.ppm");
+    operationPixels = flip.apply(image.getStoredPixels("testKey"), Flip.Direction.HORIZONTAL);
+    image.storePixels("expected-horizontal-flip-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-horizontal-flip.ppm"));
+    expectedPixels = image.getStoredPixels("expected-horizontal-flip-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -97,8 +100,9 @@ public class ImagePPMModelTest {
   @Test
   public void testVerticalFlip() {
     Flip flip = new Flip();
-    operationPixels = flip.apply(image.getPixels("testKey", load), Flip.Direction.VERTICAL);
-    expectedPixels = image.getPixels("expected-vertical-flip-Key", "test/Test_Image/ppm_op/P3-vertical-flip.ppm");
+    operationPixels = flip.apply(image.getStoredPixels("testKey"), Flip.Direction.VERTICAL);
+    image.storePixels("expected-vertical-flip-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-vertical-flip.ppm"));
+    expectedPixels = image.getStoredPixels("expected-vertical-flip-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -110,8 +114,9 @@ public class ImagePPMModelTest {
   @Test
   public void testBrighten() {
     Brighten brighten = new Brighten(20); // Brighten by an intensity of 20
-    operationPixels = brighten.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-BrightenedKey", "test/Test_Image/ppm_op/P3-brighter.ppm");
+    operationPixels = brighten.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-BrightenedKey", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-brighter.ppm"));
+    expectedPixels = image.getStoredPixels("expected-BrightenedKey");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -123,8 +128,9 @@ public class ImagePPMModelTest {
   @Test
   public void testNegativeBrighten() {
     Brighten brighten = new Brighten(-20); // Darken by an intensity of -20
-    operationPixels = brighten.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-darkened-Key", "test/Test_Image/ppm_op/P3-darker.ppm");
+    operationPixels = brighten.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-darkened-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-darker.ppm"));
+    expectedPixels = image.getStoredPixels("expected-darkened-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -136,11 +142,12 @@ public class ImagePPMModelTest {
   @Test
   public void testGreyscale() {
     GreyScale greyscale = new GreyScale();
-    operationPixels = greyscale.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-greyscale-Key", "test/Test_Image/ppm_op/P3-greyscale.ppm");
+    operationPixels = greyscale.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-greyscale-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-greyscale.ppm"));
+    expectedPixels = image.getStoredPixels("expected-greyscale-Key");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals((RGBPixel[][])expectedPixels,(RGBPixel[][]) operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -149,8 +156,9 @@ public class ImagePPMModelTest {
   @Test
   public void testSepia() {
     Sepia sepia = new Sepia();
-    operationPixels = sepia.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-sepia-Key", "test/Test_Image/ppm_op/P3-sepia.ppm");
+    operationPixels = sepia.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-sepia-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-sepia.ppm"));
+    expectedPixels = image.getStoredPixels("expected-sepia-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -162,8 +170,9 @@ public class ImagePPMModelTest {
   @Test
   public void testSharpen() {
     Sharpen sharpen = new Sharpen();
-    operationPixels = sharpen.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-sharpen-Key", "test/Test_Image/ppm_op/P3-sharper.ppm");
+    operationPixels = sharpen.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-sharpen-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-sharper.ppm"));
+    expectedPixels = image.getStoredPixels("expected-sharpen-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -175,8 +184,9 @@ public class ImagePPMModelTest {
   @Test
   public void testLuma() {
     Luma luma = new Luma();
-    operationPixels = luma.apply(image.getPixels("testKey", load));
-    expectedPixels = image.getPixels("expected-Luma-component-Key", "test/Test_Image/ppm_op/P3-Luma.ppm");
+    operationPixels = luma.apply(image.getStoredPixels("testKey"));
+    image.storePixels("expected-Luma-component-Key", ImageUtil.loadImage("test/Test_Image/ppm_op/P3-luma.ppm"));
+    expectedPixels = image.getStoredPixels("expected-Luma-component-Key");
 
     // Compare the actual pixels with the expected pixels
     assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
@@ -187,26 +197,18 @@ public class ImagePPMModelTest {
    */
   @Test
   public void testCombine() {
-    // Initialize the Split operation
     Split split = new Split();
+    t1.put("testKey", image.getStoredPixels("testKey"));
 
-    // Load the image into the t1 HashMap, assuming the `getPixels()` method returns Pixels[][]
-    t1.put("testKey", (RGBPixel[][]) image.getPixels("testKey", load));
-
-    // Split the image into individual channels (red, green, blue)
-    HashMap<String, Pixels[][]> splitResult = split.apply(t1, t1.get("testKey"), "testKey", "red-Key", "green-Key", "blue-Key");
+    HashMap<String, Pixels[][]> splitResult = split.apply(t1, t1.get("testKey"),
+        "testKey", "red-Key", "green-Key", "blue-Key");
     t1.putAll(splitResult);
 
-    // Now, combine the individual color channels back into a full RGB image
     Combine combine = new Combine();
-    Pixels[][] operationPixels = combine.apply(t1.get("red-Key"), t1.get("green-Key"), t1.get("blue-Key"));
+    operationPixels = combine.apply(t1.get("red-Key"), t1.get("green-Key"), t1.get("blue-Key"));
+    image.storePixels("expected-combine-Key", ImageUtil.loadImage("test/Test_Image/P3.ppm"));
+    expectedPixels = image.getStoredPixels("expected-combine-Key");
 
-    // Load the expected combined image pixels from the test data
-    Pixels[][] expectedPixels = image.getPixels("expected-combine-Key", "test/Test_Image/P3.ppm");
-
-    // Compare the actual pixels (operationPixels) with the expected pixels (expectedPixels)
     assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
   }
-
-
 }

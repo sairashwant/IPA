@@ -1,7 +1,8 @@
+package model;
+
 import static org.junit.Assert.assertEquals;
 
 import controller.ImageController;
-import model.Image;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.After;
@@ -23,7 +24,7 @@ import org.junit.Test;
  * @see Image
  * @see ImageController
  */
-public class ImageControllerTest {
+public class ImageScriptTest {
 
   private ImageController controller;
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();

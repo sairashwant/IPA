@@ -15,9 +15,6 @@ import model.imagetransformation.basicoperation.Brighten;
 import model.imagetransformation.basicoperation.Combine;
 import model.imagetransformation.basicoperation.Flip;
 import model.imagetransformation.basicoperation.Flip.Direction;
-import model.imageformat.JPGImage;
-import model.imageformat.PNGImage;
-import model.imageformat.PPMImage;
 import model.imagetransformation.colortransformation.GreyScale;
 import model.imagetransformation.basicoperation.Intensity;
 import model.imagetransformation.colortransformation.Sepia;
@@ -29,72 +26,24 @@ import java.util.HashMap;
  * Represents an image and provides methods for loading, saving, and manipulating pixel data using
  * various transformations.
  */
-public class Image {
+public class Image implements ImageModel{
 
   private Pixels[][] updatedPixel;
   HashMap<String, Pixels[][]> h1 = new HashMap<String, Pixels[][]>();
 
   /**
-   * Loads pixel data from an image file and stores it in the specified key.
-   *
-   * @param key      the key under which the pixel data will be stored
-   * @param filename the name of the image file to be loaded
-   * @return a 2D array of RGBPixel representing the loaded image
-   * @throws IllegalArgumentException if the image format is unsupported
+   * Stores the pixel data under the specified key.
    */
-  public Pixels[][] getPixels(String key, String filename) {
-    String fileExtension = filename.substring(filename.lastIndexOf("."));
-    if (fileExtension.equals(".png")) {
-      PNGImage imageFormat = new PNGImage();
-      updatedPixel = imageFormat.load(filename);
-    } else if (fileExtension.equals(".jpg")) {
-      JPGImage imageFormat = new JPGImage();
-      updatedPixel = imageFormat.load(filename);
-    } else if (fileExtension.equals(".ppm")) {
-      PPMImage imageFormat = new PPMImage();
-      updatedPixel = imageFormat.load(filename);
-    } else {
-      throw new IllegalArgumentException("Unsupported image format");
-    }
-    h1.put(key, updatedPixel);
-    return updatedPixel;
+  public void storePixels(String key, Pixels[][] pixels) {
+    this.updatedPixel = pixels;
+    h1.put(key, pixels);
   }
 
   /**
-   * Saves pixel data to an image file based on the specified key.
-   *
-   * @param key      the key used to retrieve the pixel data to save
-   * @param filename the name of the output image file
-   * @throws IllegalArgumentException if the image format is unsupported
+   * Gets the pixel data stored under the specified key.
    */
-  public void savePixels(String key, String filename) {
-    String outputFile = filename;
-    String fileExtension = filename.substring(filename.lastIndexOf("."));
-    Pixels[][] tosavepixels = h1.get(key);
-    if (fileExtension.equals(".png")) {
-      PNGImage imageFormat = new PNGImage();
-      if (tosavepixels == null) {
-        System.out.println("Image has not been saved");
-        return;
-      }
-      imageFormat.save(outputFile, tosavepixels);
-    } else if (fileExtension.equals(".jpg")) {
-      JPGImage imageFormat = new JPGImage();
-      if (tosavepixels == null) {
-        System.out.println("Image has not been saved");
-        return;
-      }
-      imageFormat.save(outputFile, tosavepixels);
-    } else if (fileExtension.equals(".ppm")) {
-      PPMImage imageFormat = new PPMImage();
-      if (tosavepixels == null) {
-        System.out.println("Image has not been saved");
-        return;
-      }
-      imageFormat.save(outputFile, tosavepixels);
-    } else {
-      throw new IllegalArgumentException("Unsupported image format");
-    }
+  public Pixels[][] getStoredPixels(String key) {
+    return h1.get(key);
   }
 
   /**
