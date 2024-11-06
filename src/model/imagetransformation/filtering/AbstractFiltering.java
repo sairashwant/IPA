@@ -1,5 +1,6 @@
 package model.imagetransformation.filtering;
 
+import model.colorscheme.Pixels;
 import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public abstract class AbstractFiltering implements Transformation {
    *                                  objects
    */
   @Override
-  public RGBPixel[][] apply(RGBPixel[][] input) {
+  public Pixels[][] apply(Pixels[][] input) {
 
     int height = input.length;
     int width = input[0].length;
@@ -34,7 +35,7 @@ public abstract class AbstractFiltering implements Transformation {
       return null;
     }
 
-    RGBPixel[][] blurredPixels = new RGBPixel[height][width];
+    Pixels[][] blurredPixels = new RGBPixel[height][width];
 
     double[][] filter = getFilter();
 

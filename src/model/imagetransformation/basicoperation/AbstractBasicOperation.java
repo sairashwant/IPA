@@ -23,7 +23,7 @@ public abstract class AbstractBasicOperation implements Transformation {
    * @throws IllegalArgumentException if a pixel is not an instance of {@code RGBPixel}
    */
   @Override
-  public Pixels[][] apply(RGBPixel[][] pixels) {
+  public Pixels[][] apply(Pixels[][] pixels) {
     int height = pixels.length;
     int width = pixels[0].length;
 
@@ -31,7 +31,7 @@ public abstract class AbstractBasicOperation implements Transformation {
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        RGBPixel pixel = pixels[i][j];
+        Pixels pixel = pixels[i][j];
         if (pixel instanceof RGBPixel) {
           RGBPixel rgbPixel = (RGBPixel) pixel;
 

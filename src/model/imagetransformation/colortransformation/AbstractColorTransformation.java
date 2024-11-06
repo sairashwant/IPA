@@ -1,5 +1,6 @@
 package model.imagetransformation.colortransformation;
 
+import model.colorscheme.Pixels;
 import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
@@ -24,11 +25,11 @@ public abstract class AbstractColorTransformation implements Transformation {
    * @throws IllegalArgumentException if the image pixels are not instances of RGBPixel
    */
   @Override
-  public RGBPixel[][] apply(RGBPixel[][] input) {
+  public Pixels[][] apply(Pixels[][] input) {
     int height = input.length;
     int width = input[0].length;
     double[][] matrix = getMatrix();
-    RGBPixel[][] transformedPixels = new RGBPixel[height][width];
+    Pixels[][] transformedPixels = new RGBPixel[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         if (input[i][j] instanceof RGBPixel) {
