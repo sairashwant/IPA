@@ -71,8 +71,8 @@ public class ImageController implements ImageControllerInterface{
     commandMap.put("sharpen", args -> applyOperation("sharpen", args[1], args[2]));
     commandMap.put("greyscale", args -> applyOperation("greyscale", args[1], args[2]));
     commandMap.put("sepia", args -> applyOperation("sepia", args[1], args[2]));
-    commandMap.put("horizontal-flip", args -> imageModel.flip(args[1], args[2], Direction.HORIZONTAL));
-    commandMap.put("vertical-flip", args -> imageModel.flip(args[1], args[2], Direction.VERTICAL));
+    commandMap.put("horizontal-flip", args -> handleFlip(args, Direction.HORIZONTAL));
+    commandMap.put("vertical-flip", args -> handleFlip(args, Direction.VERTICAL));
     commandMap.put("value-component", args -> applyOperation("value-component", args[1], args[2]));
     commandMap.put("luma-component", args -> applyOperation("luma-component", args[1], args[2]));
     commandMap.put("intensity-component", args -> applyOperation("intensity-component", args[1], args[2]));
@@ -92,7 +92,7 @@ public class ImageController implements ImageControllerInterface{
     BiConsumer<String, String> operation = operationsMap.get(operationName);
     if (operation != null) {
       operation.accept(srcKey, destKey);
-      System.out.println("Operation "+ operationName +"on " + srcKey);
+      System.out.println("Operation "+ operationName + " on " + srcKey);
     } else {
       System.out.println("No such operation: " + operationName);
 }
@@ -164,6 +164,19 @@ public class ImageController implements ImageControllerInterface{
       }
     } else {
       System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
+    }
+  }
+
+  public void handleFlip(String[] args, Direction direction) {
+    if (args.length == 3) {
+      try {
+        System.out.println("Flipping image " + args[1] + " horizontally");
+        imageModel.flip(args[1], args[2], direction);
+      } catch (IllegalArgumentException e) {
+        System.out.println("Error during flip operation: " + e.getMessage());
+      }
+    } else {
+      System.out.println("Invalid flip command. Usage: <horizontal-flip|vertical-flip> <srcKey> <destKey>");
     }
   }
 

@@ -46,7 +46,7 @@ save res/landscape-green-split.png l1-green-split
 save res/landscape-blue-split.png l1-blue-split
 
 #Combine the 3 color components
-combine l1-combine l1-red-split l1-green-split l1-blue-split
+rgb-combine l1-combine l1-red-split l1-green-split l1-blue-split
 
 #Save the combined image
 save res/landscape-combine.png l1-combine
