@@ -316,10 +316,4 @@ public class ImagePNGModelTest {
     return rgbPixels;
   }
 
-  @Test
-  public void testGetPixelReturnsDeepCopy() throws IOException {
-    Pixels[][] pixels2 = ImageUtil.loadImage("Images/koala-square.png");
-    
-  }
-
 }
