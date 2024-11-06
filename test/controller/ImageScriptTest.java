@@ -1,10 +1,10 @@
-package model;
+package controller;
 
 import static org.junit.Assert.assertEquals;
 
-import controller.ImageController;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import model.Image;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
