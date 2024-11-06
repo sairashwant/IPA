@@ -282,6 +282,10 @@ public class Image implements ImageModel{
    * @param operation     apply transformation on the first part if true
    */
   public void splitAndTransform(String key, String saveKey, int splitValue, String operation, int... params) {
+    if (splitValue < 0 || splitValue >100){
+      throw new IllegalArgumentException("Invalid split value. It must be between 0 and 100.");
+    }
+
     String part1Key = "splitPart1";
     String part2Key = "splitPart2";
 

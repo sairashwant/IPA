@@ -41,7 +41,6 @@ public class ImageControllerTest {
 
   @Test
   public void testBlur() {
-
     String input = source+"blur testKey blurred-test\nexit";
     runControllerWithInput(input);
     operationPixels = image.getStoredPixels("blurred-test");

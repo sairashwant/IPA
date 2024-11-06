@@ -5,32 +5,50 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## controller Package
 
-### ImageController.java
-**Purpose:** Main controller class implementing the command pattern.  
+### ImageControllerInterface.java (Interface)
+**Purpose:** Interface for managing image processing commands.
+
 **Responsibilities:**
-- Manages operation mappings
-- Handles image loading/saving
-- Executes image transformations
-- Routes commands between the model and view
+- Defines methods for loading, saving, and transforming images.
+- Manages command mappings.
+- Supports advanced operations like RGB manipulation and compression.
+
+### ImageController.java
+**Purpose:** Coordinates image processing commands and delegates tasks to the model.
+
+**Responsibilities:**
+- Initializes command and operation mappings.
+- Manages image loading, saving, and transformations.
+- Routes user inputs to corresponding image operations.
+- Supports advanced features like RGB split/merge, compression, color adjustments, and script execution.
 
 ### TriConsumer.java (Interface)
 **Purpose:** Functional interface for three-parameter operations.  
 **Usage:** Used for operations like `brighten` that require multiple inputs.
 
-## model Package
-
-### ColorScheme Package
-
-#### AbstractPixel.java (Abstract)
-**Purpose:** Base class for pixel representations.  
-**Usage:** Provides foundation for different pixel formats.
-
-#### RGBPixel.java
-**Purpose:** Implementation of the RGB color model.  
+### ImageView.java
+**Purpose:** Handles the user interface.  
 **Responsibilities:**
-- Stores RGB values
-- Ensures color values stay within the 0-255 range
-- Provides methods for accessing individual color components
+- Displays user prompts
+- Processes user input
+- Shows operation results
+- Reports errors
+- Manages the command-line interface
+
+### ImageUtil.java
+**Purpose:** Utility class for loading and saving image files in various formats.
+**Responsibilities:**
+- Loads images into a 2D array of Pixels from supported formats (PNG, JPG, PPM).
+- Saves Pixels data to specified image formats (PNG, JPG, PPM).
+- Handles unsupported formats and errors.
+
+### ScriptReader.java
+**Purpose:** Processes script files for batch operations.  
+**Responsibilities:**
+- Reads script files
+- Parses commands
+- Validates script syntax
+- Executes the script commands
 
 ### ImageFormat Package
 
@@ -65,6 +83,23 @@ This application is built using the MVC (model-view-controller) architecture and
 #### PPMImage.java
 **Purpose:** Handles PPM format operations.  
 **Responsibilities:** Implements PPM-specific saving functionality.
+
+## model Package
+
+### ColorScheme Package
+
+#### Pixels.java (Interface)
+**Purpose:** Base class for pixel representations.  
+**Usage:** Provides foundation for different pixel formats.
+
+#### RGBPixel.java
+**Purpose:** Implementation of the RGB color model.  
+**Responsibilities:**
+- Stores RGB values
+- Ensures color values stay within the 0-255 range
+- Provides methods for accessing individual color components
+
+
 
 ## ImageTransformation Package
 
@@ -142,6 +177,16 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## Main model Class
 
+### ImageModel.java (Interface)
+**Purpose:** Top level interface for the model.
+**Responsibilities:**
+- Image Loading and Storing
+- Image Saving
+- Image Transformations
+- Component Extraction
+- Advanced Operations
+- Error Handling
+
 ### Image.java
 **Purpose:** Core class for image processing.  
 **Responsibilities:**
@@ -153,15 +198,6 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## view Package
 
-### ImageView.java
-**Purpose:** Handles the user interface.  
-**Responsibilities:**
-- Displays user prompts
-- Processes user input
-- Shows operation results
-- Reports errors
-- Manages the command-line interface
-
 ### Main.java
 **Purpose:** Application entry point.  
 **Responsibilities:**
@@ -169,17 +205,31 @@ This application is built using the MVC (model-view-controller) architecture and
 - Sets up the application environment
 - Launches the user interface
 
-### ScriptReader.java
-**Purpose:** Processes script files for batch operations.  
-**Responsibilities:**
-- Reads script files
-- Parses commands
-- Validates script syntax
-- Executes the script commands
-
 ## Testing Package
 
-### model.ImageExceptionTest.java
+## Controller Package
+
+### ImageControllerMockTest.java
+**Purpose:** To validate that ImageController correctly processes image manipulation commands by testing a mock ImageModel. Ensures expected outputs for key image transformations.
+
+
+### ImageControllerTest.java
+**Purpose:** This test class validates the image manipulation functionalities of the ImageController, ensuring correct processing of operations like blur, flip, brighten, greyscale, RGB split/combine, and saving of results.
+
+**Tests:**
+- Verifies correct application of blur, flip (horizontal/vertical), brighten, greyscale, RGB split/combine, luma, sepia, and sharpen operations.
+- Confirms that images are loaded, processed, and saved correctly.
+- Ensures the expected output files are created during each transformation.
+- Checks if exceptions are thrown if the given input in not valid.
+
+### ImageScriptTest.java
+**Purpose:**  This test ensures that the ImageController processes image operation scripts correctly and outputs the expected messages.
+
+**Tests:** Validates that the controller executes script commands properly, performing image operations and matching the expected console output.
+
+## Model Package
+
+### ImageExceptionTest.java
 **Purpose:** Tests error handling in the application.  
 **Tests:**
 - Invalid file formats
@@ -188,7 +238,7 @@ This application is built using the MVC (model-view-controller) architecture and
 - Parameter validation
 - Boundary conditions
 
-### model.ImagePNGModelTest.java
+### ImagePNGModelTest.java
 **Purpose:** Tests PNG-specific operations.  
 **Tests:**
 - PNG loading/saving
@@ -196,13 +246,28 @@ This application is built using the MVC (model-view-controller) architecture and
 - Color operations
 - Format conversions
 
-### model.ImagePPMModelTest.java
+### ImagePPMModelTest.java
 **Purpose:** Tests PPM-specific operations.  
 **Tests:**
 - PPM loading/saving
 - PPM transformations
 - Raw format handling
 - Format conversions
+
+## Resources Package
+
+### PNGScript.txt
+- Contrains the script that is text file.
+
+### ReadMe.Md
+- Has the description of the design of the whole project.
+
+### UseMe.md
+- Has the instructions on how to use the project and perform operation on the image.
+
+### Class_Diagram.png
+- It is the class diagram of the project representing the connection between each classes in the project.
+
 
 ### Installation
 - Run Main class.
@@ -216,44 +281,59 @@ This application is built using the MVC (model-view-controller) architecture and
   - Syntax : <file-path> <image-name>
   - Eg: save res/landscape-red-component.png l1-red-component
 -     brighten
-- Syntax :  <factor> <image-name> <dest-image-name>
-- Eg: brighten 20 l1 l1-brighter
+  - Syntax :  <factor> <image-name> <dest-image-name>
+  - Eg: brighten 20 l1 l1-brighter
 -     horizontal-flip
-- Syntax : <image-name> <dest-image-name>
--  Eg: horizontal-flip l1 l1-horizontal-flip
+  - Syntax : <image-name> <dest-image-name>
+  -  Eg: horizontal-flip l1 l1-horizontal-flip
 -     vertical-flip 
-- Syntax : <image-name> <dest-image-name>
-- Eg: vertical-flip l1 l1-vertical-flip
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: vertical-flip l1 l1-vertical-flip
 -     rgb-split 
-- Syntax : <image-name> <red-image> <green-image> <blue-image>
-- Eg: rgb-split l1 l1-red-split l1-green-split l1-blue-split
+  - Syntax : <image-name> <red-image> <green-image> <blue-image>
+  - Eg: rgb-split l1 l1-red-split l1-green-split l1-blue-split
 -     rgb-combine 
-- Syntax : <dest-image-name> <red-image> <green-image> <blue-image>
-- Eg: combine l1-combine l1-red-split l1-green-split l1-blue-split
+  - Syntax : <dest-image-name> <red-image> <green-image> <blue-image>
+  - Eg: combine l1-combine l1-red-split l1-green-split l1-blue-split
 -     value-component
-- Syntax : <image-name> <dest-image-name>
-- Eg: value-component l1 l1-value
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: value-component l1 l1-value
 -     luma-component 
-- Syntax : <image-name> <dest-image-name>
-- Eg: luma-component l1 l1-luma
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: luma-component l1 l1-luma
 -     intensity-component 
-- Syntax : <image-name> <dest-image-name>
-- Eg: intensity-component l1 l1-intensity
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: intensity-component l1 l1-intensity
 -     greyscale 
-- Syntax : <image-name> <dest-image-name>
-- Eg: greyscale l1 l1-greyscale
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: greyscale l1 l1-greyscale
 -     sepia 
-- Syntax : <image-name> <dest-image-name>
-- Eg: save res/landscape-sepia.png l1-sepia
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: sepia l1 l1-sepia
 -     blur 
-- Syntax : <image-name> <dest-image-name>
-- Eg: blur l1 l1-blur
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: blur l1 l1-blur
 -     sharpen 
-- Syntax : <image-name> <dest-image-name>
-- Eg: sharpen l1 l1-sharper
+  - Syntax : <image-name> <dest-image-name>
+  - Eg: sharpen l1 l1-sharper
+-     compression
+  - Syntax: <ratio> <image-name> <dest-image-name>
+  - Eg: compress 75 l1 l1-75-compress
+-     histogram
+  - Syntax: <image-name> <dest-image-name>
+  - Eg: histogram l1 l1-histogram
+-     color-correction
+  - Syntax: <image-name> <dest-image-name>
+  - Eg: color-correction l1 l1-cc
+-     levels-adjust
+  - Syntax: <black> <mid> <white> <image-name> <dest-image-name>
+  - Eg: levels-adjust 20 100 255 l1 l1-levelsadjust
+-     split and transform
+  - Syntax: <operation> <image-name> <dest-image-name> split <splitPercentage>
+  - Eg: blur l1 l1-split-blur split 50
 -     run-script 
-- Syntax : <script-file-path>
-- Eg: run-script Images/PNGScript.txt
+  - Syntax : <script-file-path>
+  - Eg: run-script Images/PNGScript.txt
 
 
 ## IMAGE CITATION ##
