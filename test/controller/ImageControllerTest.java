@@ -325,5 +325,12 @@ public class ImageControllerTest {
     runControllerWithInput(input);
     assertEquals("Split and transformed with key: Image\n", output.toString());
   }
+  @Test
+  public void testGetStoredPixels() {
+    String input = "save test/Test_Image/png_op/Lanscape-new.png test1\nexit";
+    runControllerWithInput(input);
+    assertEquals("Retrieved pixels with key: test1\n", output.toString());
+  }
+
 
 }
