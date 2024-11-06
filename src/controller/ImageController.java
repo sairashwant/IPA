@@ -187,12 +187,24 @@ public class ImageController implements ImageControllerInterface{
   }
 
   public void handleRGBSplit(String[] args) {
-    if (args.length == 5) {
-      System.out.println("Split Image " + args[1] + " into red, green and blue");
-      imageModel.split(args[1], args[2], args[3], args[4]);
-    } else {
-      System.out.println("Invalid split command. Usage: rgb-split <srcKey> <redKey> <greenKey> <blueKey>");
+    if (args.length != 5) {
+      System.out.println("Invalid rgb-split command. Usage: rgb-split <srcKey> <redKey> <greenKey> <blueKey>");
+      return;
     }
+
+    String srcKey = args[1];
+    try {
+      Pixels[][] pixels = imageModel.getStoredPixels(srcKey);
+      if (pixels == null) {
+        System.out.println("No image found with key: " + srcKey);
+        return;
+      }
+      imageModel.split(srcKey, args[2], args[3], args[4]);
+      System.out.println("Split Image " + srcKey + " into red, green and blue");
+    } catch (Exception e) {
+      System.out.println("Error processing command: " + e.getMessage());
+    }
+
   }
 
   public void handleCombine(String[] args) {
@@ -208,13 +220,17 @@ public class ImageController implements ImageControllerInterface{
     if (args.length == 4) {
       try {
         double compressionRatio = Double.parseDouble(args[1]);
+        if (compressionRatio < 0 || compressionRatio > 100) {
+          System.out.println("Invalid compression ratio. Must be between 0 and 100.");
+          return;
+        }
         System.out.println("Applying compression to " + args[2] + " with ratio " + compressionRatio);
         imageModel.compress(args[2], args[3], compressionRatio);
       } catch (NumberFormatException e) {
         System.out.println("Invalid compression ratio. Please enter a number.");
       }
     } else {
-      System.out.println(" Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
+      System.out.println("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
     }
   }
 
@@ -224,6 +240,16 @@ public class ImageController implements ImageControllerInterface{
         int black = Integer.parseInt(args[1]);
         int mid = Integer.parseInt(args[2]);
         int white = Integer.parseInt(args[3]);
+
+        // Validate the level values
+        if (black < 0 || black > 255 ||
+            mid < 0 || mid > 255 ||
+            white < 0 || white > 255 ||
+            black >= mid || mid >= white) {
+          System.out.println("Invalid level values. Values must be between 0 and 255, and black < mid < white");
+          return;
+        }
+
         System.out.println("Adjusting levels for " + args[4]);
         imageModel.adjustLevel(black, mid, white, args[4], args[5]);
       } catch (NumberFormatException e) {
@@ -233,22 +259,40 @@ public class ImageController implements ImageControllerInterface{
       System.out.println("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
     }
   }
-
   public void handleSplit(String[] args) {
-    if (args.length == 5) {
-      try {
-        int splitValue = Integer.parseInt(args[4]);
-        String operation = args[0];
-        System.out.println("Splitting and transforming " + args[1]);
-        imageModel.splitAndTransform(args[1], args[2], splitValue, operation);
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid split value. Please enter an integer for the split percentage.");
-      }
-    } else {
+    if (args.length < 5) {
       System.out.println("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
+      return;
+    }
+
+    if (!args[3].equalsIgnoreCase("split")) {
+      System.out.println("Invalid split command. Expected 'split' keyword.");
+      return;
+    }
+
+    try {
+      String srcKey = args[1];
+      Pixels[][] pixels = imageModel.getStoredPixels(srcKey);
+      if (pixels == null) {
+        System.out.println("No image found with key: " + srcKey);
+        return;
+      }
+
+      int splitValue = Integer.parseInt(args[4]);
+      if (splitValue < 0 || splitValue > 100) {
+        System.out.println("Invalid split value. Must be between 0 and 100.");
+        return;
+      }
+
+      String operation = args[0];
+      imageModel.splitAndTransform(srcKey, args[2], splitValue, operation);
+      System.out.println("Split and transformed image " + srcKey + " with operation " + operation);
+    } catch (NumberFormatException e) {
+      System.out.println("Invalid split value. Please enter a valid number.");
+    } catch (Exception e) {
+      System.out.println("Error processing command: " + e.getMessage());
     }
   }
-
   public void handleScript(String[] args) {
     if (args.length != 2) {
       System.out.println("Invalid script command. Usage: script <filename>");
