@@ -30,7 +30,6 @@ import java.util.HashMap;
 public class ImagePPMModelTest {
 
   private Image image;
-  private ImageController controller;
   RGBPixel[][] operationPixels;
   RGBPixel[][] expectedPixels;
   HashMap<String, RGBPixel[][]> t1 = new HashMap<>();
@@ -60,10 +59,9 @@ public class ImagePPMModelTest {
   @Before
   public void setUp() {
     image = new Image();
-    controller = new ImageController(image);
 
     // Load the PPM image for the test
-    controller.loadIMage("testKey", load);
+    image.getPixels("testKey", load);
   }
 
   /**

@@ -2,7 +2,6 @@ import static org.junit.Assert.assertEquals;
 
 import controller.ImageController;
 import model.Image;
-import view.ImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.After;
@@ -22,11 +21,11 @@ import org.junit.Test;
  *
  * @see ImageController
  * @see Image
- * @see ImageView
+ * @see ImageController
  */
 public class ImageControllerTest {
 
-  private ImageView view;
+  private ImageController controller;
   private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
 
@@ -40,8 +39,7 @@ public class ImageControllerTest {
     System.setOut(new PrintStream(outputStreamCaptor));
 
     Image image = new Image();
-    ImageController controller = new ImageController(image);
-    view = new ImageView(controller);
+    controller = new ImageController(image);
   }
 
   /**
@@ -53,7 +51,7 @@ public class ImageControllerTest {
   public void testRunScript() {
     String[] command = {"run-script", "Images/PNGScript.txt"};
 
-    view.getCommandMap().get(command[0]).accept(command);
+    controller.getCommandMap().get(command[0]).accept(command);
 
     String expectedOutput = "Loading script from Images/PNGScript.txt\n"
         + "Loaded Image l1\n"

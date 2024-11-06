@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 import controller.ImageController;
 import model.Image;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import org.junit.Test;
  */
 public class ImageExceptionTest {
 
-  private ImageController controller;
+  private Image image;
   RGBPixel[][] operationPixels;
   RGBPixel[][] expectedPixels;
 
@@ -39,9 +40,8 @@ public class ImageExceptionTest {
    */
   @Before
   public void setUp() {
-    Image image = new Image();
-    controller = new ImageController(image);
-    controller.loadIMage("testKey", "test/Test_Image/Landscape.png");
+    image = new Image();
+    image.getPixels("testKey", "test/Test_Image/Landscape.png");
   }
 
   /**
@@ -49,66 +49,61 @@ public class ImageExceptionTest {
    */
   @Test(expected = IllegalArgumentException.class)
   public void testLoadImageWithUnsupportedFormatThrowsIllegalArgumentException() {
-    controller.loadIMage("testKey", "test/Test_Image/unsupported.xyz");
+    image.getPixels("testKey", "test/Test_Image/unsupported.xyz");
   }
 
   /**
    * Tests that applying the red component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
-  public void testRedComponentWithNullImageThrowsIOException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("red-component", "nullKey", "red-component-Key");
+  public void testRedComponentWithNullImageThrowsNullPointerException() {
+    image.getPixels("nullKey", null);
+    image.getRedChannel("nullKey", "red-component-Key");
   }
 
   /**
-   * Tests that applying the green component operation on a null image throws a
-   * NullPointerException.
+   * Tests that applying the green component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
-  public void testGreenComponentWithNullImageThrowsIOException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("green-component", "nullKey", "green-component-Key");
+  public void testGreenComponentWithNullImageThrowsNullPointerException() {
+    image.getPixels("nullKey", null);
+    image.getGreenChannel("nullKey", "green-component-Key");
   }
 
   /**
-   * Tests that applying the blue component operation on a null image throws a
-   * NullPointerException.
+   * Tests that applying the blue component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
-  public void testBlueComponentWithNullImageThrowsIOException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("blue-component", "nullKey", "blue-component-Key");
+  public void testBlueComponentWithNullImageThrowsNullPointerException() {
+    image.getPixels("nullKey", null);
+    image.getBlueChannel("nullKey", "blue-component-Key");
   }
 
   /**
-   * Tests that applying the value component operation on a null image throws a
-   * NullPointerException.
+   * Tests that applying the value component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testValueComponentWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("value-component", "nullKey", "value-component-Key");
+    image.getPixels("nullKey", null);
+    image.value("nullKey", "value-component-Key");
   }
 
   /**
-   * Tests that applying the Luma component operation on a null image throws a
-   * NullPointerException.
+   * Tests that applying the Luma component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testLumaComponentWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("Luma-component", "nullKey", "Luma-component-Key");
+    image.getPixels("nullKey", null);
+    image.luma("nullKey", "luma-component-Key");
   }
 
   /**
-   * Tests that applying the intensity component operation on a null image throws a
-   * NullPointerException.
+   * Tests that applying the intensity component operation on a null image throws a NullPointerException.
    */
   @Test(expected = NullPointerException.class)
   public void testIntensityComponentWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("intensity-component", "nullKey", "intensity-Key");
+    image.getPixels("nullKey", null);
+    image.intensity("nullKey", "intensity-component-Key");
   }
 
   /**
@@ -116,8 +111,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testFlipHorizontallyWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("horizontal-flip", "nullKey", "horizontal-flip-Key");
+    image.getPixels("nullKey", null);
+    image.flip("nullKey", "horizontal-flip-Key", Direction.HORIZONTAL);
   }
 
   /**
@@ -125,8 +120,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testFlipVerticallyWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("vertical-flip", "nullKey", "vertical-flip-Key");
+    image.getPixels("nullKey", null);
+    image.flip("nullKey", "vertical-flip-Key",Direction.VERTICAL);
   }
 
   /**
@@ -134,8 +129,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testBrightenImageWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.brighten(20, "nullKey", "brightened-Key");
+    image.getPixels("nullKey", null);
+    image.brighten(20, "nullKey", "brightened-Key");
   }
 
   /**
@@ -143,8 +138,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testRgbSplitWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.split("nullKey", "red-Key", "green-Key", "blue-Key");
+    image.getPixels("nullKey", null);
+    image.split("nullKey", "red-Key", "green-Key", "blue-Key");
   }
 
   /**
@@ -152,8 +147,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testApplySepiaWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("sepia", "nullKey", "sepia-Key");
+    image.getPixels("nullKey", null);
+    image.sepia("nullKey", "sepia-Key");
   }
 
   /**
@@ -161,8 +156,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testBlurWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("blur", "nullKey", "blur-Key");
+    image.getPixels("nullKey", null);
+    image.blur("nullKey", "blur-Key");
   }
 
   /**
@@ -170,8 +165,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testSharpenWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("sharpen", "nullKey", "sharpen-Key");
+    image.getPixels("nullKey", null);
+    image.sharpen("nullKey", "sharpen-Key");
   }
 
   /**
@@ -179,8 +174,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testApplyGreyScaleWithNullImageThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.applyOperations("greyscale", "nullKey", "greyscale-Key");
+    image.getPixels("nullKey", null);
+    image.greyScale("nullKey", "greyscale-Key");
   }
 
   /**
@@ -188,8 +183,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullRedComponentThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.combine("nullKey", "nullRedKey", "green-Key", "blue-Key");
+    image.getPixels("nullKey", null);
+    image.combine("nullKey", "nullRedKey", "green-Key", "blue-Key");
   }
 
   /**
@@ -197,8 +192,8 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullGreenComponentThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.combine("nullKey", "red-Key", "nullGreenKey", "blue-Key");
+    image.getPixels("nullKey", null);
+    image.combine("nullKey", "red-Key", "nullGreenKey", "blue-Key");
   }
 
   /**
@@ -206,8 +201,7 @@ public class ImageExceptionTest {
    */
   @Test(expected = NullPointerException.class)
   public void testCombineRgbWithNullBlueComponentThrowsNullPointerException() {
-    controller.loadIMage("nullKey", null);
-    controller.combine("nullKey", "red-Key", "green-Key", "nullBlueKey");
+    image.getPixels("nullKey", null);
+    image.combine("nullKey", "red-Key", "green-Key", "nullBlueKey");
   }
-
 }

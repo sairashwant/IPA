@@ -26,7 +26,6 @@ import static org.junit.Assert.assertEquals;
 public class ImagePNGModelTest {
 
   private Image image;
-  private ImageController controller;
   RGBPixel[][] operationPixels;
   RGBPixel[][] expectedPixels;
   HashMap<String, RGBPixel[][]> t1 = new HashMap<>();
@@ -56,10 +55,9 @@ public class ImagePNGModelTest {
   @Before
   public void setUp() {
     image = new Image();
-    controller = new ImageController(image);
 
     // Assuming you have a method to load the image into the controller.
-    controller.loadIMage("testKey", load);
+    image.getPixels("testKey", load);
   }
 
   /**
