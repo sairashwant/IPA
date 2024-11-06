@@ -71,7 +71,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-Blurred-Key", "test/Test_Image/png_op/landscape-blur.png"); // Expected image after blur
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -85,7 +85,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-horizontal-flip-Key", "test/Test_Image/png_op/landscape-horizontal-flip.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -99,7 +99,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-vertical-flip-Key", "test/Test_Image/png_op/landscape-vertical-flip.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -112,7 +112,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-BrightenedKey", "test/Test_Image/png_op/landscape-brighter.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -125,7 +125,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-darkened-Key", "test/Test_Image/png_op/landscape-darker.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -138,7 +138,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-greyscale-Key", "test/Test_Image/png_op/landscape-greyscale.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   @Test
@@ -148,8 +148,9 @@ public class ImagePNGModelTest {
 
     t1.put("testKey", image.getPixels("testKey", load));
 
+
     // Apply the split operation to get individual channels
-    HashMap<String, RGBPixel[][]> splitResult = split.apply(t1, t1.get("testKey"),
+    HashMap<String, Pixels[][]> splitResult = split.apply(t1, t1.get("testKey"),
         "testKey", "red-Key", "green-Key", "blue-Key");
 
     // Store the split components in the image's HashMap
@@ -163,34 +164,43 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-combine-Key", "test/Test_Image/Landscape.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   @Test
   public void testSplit() {
+    // Create instances of the necessary classes
     Split split = new Split();
+    Image image = new Image();// Assuming `Image` is the class for loading image data
 
     // Create a local HashMap t1 and populate it with pixel data
-    t1.put("testKey", image.getPixels("testKey", load)); // Assuming load is defined somewhere
+    HashMap<String, Pixels[][]> t1 = new HashMap<>();
+    t1.put("testKey", image.getPixels("testKey", load)); // Assuming `load` is defined and properly initialized
+    image.split("testKey", "red-Key", "green-Key", "blue-Key");
+    image.savePixels("red-key","test/Test_Image/png_op/landscape-red-component.png");
+    image.savePixels("green-key","test/Test_Image/png_op/landscape-green-component.png");
+    image.savePixels("blue-key","test/Test_Image/png_op/landscape-blue-component.png");
 
     // Apply the split using the local HashMap t1
-    HashMap<String, RGBPixel[][]> splitResult = split.apply(t1, t1.get("testKey"), "testKey", "red-Key", "green-Key", "blue-Key");
+    HashMap<String, Pixels[][]> splitResult = split.apply(t1, t1.get("testKey"), "testKey", "red-Key", "green-Key", "blue-Key");
+
 
     // Test red component
-    RGBPixel[][] operationPixels = splitResult.get("red-Key");
-    RGBPixel[][] expectedPixels = image.getPixels("expected-red-split-Key", "test/Test_Image/png_op/landscape-red-component.png");
-    assertImageEquals(expectedPixels, operationPixels);
+    Pixels[][] operationPixels = splitResult.get("red-Key");
+    Pixels[][] expectedPixels = image.getPixels("expected-red-Key", "test/Test_Image/png_op/landscape-red-component.png");
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
 
     // Test green component
     operationPixels = splitResult.get("green-Key");
     expectedPixels = image.getPixels("expected-green-split-Key", "test/Test_Image/png_op/landscape-green-component.png");
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
 
     // Test blue component
     operationPixels = splitResult.get("blue-Key");
     expectedPixels = image.getPixels("expected-blue-split-Key", "test/Test_Image/png_op/landscape-blue-component.png");
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
   }
+
 
   /**
    * Tests extracting the Luma component from the image.
@@ -202,7 +212,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-Luma-component-Key", "test/Test_Image/png_op/landscape-Luma.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels, (RGBPixel[][])operationPixels);
   }
 
   /**
@@ -215,7 +225,7 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-sepia-key", "test/Test_Image/png_op/landscape-sepia.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels,(RGBPixel[][]) operationPixels);
   }
 
   /**
@@ -228,6 +238,6 @@ public class ImagePNGModelTest {
     expectedPixels = image.getPixels("expected-sharpened-key", "test/Test_Image/png_op/landscape-sharper.png");
 
     // Compare the actual pixels with the expected pixels
-    assertImageEquals(expectedPixels, operationPixels);
+    assertImageEquals((RGBPixel[][])expectedPixels,(RGBPixel[][]) operationPixels);
   }
 }

@@ -1,7 +1,7 @@
 package model.imagetransformation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
 import java.util.Arrays;
 
 public class Compression implements Transformation {
@@ -12,9 +12,8 @@ public class Compression implements Transformation {
   }
 
   @Override
-  public RGBPixel[][] apply(RGBPixel[][] originalImage) {
+  public Pixels[][] apply(Pixels[][] originalImage) {
     // Add null check for input
-
     if (originalImage == null || originalImage.length == 0) {
       throw new IllegalArgumentException("Invalid image data");
     }
@@ -25,7 +24,7 @@ public class Compression implements Transformation {
     // Pad the image to the nearest power of two
     int paddedHeight = nextPowerOfTwo(originalHeight);
     int paddedWidth = nextPowerOfTwo(originalWidth);
-    RGBPixel[][] paddedImage = padImage(originalImage, paddedHeight, paddedWidth);
+    Pixels[][] paddedImage = padImage(originalImage, paddedHeight, paddedWidth);
 
     // Separate channels
     int[][] redChannel = new int[paddedHeight][paddedWidth];
@@ -35,7 +34,7 @@ public class Compression implements Transformation {
     // Extract color channels
     for (int i = 0; i < paddedHeight; i++) {
       for (int j = 0; j < paddedWidth; j++) {
-        RGBPixel pixel = paddedImage[i][j];
+        RGBPixel pixel = (RGBPixel) paddedImage[i][j]; // Cast to RGBPixel
         redChannel[i][j] = pixel.getRed();
         greenChannel[i][j] = pixel.getGreen();
         blueChannel[i][j] = pixel.getBlue();
@@ -198,15 +197,19 @@ public class Compression implements Transformation {
     return power;
   }
 
-  private RGBPixel[][] padImage(RGBPixel[][] image, int newHeight, int newWidth) {
+  private Pixels[][] padImage(Pixels[][] image, int newHeight, int newWidth) {
     int originalHeight = image.length;
     int originalWidth = image[0].length;
-    RGBPixel[][] paddedImage = new RGBPixel[newHeight][newWidth];
+    Pixels[][] paddedImage = new Pixels[newHeight][newWidth];
 
     for (int i = 0; i < newHeight; i++) {
       for (int j = 0; j < newWidth; j++) {
         if (i < originalHeight && j < originalWidth) {
-          paddedImage[i][j] = image[i][j];
+          // Ensure the pixel is an instance of RGBPixel
+          if (!(image[i][j] instanceof RGBPixel)) {
+            throw new IllegalArgumentException("Expected an instance of RGBPixel.");
+          }
+          paddedImage[i][j] = image[i][j]; // No cast needed since we use Pixels
         } else {
           // Fill with black pixels (0,0,0)
           paddedImage[i][j] = new RGBPixel(0, 0, 0);
@@ -217,8 +220,8 @@ public class Compression implements Transformation {
     return paddedImage;
   }
 
-  private RGBPixel[][] unpadImage(RGBPixel[][] image, int originalHeight, int originalWidth) {
-    RGBPixel[][] unpaddedImage = new RGBPixel[originalHeight][originalWidth];
+  private Pixels[][] unpadImage(Pixels[][] image, int originalHeight, int originalWidth) {
+    Pixels[][] unpaddedImage = new Pixels[originalHeight][originalWidth];
     for (int i = 0; i < originalHeight; i++) {
       System.arraycopy(image[i], 0, unpaddedImage[i], 0, originalWidth);
     }

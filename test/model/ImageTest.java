@@ -111,10 +111,12 @@ public class ImageTest {
   @Test
   public void testimage()
   {
-    image.getPixels("m1","Images/manhattan-small.png");
-    image.brighten(90,"m1","m1-brighten");
-    image.flip("m1-brighten","m1-flip", Direction.VERTICAL);
-    image.savePixels("m1-brighten", "test/Test_Image/m1-brightennew.png");
+    image.getPixels("test-key","test/Test_Image/Landscape.png");
+    image.split("test-key","red-Key","green-Key","blue-Key");
+    image.savePixels("red-Key","landscape-red-component.png");
+    image.savePixels("green-Key","landscape-green-component.png");
+    image.savePixels("blue-Key","landscape-blue-component.png");
   }
+
 
 }
