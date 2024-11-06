@@ -1,5 +1,6 @@
 package model.imagetransformation.basicoperation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
 
@@ -26,8 +27,7 @@ public class Split extends AbstractBasicOperation {
    *          saveKey2, and saveKey3 respectively
    * @throws IllegalArgumentException if the input image does not contain RGBPixel objects
    */
-  public HashMap<String, RGBPixel[][]> apply(HashMap<String, RGBPixel[][]> h1,
-      RGBPixel[][] originalPixels, String key, String saveKey1, String saveKey2, String saveKey3) {
+  public HashMap<String, Pixels[][]> apply( Pixels[][] originalPixels, String key, String saveKey1, String saveKey2, String saveKey3) {
 
     int height = originalPixels.length;
     int width = originalPixels[0].length;
@@ -36,7 +36,7 @@ public class Split extends AbstractBasicOperation {
     RGBPixel[][] greenChannel = new RGBPixel[height][width];
     RGBPixel[][] blueChannel = new RGBPixel[height][width];
 
-    HashMap<String, RGBPixel[][]> channelsMap = new HashMap<>();
+    HashMap<String, Pixels[][]> channelsMap = new HashMap<>();
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
@@ -44,14 +44,11 @@ public class Split extends AbstractBasicOperation {
           throw new IllegalArgumentException("Input image must contain RGBPixels");
         }
 
-        RGBPixel currentPixel = originalPixels[i][j];
+        RGBPixel currentPixel = (RGBPixel) originalPixels[i][j];
 
-        redChannel[i][j] = new RGBPixel(currentPixel.getRed(), currentPixel.getRed(),
-            currentPixel.getRed());
-        greenChannel[i][j] = new RGBPixel(currentPixel.getGreen(), currentPixel.getGreen(),
-            currentPixel.getGreen());
-        blueChannel[i][j] = new RGBPixel(currentPixel.getBlue(), currentPixel.getBlue(),
-            currentPixel.getBlue());
+        redChannel[i][j] = new RGBPixel(currentPixel.getRed(), currentPixel.getRed(), currentPixel.getRed());
+        greenChannel[i][j] = new RGBPixel(currentPixel.getGreen(), currentPixel.getGreen(), currentPixel.getGreen());
+        blueChannel[i][j] = new RGBPixel(currentPixel.getBlue(), currentPixel.getBlue(), currentPixel.getBlue());
       }
     }
 

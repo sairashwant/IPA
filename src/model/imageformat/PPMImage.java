@@ -2,6 +2,7 @@ package model.imageformat;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
@@ -21,7 +22,7 @@ public class PPMImage extends AbstractRawImageFormat {
    *                 columns). The pixel data must not be null or empty.
    */
   @Override
-  public void save(String filename, RGBPixel[][] pixels) {
+  public void save(String filename, Pixels[][] pixels) {
     String outputPath = filename;
     if (pixels == null || pixels.length == 0 || pixels[0].length == 0) {
       System.out.println("Invalid pixel data.");

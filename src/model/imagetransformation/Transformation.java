@@ -1,5 +1,6 @@
 package model.imagetransformation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
 
@@ -15,6 +16,6 @@ public interface Transformation {
    * @param pixels  a map containing the RGB pixel data associated with various keys
    * @return a 2D array of RGBPixel representing the transformed image
    */
-  public RGBPixel[][] apply(RGBPixel[][] pixels);
+  public Pixels[][] apply(Pixels[][] pixels);
 
 }

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
@@ -20,7 +21,7 @@ public class JPGImage extends AbstractCompressedImageFormat {
    * @param pixels   Pixels of the file to save.
    */
   @Override
-  public void save(String filename, RGBPixel[][] pixels) {
+  public void save(String filename, Pixels[][] pixels) {
     {
       int width = pixels[0].length;
       int height = pixels.length;
@@ -28,7 +29,7 @@ public class JPGImage extends AbstractCompressedImageFormat {
       BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
       for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-          RGBPixel pixel = pixels[y][x];
+          RGBPixel pixel = (RGBPixel) pixels[y][x];  // Cast to RGBPixel
           int rgb = (pixel.getRed() << 16) | (pixel.getGreen() << 8) | pixel.getBlue();
           image.setRGB(x, y, rgb);
         }

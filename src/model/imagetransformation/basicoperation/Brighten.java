@@ -1,5 +1,6 @@
 package model.imagetransformation.basicoperation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
 
@@ -36,13 +37,13 @@ public class Brighten extends AbstractBasicOperation {
    * @throws IllegalArgumentException if the pixel data retrieved is not of type RGBPixel.
    */
   @Override
-  public RGBPixel[][] apply(RGBPixel[][] pixels) {
+  public Pixels[][] apply(Pixels[][] pixels) {
 
 
     int height = pixels.length;
     int width = pixels[0].length;
 
-    RGBPixel[][] brightenedPixels = new RGBPixel[height][width];
+    Pixels[][] brightenedPixels = new RGBPixel[height][width];
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {

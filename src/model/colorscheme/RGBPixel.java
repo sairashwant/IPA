@@ -4,7 +4,7 @@ package model.colorscheme;
  * The RGBPixel class represents a pixel with red, green, and blue (RGB) color components. Each
  * color component is clamped between 0 and 255 to ensure valid RGB values.
  */
-public class RGBPixel extends AbstractPixel {
+public class RGBPixel implements Pixels{
 
   private int r;
   private int g;

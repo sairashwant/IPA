@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import model.Image;
 import controller.ImageController;
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Brighten;
 import model.imagetransformation.basicoperation.Combine;
@@ -26,9 +27,9 @@ import static org.junit.Assert.assertEquals;
 public class ImagePNGModelTest {
 
   private Image image;
-  RGBPixel[][] operationPixels;
-  RGBPixel[][] expectedPixels;
-  HashMap<String, RGBPixel[][]> t1 = new HashMap<>();
+  Pixels[][] operationPixels;
+  Pixels[][] expectedPixels;
+  HashMap<String, Pixels[][]> t1 = new HashMap<>();
 
   String load = "test/Test_Image/Landscape.png";
 

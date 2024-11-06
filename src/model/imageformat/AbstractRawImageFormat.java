@@ -3,6 +3,7 @@ package model.imageformat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
@@ -18,7 +19,7 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
    * @param fileName Name of the ppm file.
    * @return RGB pixels.
    */
-  public RGBPixel[][] load(String fileName) {
+  public Pixels[][] load(String fileName) {
     Scanner scanner = null;
     try {
       File file = new File(fileName);
@@ -54,7 +55,7 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
           return null;
         }
 
-        RGBPixel[][] pixels = new RGBPixel[height][width];
+        Pixels[][] pixels = new RGBPixel[height][width];
 
         for (int y = 0; y < height; y++) {
           for (int x = 0; x < width; x++) {
@@ -91,6 +92,6 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
    * @param filename name of the file to save.
    * @param pixels   Pixels of the file to save.
    */
-  public abstract void save(String filename, RGBPixel[][] pixels);
+  public abstract void save(String filename, Pixels[][] pixels);
 }
 

@@ -1,5 +1,6 @@
 package model.imagetransformation.basicoperation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
@@ -21,7 +22,7 @@ public class Combine extends AbstractBasicOperation {
    * @throws IllegalArgumentException if the input images do not have the same dimensions or if any
    *                                  of the pixels are not instances of {@code RGBPixel}
    */
-  public RGBPixel[][] apply(RGBPixel[][] redPixels, RGBPixel[][] greenPixels,
+  public Pixels[][] apply(RGBPixel[][] redPixels, RGBPixel[][] greenPixels,
       RGBPixel[][] bluePixels) {
 
     int height = redPixels.length;

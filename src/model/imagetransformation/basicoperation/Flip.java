@@ -1,5 +1,6 @@
 package model.imagetransformation.basicoperation;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import java.util.HashMap;
 
@@ -31,11 +32,11 @@ public class Flip extends AbstractBasicOperation {
    * @return a 2D array of {@code RGBPixel} representing the flipped image
    * @throws IllegalArgumentException if the specified key is not found in the HashMap
    */
-  public RGBPixel[][] apply(RGBPixel[][] input, Direction direction) {
+  public Pixels[][] apply(Pixels[][] input, Direction direction) {
     int height = input.length;
     int width = input[0].length;
 
-    RGBPixel[][] flippedImage = new RGBPixel[height][width];
+    Pixels[][] flippedImage = new RGBPixel[height][width];
 
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {

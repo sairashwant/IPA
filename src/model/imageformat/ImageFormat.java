@@ -1,5 +1,6 @@
 package model.imageformat;
 
+import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
@@ -13,7 +14,7 @@ public interface ImageFormat {
    * @param filename Name of file to load.
    * @return RGB Pixel values.
    */
-  RGBPixel[][] load(String filename);
+  Pixels[][] load(String filename);
 
   /**
    * This file saves the rgb pixel as an image in the given filename.
@@ -21,6 +22,6 @@ public interface ImageFormat {
    * @param filename Name of the file to save.
    * @param pixels   Pixel values of the file to save.
    */
-  void save(String filename, RGBPixel[][] pixels);
+  void save(String filename, Pixels[][] pixels);
 
 }
