@@ -27,7 +27,6 @@ public class ImageController implements ImageControllerInterface{
     this.operationsMap = new HashMap<>();
     initializeOperationsMap();
     initializeCommandMap();
-    boolean exitFlag = false;
   }
 
   public ImageController(ImageModel image) {

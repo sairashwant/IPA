@@ -180,7 +180,7 @@ public class ImageControllerTest {
   }
 
   @Test
-  public void testSplit() {
+  public void testRGBSplit() {
     String input = "rgb-split test1 red green blue\nexit";
     runControllerWithInput(input);
     assertEquals("Split test1 into red, green and blue\n", output.toString());
@@ -257,7 +257,7 @@ public class ImageControllerTest {
   }
 
   @Test
-  public void RGBSplit() {
+  public void Split() {
     String input = "rgb-split test1 red green blue \nexit";
     runControllerWithInput(input);
     assertEquals("Split test1 into red, green and blue\n", output.toString());
@@ -317,6 +317,13 @@ public class ImageControllerTest {
     String input = "rgb-combine combinedImage redImage greenImage blueImage\nexit";
     runControllerWithInput(input);
     assertEquals("Combined redImage, greenImage, blueImage saved as combinedImage\n", output.toString());
+  }
+
+  @Test
+  public void testSplitandTransform() {
+    String input = "Split Image splitimage split 30\nexit";
+    runControllerWithInput(input);
+    assertEquals("Split and transformed with key: Image\n", output.toString());
   }
 
 }
