@@ -2,6 +2,7 @@ package view;
 
 import controller.ImageController;
 import model.Image;
+import model.ImageModel;
 
 /**
  * The entry point of the image processing application. It initializes the model, controller, and
@@ -17,7 +18,7 @@ public class Main {
    * @param args command-line arguments (not used in this application)
    */
   public static void main(String[] args) {
-    Image model = new Image(); // Create an instance of the image model
+    ImageModel model = new Image(); // Create an instance of the image model
     ImageController controller = new ImageController(model); // Create the controller with model and view
     controller.run(); // Start the application
   }
