@@ -284,7 +284,4 @@ public class ImageControllerTest {
     runControllerWithInput(input);
     assertEquals("Flipped test1 HORIZONTAL saved as test2\n", output.toString());
   }
-
-
-
 }

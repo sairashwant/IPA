@@ -85,5 +85,5 @@ public interface ImageControllerInterface {
    */
   void handleScript(String[] args);
 
-  void applyOperation(String operationName, String srcKey, String destKey);
+  void applyOperation(String[] args);
 }

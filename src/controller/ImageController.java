@@ -67,36 +67,44 @@ public class ImageController implements ImageControllerInterface{
     commandMap.put("brighten", this::handleBrighten);
     commandMap.put("rgb-combine", this::handleCombine);
     commandMap.put("rgb-split", this::handleRGBSplit);
-    commandMap.put("blur", args -> applyOperation("blur", args[1], args[2]));
-    commandMap.put("sharpen", args -> applyOperation("sharpen", args[1], args[2]));
-    commandMap.put("greyscale", args -> applyOperation("greyscale", args[1], args[2]));
-    commandMap.put("sepia", args -> applyOperation("sepia", args[1], args[2]));
+    commandMap.put("blur", this :: applyOperation);
+    commandMap.put("sharpen", this :: applyOperation);
+    commandMap.put("greyscale", this :: applyOperation);
+    commandMap.put("sepia", this :: applyOperation);
     commandMap.put("horizontal-flip", args -> handleFlip(args, Direction.HORIZONTAL));
     commandMap.put("vertical-flip", args -> handleFlip(args, Direction.VERTICAL));
-    commandMap.put("value-component", args -> applyOperation("value-component", args[1], args[2]));
-    commandMap.put("luma-component", args -> applyOperation("luma-component", args[1], args[2]));
-    commandMap.put("intensity-component", args -> applyOperation("intensity-component", args[1], args[2]));
-    commandMap.put("red-component", args -> applyOperation("red-component", args[1], args[2]));
-    commandMap.put("green-component", args -> applyOperation("green-component", args[1], args[2]));
-    commandMap.put("blue-component", args -> applyOperation("blue-component", args[1], args[2]));
+    commandMap.put("value-component",this :: applyOperation);
+    commandMap.put("luma-component", this :: applyOperation);
+    commandMap.put("intensity-component",this :: applyOperation);
+    commandMap.put("red-component",this :: applyOperation);
+    commandMap.put("green-component", this :: applyOperation);
+    commandMap.put("blue-component", this :: applyOperation);
     commandMap.put("compress", this::handleCompression);
-    commandMap.put("histogram", args -> applyOperation("histogram", args[1], args[2]));
-    commandMap.put("color-correction", args -> applyOperation("color-correction", args[1], args[2]));
+    commandMap.put("histogram", this :: applyOperation);
+    commandMap.put("color-correction", this :: applyOperation);
     commandMap.put("levels-adjust", this::handleLevelsAdjust);
     commandMap.put("split", this::handleSplit);
     commandMap.put("run-script", this::handleScript);
     commandMap.put("exit", args -> exitFlag = true);
   }
 
-  public void applyOperation(String operationName, String srcKey, String destKey) {
-    BiConsumer<String, String> operation = operationsMap.get(operationName);
-    if (operation != null) {
-      operation.accept(srcKey, destKey);
-      System.out.println("Operation "+ operationName + " on " + srcKey);
+  public void applyOperation(String[] args) {
+    if (args.length > 3) {
+      handleSplit(args); // Call handleSplit if arguments length is greater than 3
     } else {
-      System.out.println("No such operation: " + operationName);
-}
-}
+      String operationName = args[0];
+      String srcKey = args[1];
+      String destKey = args[2];
+
+      BiConsumer<String, String> operation = operationsMap.get(operationName);
+      if (operation != null) {
+        operation.accept(srcKey, destKey); // Apply the operation on the image
+        System.out.println("Operation " + operationName + " on " + srcKey);
+      } else {
+        System.out.println("No such operation: " + operationName);
+      }
+    }
+  }
 
   public void run() {
     printMenu();
@@ -232,14 +240,14 @@ public class ImageController implements ImageControllerInterface{
     if (args.length == 5) {
       try {
         int splitValue = Integer.parseInt(args[4]);
-        String operation = args[3];
+        String operation = args[0];
         System.out.println("Splitting and transforming " + args[1]);
         imageModel.splitAndTransform(args[1], args[2], splitValue, operation);
       } catch (NumberFormatException e) {
         System.out.println("Invalid split value. Please enter an integer for the split percentage.");
       }
     } else {
-      System.out.println("Invalid split command. Usage: split <srcKey> <destKey> <operation> <splitPercentage>");
+      System.out.println("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
     }
   }
 
