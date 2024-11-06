@@ -16,6 +16,5 @@ public interface Transformation {
    * @param pixels  a map containing the RGB pixel data associated with various keys
    * @return a 2D array of RGBPixel representing the transformed image
    */
-  public Pixels[][] apply(Pixels[][] pixels);
-
+  Pixels[][] apply(RGBPixel[][] pixels);
 }

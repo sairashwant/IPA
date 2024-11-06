@@ -2,7 +2,6 @@ package model.imagetransformation.basicoperation;
 
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
 
 /**
  * The {@code Flip} class extends {@code AbstractBasicOperation} to provide an image transformation

@@ -3,7 +3,6 @@ package model.imagetransformation.basicoperation;
 import model.colorscheme.Pixels;
 import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
 
 /**
  * The class provides a base implementation for basic image transformation operations. It implements
@@ -23,6 +22,7 @@ public abstract class AbstractBasicOperation implements Transformation {
    * @return a 2D array of {@code RGBPixel} representing the transformed image
    * @throws IllegalArgumentException if a pixel is not an instance of {@code RGBPixel}
    */
+  @Override
   public Pixels[][] apply(RGBPixel[][] pixels) {
     int height = pixels.length;
     int width = pixels[0].length;
@@ -63,4 +63,5 @@ public abstract class AbstractBasicOperation implements Transformation {
 
     return 0;
   }
+
 }
