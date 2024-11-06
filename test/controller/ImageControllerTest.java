@@ -184,7 +184,7 @@ public class ImageControllerTest {
   public void testSplit() {
     String input = "rgb-split test1 red green blue\nexit";
     runControllerWithInput(input);
-    assertEquals("Split Image test1 into red, green and blue", output.toString());
+    assertEquals("Split test1 into red, green and blue\n", output.toString());
   }
 
   private void runControllerWithInput(String input) {
