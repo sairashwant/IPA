@@ -77,6 +77,7 @@ public class ImageController implements ImageControllerInterface{
     BiConsumer<String, String> operation = operationsMap.get(operationName);
     if (operation != null) {
       operation.accept(srcKey, destKey);
+      System.out.println("Operation on " + srcKey);
     } else {
       System.out.println("No such operation: " + operationName);
     }
@@ -144,7 +145,7 @@ public class ImageController implements ImageControllerInterface{
         System.out.println("Brightened Image " + args[2] + " by " + factor);
         imageModel.brighten(factor, args[2], args[3]);
       } catch (NumberFormatException e) {
-        System.out.println("Invalid brighten factor. Please enter an integer.");
+        System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
       }
     } else {
       System.out.println("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");

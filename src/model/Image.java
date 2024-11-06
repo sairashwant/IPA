@@ -23,8 +23,7 @@ import model.imagetransformation.basicoperation.Value;
 import java.util.HashMap;
 
 /**
- * Represents an image and provides methods for loading, saving, and manipulating pixel data using
- * various transformations.
+ *
  */
 public class Image implements ImageModel{
 

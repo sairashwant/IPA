@@ -1,6 +1,7 @@
 package view;
 
 import controller.ImageController;
+import controller.ImageControllerInterface;
 import model.Image;
 import model.ImageModel;
 
@@ -19,7 +20,7 @@ public class Main {
    */
   public static void main(String[] args) {
     ImageModel model = new Image(); // Create an instance of the image model
-    ImageController controller = new ImageController(model); // Create the controller with model and view
+    ImageControllerInterface controller = new ImageController(model); // Create the controller with model and view
     controller.run(); // Start the application
   }
 }
