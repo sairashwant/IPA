@@ -1,7 +1,5 @@
 package controller;
-
 import static org.junit.Assert.assertEquals;
-
 import java.io.StringReader;
 import model.ImageModel;
 import model.colorscheme.Pixels;
@@ -157,6 +155,7 @@ public class ImageControllerTest {
       output.append("Flipped ").append(key).append(" ").append(d).append(" saved as ").append(saveKey).append("\n");
     }
 
+
   }
 
   @Test
@@ -284,4 +283,40 @@ public class ImageControllerTest {
     runControllerWithInput(input);
     assertEquals("Flipped test1 HORIZONTAL saved as test2\n", output.toString());
   }
+
+  @Test
+  public void testVerticalFlip() {
+    String input = "vertical-flip test1 test2\nexit"; // Assuming "vertical" is a valid direction
+    runControllerWithInput(input);
+    assertEquals("Flipped test1 VERTICAL saved as test2\n", output.toString());
+  }
+
+  @Test
+  public void testGetRedChannel() {
+    String input = "red-component test1 test2\nexit";
+    runControllerWithInput(input);
+    assertEquals("Red component extracted from test1 saved as test2\n", output.toString());
+  }
+
+  @Test
+  public void testGetGreenChannel() {
+    String input = "green-component test1 test2\nexit";
+    runControllerWithInput(input);
+    assertEquals("Green component extracted from test1 saved as test2\n", output.toString());
+  }
+
+  @Test
+  public void testGetBlueChannel() {
+    String input = "blue-component test1 test2\nexit";
+    runControllerWithInput(input);
+    assertEquals("Blue component extracted from test1 saved as test2\n", output.toString());
+  }
+
+  @Test
+  public void testCombine() {
+    String input = "rgb-combine combinedImage redImage greenImage blueImage\nexit";
+    runControllerWithInput(input);
+    assertEquals("Combined redImage, greenImage, blueImage saved as combinedImage\n", output.toString());
+  }
+
 }
