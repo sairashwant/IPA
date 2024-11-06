@@ -358,8 +358,6 @@ public class ImageControllerTest {
     assertTrue(output.toString().contains("No imageModel found with key"));
   }
 
-
-
   @Test
   public void testInvalidCompressionRatio() {
     try {

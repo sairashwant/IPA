@@ -183,7 +183,7 @@ public class ImageControllerMockTest {
   public void testRGBSplit() {
     String input = "rgb-split test1 red green blue\nexit";
     runControllerWithInput(input);
-    assertEquals("Split test1 into red, green and blue\n", output.toString());
+    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n", output.toString());
   }
 
   private void runControllerWithInput(String input) {
@@ -260,7 +260,7 @@ public class ImageControllerMockTest {
   public void Split() {
     String input = "rgb-split test1 red green blue \nexit";
     runControllerWithInput(input);
-    assertEquals("Split test1 into red, green and blue\n", output.toString());
+    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n", output.toString());
   }
 
   @Test
@@ -323,7 +323,7 @@ public class ImageControllerMockTest {
   public void testSplitandTransform() {
     String input = "Split Image splitimage split 30\nexit";
     runControllerWithInput(input);
-    assertEquals("Split and transformed with key: Image\n", output.toString());
+    assertEquals("Retrieved pixels with key: Image\nSplit and transformed with key: Image\n", output.toString());
   }
   @Test
   public void testGetStoredPixels() {
