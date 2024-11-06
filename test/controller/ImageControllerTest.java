@@ -138,7 +138,7 @@ public class ImageControllerTest {
     Pixels[][] greenPixels = image.getStoredPixels("greenKey");
     Pixels[][] bluePixels = image.getStoredPixels("blueKey");
 
-    // Assuming we have pre-saved expected images for each channel
+
     Pixels[][] expectedRedPixels = ImageUtil.loadImage(
         "test/Test_Image/png_op/landscape-red-component.png");
     Pixels[][] expectedGreenPixels = ImageUtil.loadImage(
@@ -158,9 +158,7 @@ public class ImageControllerTest {
 
         "rgb-split testKey redKey greenKey blueKey\n" +
 
-        "rgb-combine combinedKey redKey greenKey blueKey\n" +
-
-        "save test/Test_Image/png_op/landscape-combined.png combinedKey\n" +
+        "rgb-combine combinedKey redKey greenKey blueKey\n"+
         "exit";
 
     runControllerWithInput(input);
@@ -959,5 +957,109 @@ public class ImageControllerTest {
     assertTrue("Should handle or reject non-ASCII characters in filenames",
         output.toString().contains("Error loading image") || output.toString().contains("Loaded Image testKey"));
   }
+
+  @Test
+  public void testSplitWithBasicOperations() {
+    // Test split with blur
+    String input = source +
+        "blur testKey split-blur split 50\n"+
+        "exit\n";
+    runControllerWithInput(input);
+    operationPixels = image.getStoredPixels("split-blur");
+    image.storePixels("expected-split-blur-Key",
+        ImageUtil.loadImage("test/Test_Image/png_op/landscape-split-blur.png"));
+    expectedPixels = image.getStoredPixels("expected-split-blur-Key");
+    assertImageEquals(expectedPixels, operationPixels);
+
+    // Test split with sharpen
+    input = source +
+        "sharpen testKey split-sharpen split 50\n" +
+        "exit\n";
+    runControllerWithInput(input);
+    operationPixels = image.getStoredPixels("split-sharpen");
+    image.storePixels("expected-split-sharpen-Key",
+        ImageUtil.loadImage("test/Test_Image/png_op/landscape-split-sharpen.png"));
+    expectedPixels = image.getStoredPixels("expected-split-sharpen-Key");
+    assertImageEquals(expectedPixels, operationPixels);
+
+    // Test split with sepia
+    input = source +
+        "sepia testKey split-sepia split 50\n"+
+        "exit\n";
+    runControllerWithInput(input);
+    operationPixels = image.getStoredPixels("split-sepia");
+    image.storePixels("expected-split-sepia-Key",
+        ImageUtil.loadImage("test/Test_Image/png_op/landscape-split-sepia.png"));
+    expectedPixels = image.getStoredPixels("expected-split-sepia-Key");
+    assertImageEquals(expectedPixels, operationPixels);
+
+    // Test split with greyscale
+    input = source +
+        "greyscale testKey split-greyscale split 50\n"+
+        "exit\n";
+    runControllerWithInput(input);
+    operationPixels = image.getStoredPixels("split-greyscale");
+    image.storePixels("expected-split-greyscale-Key",
+        ImageUtil.loadImage("test/Test_Image/png_op/landscape-split-greyscale.png"));
+    expectedPixels = image.getStoredPixels("expected-split-greyscale-Key");
+    assertImageEquals(expectedPixels, operationPixels);
+  }
+
+  @Test
+  public void testSplitWithDifferentPercentages() {
+    // First ensure the source image is loaded
+    runControllerWithInput(source + "exit\n");
+    assertNotNull("Source image should be loaded", image.getStoredPixels("testKey"));
+
+    try {
+      // Test with 25% split
+      String input = source +
+          "blur testKey split-25 split 25\n" +
+          "exit\n";
+      runControllerWithInput(input);
+
+      // Verify the operation result
+      operationPixels = image.getStoredPixels("split-25");
+      assertNotNull("Operation result should not be null for 25% split", operationPixels);
+
+      // Load and verify expected image
+      Pixels[][] loadedExpectedPixels = ImageUtil.loadImage(
+          "test/Test_Image/png_op/landscape-split-25.png");
+      assertNotNull("Expected image should load successfully for 25% split", loadedExpectedPixels);
+
+      image.storePixels("expected-split-25-Key", loadedExpectedPixels);
+      expectedPixels = image.getStoredPixels("expected-split-25-Key");
+      assertNotNull("Expected pixels should not be null for 25% split", expectedPixels);
+
+      // Compare the images
+      assertImageEquals(expectedPixels, operationPixels);
+
+      // Test with 75% split
+      input = source +
+          "sharpen testKey split-75 split 75\n"+
+          "exit\n";
+      runControllerWithInput(input);
+
+      // Verify the operation result
+      operationPixels = image.getStoredPixels("split-75");
+      assertNotNull("Operation result should not be null for 75% split", operationPixels);
+
+      // Load and verify expected image
+      loadedExpectedPixels = ImageUtil.loadImage(
+          "test/Test_Image/png_op/landscape-split-75.png");
+      assertNotNull("Expected image should load successfully for 75% split", loadedExpectedPixels);
+
+      image.storePixels("expected-split-75-Key", loadedExpectedPixels);
+      expectedPixels = image.getStoredPixels("expected-split-75-Key");
+      assertNotNull("Expected pixels should not be null for 75% split", expectedPixels);
+
+      // Compare the images
+      assertImageEquals(expectedPixels, operationPixels);
+
+    } catch (Exception e) {
+      fail("Test failed with exception: " + e.getMessage());
+    }
+  }
+
 
 }
