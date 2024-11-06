@@ -1,6 +1,8 @@
 package model;
 
+import controller.ImageControllerInterface;
 import controller.ImageUtil;
+import java.io.IOException;
 import java.util.HashMap;
 import controller.ImageController;
 import model.colorscheme.Pixels;
@@ -226,4 +228,98 @@ public class ImagePNGModelTest {
 
     assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
   }
+
+  @Test
+  public void testHistogram(){
+    image.histogram("testKey","histogram-key");
+    operationPixels = image.getStoredPixels("histogram-key");
+    image.storePixels("expected-histogram-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-histogram.png"));
+    expectedPixels = image.getStoredPixels("expected-histogram-key");
+
+    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+  }
+
+  @Test
+  public void testColorCorrection(){
+    image.colorCorrection("testKey","cc-key");
+    operationPixels = image.getStoredPixels("cc-key");
+    image.storePixels("expected-cc-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-color-correction.png"));
+    expectedPixels = image.getStoredPixels("expected-cc-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testCompression(){
+    image.compress("testKey","compression-key",50);
+    operationPixels = image.getStoredPixels("compression-key");
+    image.storePixels("expected-comp-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-compressed-50.png"));
+    expectedPixels = image.getStoredPixels("expected-comp-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testLevelsAdjust(){
+    image.adjustLevel(20,100,255,"testKey","levelsAdjust-key");
+    operationPixels = image.getStoredPixels("levelsAdjust-key");
+    image.storePixels("expected-levels-adjust-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-levels-adjust.png"));
+    expectedPixels = image.getStoredPixels("expected-levels-adjust-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testSplitAndTransformBlur(){
+    image.splitAndTransform("testKey","split-blur-key",50,"blur");
+    operationPixels = image.getStoredPixels("split-blur-key");
+    image.storePixels("expected-split-blur-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-split-blur-50.png"));
+    expectedPixels = image.getStoredPixels("expected-split-blur-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testSplitAndTransformSepia(){
+    image.splitAndTransform("testKey","split-sepia-key",80,"sepia");
+    operationPixels = image.getStoredPixels("split-sepia-key");
+    image.storePixels("expected-split-sepia-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-split-sepia-80.png"));
+    expectedPixels = image.getStoredPixels("expected-split-sepia-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testSplitAndTransformLevelsAdjust(){
+    image.splitAndTransform("testKey","split-levels-adjust-key",25,"levels-adjust",20,100,255);
+    operationPixels = image.getStoredPixels("split-levels-adjust-key");
+    image.storePixels("expected-split-levels-adjust-key", ImageUtil.loadImage("test/Test_Image/png_op/Landscape-split-levels-adjust-25.png"));
+    expectedPixels = image.getStoredPixels("expected-split-levels-adjust-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+
+  private RGBPixel[][] convertToRGBPixelArray(Pixels[][] pixelsArray) {
+    int height = pixelsArray.length;
+    int width = pixelsArray[0].length;
+    RGBPixel[][] rgbPixels = new RGBPixel[height][width];
+    for (int i = 0; i < height; i++) {
+      for (int j = 0; j < width; j++) {
+        if (pixelsArray[i][j] instanceof RGBPixel) {
+          rgbPixels[i][j] = (RGBPixel) pixelsArray[i][j];
+        } else {
+          throw new ClassCastException("Element is not of type RGBPixel.");
+        }
+      }
+    }
+    return rgbPixels;
+  }
+
+  @Test
+  public void testGetPixelReturnsDeepCopy() throws IOException {
+    Pixels[][] pixels2 = ImageUtil.loadImage("Images/koala-square.png");
+    
+  }
+
 }

@@ -218,8 +218,18 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+
+
   public void handleLevelsAdjust(String[] args) {
-    if (args.length == 6) {
+    if(args.length >6 ){
+      int split = Integer.parseInt(args[7]);
+      int black = Integer.parseInt(args[1]);
+      int mid = Integer.parseInt(args[2]);
+      int white = Integer.parseInt(args[3]);
+      imageModel.splitAndTransform(args[4],args[5],split,"levels-adjust",black, mid, white);
+      System.out.println("Adjusting levels for " + args[4]);
+    }else if (args.length == 6)
+    {
       try {
         int black = Integer.parseInt(args[1]);
         int mid = Integer.parseInt(args[2]);
