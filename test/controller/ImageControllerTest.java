@@ -268,7 +268,7 @@ public class ImageControllerTest {
     image.storePixels("expected-sequence-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-sequence.png"));
     expectedPixels = image.getStoredPixels("expected-sequence-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   // Testing RGB component operations
@@ -280,7 +280,7 @@ public class ImageControllerTest {
     image.storePixels("expected-red-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-red-component.png"));
     expectedPixels = image.getStoredPixels("expected-red-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -291,7 +291,7 @@ public class ImageControllerTest {
     image.storePixels("expected-green-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-green-component.png"));
     expectedPixels = image.getStoredPixels("expected-green-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -302,7 +302,7 @@ public class ImageControllerTest {
     image.storePixels("expected-blue-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-blue-component.png"));
     expectedPixels = image.getStoredPixels("expected-blue-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   // Testing value, intensity, and luma components
@@ -314,7 +314,7 @@ public class ImageControllerTest {
     image.storePixels("expected-value-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-value.png"));
     expectedPixels = image.getStoredPixels("expected-value-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -325,7 +325,7 @@ public class ImageControllerTest {
     image.storePixels("expected-intensity-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-intensity.png"));
     expectedPixels = image.getStoredPixels("expected-intensity-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   // Testing script execution
