@@ -235,9 +235,10 @@ public class ImageController implements ImageControllerInterface {
    * with a new key.
    *
    * @param args      the command-line arguments for flipping the image in the format:
-   *                  <horizontal-flip|vertical-flip> <srcKey> <destKey>
-   * @param direction the direction of the flip, either horizontal or vertical
+   *                  {@code <horizontal-flip or vertical-flip> <srcKey> <destKey>}
+   * @param direction the direction of the flip, either "horizontal" or "vertical"
    */
+
   public void handleFlip(String[] args, Direction direction) {
     if (args.length == 3) {
       try {
@@ -255,9 +256,10 @@ public class ImageController implements ImageControllerInterface {
   /**
    * Splits an image into red, green, and blue channels and stores each channel with a unique key.
    *
-   * @param args the command-line arguments for splitting the image in the format: rgb-split
-   *             <srcKey> <redKey> <greenKey> <blueKey>
+   * @param args the command-line arguments for splitting the image in the format: {@code rgb-split
+   *             <srcKey> <redKey> <greenKey> <blueKey>}
    */
+
   public void handleRGBSplit(String[] args) {
     if (args.length != 5) {
       System.out.println(
@@ -283,8 +285,9 @@ public class ImageController implements ImageControllerInterface {
   /**
    * Combines red, green, and blue channel images into one color image and saves it with a new key.
    *
-   * @param args the command-line arguments for combining RGB channels in the format: rgb-combine
-   *             <destKey> <redKey> <greenKey> <blueKey>
+   * @param args the command-line arguments for combining RGB channels in the format:
+   *             {@code rgb-combine
+   *             <destKey> <redKey> <greenKey> <blueKey>}
    */
   public void handleCombine(String[] args) {
     if (args.length == 5) {
@@ -299,8 +302,8 @@ public class ImageController implements ImageControllerInterface {
   /**
    * Compresses an image by a specified compression ratio and saves it with a new key.
    *
-   * @param args the command-line arguments for compressing the image in the format: compress
-   *             <ratio> <srcKey> <destKey>
+   * @param args the command-line arguments for compressing the image in the format:{@code compress
+   *             <ratio> <srcKey> <destKey>}
    */
   public void handleCompression(String[] args) {
     if (args.length == 4) {
@@ -326,8 +329,9 @@ public class ImageController implements ImageControllerInterface {
    * Adjusts the levels of black, mid, and white points of an image and saves the adjusted image
    * with a new key.
    *
-   * @param args the command-line arguments for levels adjustment in the format: levels-adjust
-   *             <black> <mid> <white> <srcKey> <destKey>
+   * @param args the command-line arguments for levels adjustment in the
+   *             format:{@code levels-adjust
+   *             <black> <mid> <white> <srcKey> <destKey>}
    */
   public void handleLevelsAdjust(String[] args) {
     if (args.length > 6) {
@@ -360,7 +364,8 @@ public class ImageController implements ImageControllerInterface {
       }
     } else {
       System.out.println(
-          "Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+          "Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> "
+              + "<srcKey> <destKey>");
     }
   }
 
@@ -368,7 +373,7 @@ public class ImageController implements ImageControllerInterface {
    * Splits an image based on a percentage, applies a transformation, and saves it with a new key.
    *
    * @param args the command-line arguments for splitting and transforming the image in the format:
-   *             <operation> <srcKey> <destKey> split <splitPercentage>
+   *             {@code <operation> <srcKey> <destKey> split <splitPercentage>}
    */
   public void handleSplit(String[] args) {
     if (args.length < 5) {
@@ -409,8 +414,8 @@ public class ImageController implements ImageControllerInterface {
   /**
    * Executes a script containing multiple commands.
    *
-   * @param args the command-line arguments for running the script in the format: run-script
-   *             <filename>
+   * @param args the command-line arguments for running the script in the format:{@code run-script
+   *             <filename>}
    */
   public void handleScript(String[] args) {
     if (args.length != 2) {

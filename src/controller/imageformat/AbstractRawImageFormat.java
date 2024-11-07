@@ -18,10 +18,11 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
    * the file, verifies the format, and extracts width, height, and color data for each pixel. Only
    * files with a maximum color value of 255 are supported.
    *
-   * @param fileName The name or path of the PPM file to load.
-   * @return A 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   * image, or null if an error occurs or if the file is in an unsupported format.
+   * @param fileName the name or path of the PPM file to load
+   * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
+   *         image, or {@code null} if an error occurs or if the file is in an unsupported format
    */
+
   public Pixels[][] load(String fileName) {
     Scanner scanner = null;
     try {

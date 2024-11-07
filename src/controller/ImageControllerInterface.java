@@ -29,15 +29,17 @@ public interface ImageControllerInterface {
   /**
    * Loads an image from the specified file and stores it using the provided key.
    *
-   * @param args an array containing the filename and storage key in the format: load <filename>
-   *             <key>
+   * @param args an array containing the filename and storage key in the format:
+   *             {@code load <filename>
+   *             <key>}
    */
   void handleLoad(String[] args);
 
   /**
    * Saves an image to the specified file using the provided key to locate it in storage.
    *
-   * @param args an array containing the filename and key in the format: save <filename> <key>
+   * @param args an array containing the filename and key in the format:
+   *             {@code save <filename> <key>}
    */
   void handleSave(String[] args);
 
@@ -46,7 +48,7 @@ public interface ImageControllerInterface {
    * new key.
    *
    * @param args an array containing the brightness factor, source key, and destination key in the
-   *             format: brighten <factor> <srcKey> <destKey>
+   *             format: {@code brighten <factor> <srcKey> <destKey>}
    */
   void handleBrighten(String[] args);
 
@@ -55,7 +57,8 @@ public interface ImageControllerInterface {
    * key.
    *
    * @param args an array containing the source key and separate destination keys for red, green,
-   *             and blue channels in the format: rgb-split <srcKey> <redKey> <greenKey> <blueKey>
+   *             and blue channels in the format:
+   *             {@code rgb-split <srcKey> <redKey> <greenKey> <blueKey>}
    */
   void handleRGBSplit(String[] args);
 
@@ -64,16 +67,16 @@ public interface ImageControllerInterface {
    * the specified destination key.
    *
    * @param args an array containing the destination key and source keys for red, green, and blue
-   *             channels in the format: rgb-combine <destKey> <redKey> <greenKey> <blueKey>
+   *             channels in the format:
+   *             {@code rgb-combine <destKey> <redKey> <greenKey> <blueKey>}
    */
   void handleCombine(String[] args);
-
 
   /**
    * Compresses an image to the specified compression ratio, saving the result with a new key.
    *
    * @param args an array containing the compression ratio, source key, and destination key in the
-   *             format: compress <ratio> <srcKey> <destKey>
+   *             format: {@code compress <ratio> <srcKey> <destKey>}
    */
   void handleCompression(String[] args);
 
@@ -82,10 +85,9 @@ public interface ImageControllerInterface {
    * brightness, storing the adjusted image under a new key.
    *
    * @param args an array containing black, mid, and white points, source key, and destination key
-   *             in the format: levels-adjust <black> <mid> <white> <srcKey> <destKey>
+   *             in the format: {@code levels-adjust <black> <mid> <white> <srcKey> <destKey>}
    */
   void handleLevelsAdjust(String[] args);
-
 
   /**
    * Splits an image based on a specified percentage and applies a transformation operation on each
@@ -93,14 +95,15 @@ public interface ImageControllerInterface {
    *
    * @param args an array containing the operation, source key, destination key, and split
    *             percentage in the format:
-   *             <operation> <srcKey> <destKey> split <splitPercentage>
+   *             {@code <operation> <srcKey> <destKey> split <splitPercentage>}
    */
   void handleSplit(String[] args);
 
   /**
    * Executes a script file containing multiple image processing commands in sequence.
    *
-   * @param args an array containing the script filename in the format: run-script <filename>
+   * @param args an array containing the script filename in the format:
+   *             {@code run-script <filename>}
    */
   void handleScript(String[] args);
 

@@ -50,13 +50,14 @@ public class ColorCorrection implements Transformation {
    * <p>This method generates a histogram representing the frequency of pixel values (0-255)
    * for a specified color channel (red, green, or blue) within the image's pixel data.</p>
    *
-   * @param pixels  The 2D array of {@link Pixels} representing the image.
-   * @param channel The color channel to analyze (0 for red, 1 for green, 2 for blue).
-   * @return Histogram array of size 256 representing the frequency of pixel values for the
-   * specified channel.
+   * @param pixels  the 2D array of {@link Pixels} representing the image
+   * @param channel the color channel to analyze (0 for red, 1 for green, 2 for blue)
+   * @return histogram array of size 256 representing the frequency of pixel values for the
+   *         specified channel
    * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an instance
-   *                                  of {@link RGBPixel}.
+   *         of {@link RGBPixel}
    */
+
   private int[] getChannelHistogram(Pixels[][] pixels, int channel) {
     int[] histogram = new int[256];
     for (Pixels[] row : pixels) {
@@ -95,12 +96,13 @@ public class ColorCorrection implements Transformation {
    * channel. The corrected pixel values are then clamped to the valid range [0, 255] to ensure
    * valid RGB values.</p>
    *
-   * @param pixels The 2D array of {@link Pixels} representing the image to be corrected.
-   * @return A 2D array of corrected {@link RGBPixel} objects representing the adjusted image
-   * pixels.
+   * @param pixels the 2D array of {@link Pixels} representing the image to be corrected
+   * @return a 2D array of corrected {@link RGBPixel} objects representing the adjusted image
+   *         pixels
    * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an instance
-   *                                  of {@link RGBPixel}.
+   *         of {@link RGBPixel}
    */
+
   @Override
   public Pixels[][] apply(Pixels[][] pixels) {
     if (pixels == null) {

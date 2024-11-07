@@ -272,6 +272,10 @@ This application is built using the MVC (model-view-controller) architecture and
 - Format conversions
 
 ### ImagePPMModelTest.java
+**Since the number of files was more than 125 and submission on the server was not possible, we had to
+remove the PPM test images so none of these tests will pass. If needed, please do contact us so that we can
+provide you the test images and all these tests will pass.**
+
 **Purpose:** Tests PPM-specific operations.  
 **Tests:**
 - PPM loading/saving
@@ -295,6 +299,13 @@ This application is built using the MVC (model-view-controller) architecture and
 
 
 ## Change log
+
+### Added New Operations: Compression, Histogram, Color Correction, Levels Adjustment, and Split
+- New classes implementing the Transformation interface were created for color correction, levels adjustment, and compression, each with its unique implementation.
+- For histogram and split, methods were directly added within Image.java since histogram is not a true transformation, and split was achieved by invoking existing methods.
+- These operations were incorporated into the Image.java class and ImageModel.java interface.
+- In the controller, new operations were added to the menu as selectable options.
+- Operations requiring a specific handler were mapped accordingly, while those needing no separate handler were added to the applyOperation map.
 
 ### Changed AbstractPixel (Abstract Class) to Pixels (Interface)
 - The RGBPixel class, previously extending an abstract class, was refactored to implement an interface, as inheritance was unnecessary.
@@ -380,5 +391,5 @@ This application is built using the MVC (model-view-controller) architecture and
 
 
 ## IMAGE CITATION ##
-- Images taken by [Pranav Viswanathan](https://www.flickr.com/photos/199542081@N07/albums/with/72177720312735513)
+- Images(Wildlife.png and Landscape.png) taken by [Pranav Viswanathan](https://www.flickr.com/photos/199542081@N07/albums/with/72177720312735513)
 

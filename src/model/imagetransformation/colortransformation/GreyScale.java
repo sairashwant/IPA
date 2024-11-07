@@ -27,9 +27,10 @@ public class GreyScale extends AbstractColorTransformation {
    * each pixel, resulting in grayscale values.</p>
    *
    * @return a 3x3 transformation matrix that is used to calculate the grayscale values of the
-   * image. Each row in the matrix is identical and represents the luminance coefficients for RGB to
-   * grayscale conversion.
+   *        image. Each row in the matrix is identical and represents the luminance coefficients
+   *        for RGB to grayscale conversion.
    */
+
   @Override
   protected double[][] getMatrix() {
     return new double[][]{

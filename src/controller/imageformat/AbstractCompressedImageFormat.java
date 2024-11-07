@@ -21,10 +21,11 @@ public abstract class AbstractCompressedImageFormat implements ImageFormat {
    * BufferedImage to read pixel data from the file and performs bit manipulation to extract
    * individual red, green, and blue values for each pixel.
    *
-   * @param filename The name or path of the image file to load.
-   * @return A 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   * image, or null if an error occurs during loading.
+   * @param filename the name or path of the image file to load
+   * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
+   *         image, or {@code null} if an error occurs during loading
    */
+
   public Pixels[][] load(String filename) {
     try {
       File file = new File(filename);

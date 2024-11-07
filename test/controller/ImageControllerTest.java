@@ -445,17 +445,6 @@ public class ImageControllerTest {
   }
 
   @Test
-  public void testEmptyImage() {
-    // Test handling of 0x0 image
-  }
-
-
-  @Test
-  public void testDifferentFileFormats() {
-    // Test loading/saving different formats
-  }
-
-  @Test
   public void testInvalidSplitPercentage() {
     // Test percentage > 100
     output = new StringBuilder();

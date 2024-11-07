@@ -18,10 +18,12 @@ import model.imagetransformation.Transformation;
  */
 public class AdjustLevel implements Transformation {
 
-  private final int blackPoint; // shadow point (black)
-  private final int midPoint;   // midtone point
-  private final int whitePoint; // highlight point
-  private double a, b2, c;      // quadratic curve coefficients
+  private final int blackPoint;
+  private final int midPoint;
+  private final int whitePoint;
+  private double a;
+  private double b2;
+  private double c;
 
   /**
    * Constructs an {@code AdjustLevel} object with specified shadow, midtone, and highlight points.

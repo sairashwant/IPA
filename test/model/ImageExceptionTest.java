@@ -28,12 +28,6 @@ public class ImageExceptionTest {
    * The Image model instance used in the tests.
    */
   private Image image;
-
-  /**
-   * The ImageController instance that interacts with the image.
-   */
-  private ImageController controller;
-
   /**
    * The pixels of the image used during operations.
    */
@@ -72,7 +66,7 @@ public class ImageExceptionTest {
   @Before
   public void setUp() {
     image = new Image();
-    controller = new ImageController(image);
+    ImageController controller = new ImageController(image);
     Pixels[][] pixels = ImageUtil.loadImage(load);
   }
 

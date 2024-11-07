@@ -23,8 +23,9 @@ public class Intensity extends AbstractBasicOperation {
    * @param g the green component of the pixel (0-255)
    * @param b the blue component of the pixel (0-255)
    * @return the calculated intensity value, which is the average of the red, green, and blue
-   * components, resulting in a single grayscale value (0-255)
+   *         components, resulting in a single grayscale value (0-255)
    */
+
   @Override
   public int properties(int r, int g, int b) {
 

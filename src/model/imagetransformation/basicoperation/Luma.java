@@ -29,7 +29,7 @@ public class Luma extends AbstractBasicOperation {
    * @param g The green color value of the pixel (0-255).
    * @param b The blue color value of the pixel (0-255).
    * @return The calculated Luma value, which is the brightness of the pixel. The value is rounded
-   * to the nearest integer, resulting in an integer between 0 and 255.
+   *         to the nearest integer, resulting in an integer between 0 and 255.
    */
   @Override
   public int properties(int r, int g, int b) {

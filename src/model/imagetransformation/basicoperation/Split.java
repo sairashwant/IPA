@@ -25,27 +25,28 @@ public class Split extends AbstractBasicOperation {
    * value as the target channel.
    *
    * <p>This method processes the input image, which should be in RGB format, and creates three new
-   * images:
-   * one for the red channel, one for the green channel, and one for the blue channel. These
+   * images: one for the red channel, one for the green channel, and one for the blue channel. These
    * channels are stored in a {@code HashMap} using the provided keys.</p>
    *
    * @param h1             a {@code HashMap} containing image data, where the key is a string
    *                       identifier and the value is a 2D array of {@code RGBPixel} objects
-   *                       representing the image's pixels.
+   *                       representing the image's pixels
    * @param originalPixels a 2D array of {@code Pixels} representing the original image in RGB
-   *                       format to be split.
+   *                       format to be split
    * @param key3           a string key used for internal processing, could be used in future
-   *                       extensions.
+   *                       extensions
    * @param saveKey1       the key under which to save the red channel in the output
-   *                       {@code HashMap}.
+   *                       {@code HashMap}
    * @param saveKey2       the key under which to save the green channel in the output
-   *                       {@code HashMap}.
+   *                       {@code HashMap}
    * @param saveKey3       the key under which to save the blue channel in the output
-   *                       {@code HashMap}.
+   *                       {@code HashMap}
    * @return a {@code HashMap<String, Pixels[][]>} containing the red, green, and blue channel
-   * images, stored under {@code saveKey1}, {@code saveKey2}, and {@code saveKey3} respectively.
-   * @throws IllegalArgumentException if the input image does not contain {@code RGBPixel} objects.
+   *         images, stored under {@code saveKey1}, {@code saveKey2}, and {@code saveKey3}
+   *         respectively
+   * @throws IllegalArgumentException if the input image does not contain {@code RGBPixel} objects
    */
+
   public HashMap<String, Pixels[][]> apply(HashMap<String, Pixels[][]> h1,
       Pixels[][] originalPixels, String key3, String saveKey1, String saveKey2, String saveKey3) {
 

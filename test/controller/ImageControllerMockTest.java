@@ -297,7 +297,7 @@ public class ImageControllerMockTest {
 
   @Test
   public void testFlip() {
-    String input = "horizontal-flip test1 test2\nexit"; // assuming "horizontal" is a valid direction
+    String input = "horizontal-flip test1 test2\nexit";
     runControllerWithInput(input);
     assertEquals("Flipped test1 HORIZONTAL saved as test2\n", output.toString());
   }

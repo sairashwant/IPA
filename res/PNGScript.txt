@@ -1,5 +1,5 @@
 #Loading a PNG image
-load res/Sample_Images/manhattan-small.png l1
+load test/Test_Image/Landscape.png l1
 
 #getting just the Red-component
 red-component l1 l1-red-component
