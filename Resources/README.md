@@ -3,7 +3,17 @@
 ## Overview
 This application is built using the MVC (model-view-controller) architecture and supports various image processing operations, including format conversion, basic transformations, color adjustments, and filtering effects. Below is a detailed breakdown of each package and its components.
 
-## controller Package
+
+## Table of contents
+- [Controller Package](#controller-package)
+- [Model Package](#model-package)
+- [view Package](#view-package)
+- [Controller Test Package](#controller-test-package)
+- [Model Test Package](#model-test-package)
+- [Resource Package](#resources-package)
+- [Script Commands](#script-commands-with-examples)
+
+## Controller Package
 
 ### ImageControllerInterface.java (Interface)
 **Purpose:** Interface for managing image processing commands.
@@ -84,7 +94,7 @@ This application is built using the MVC (model-view-controller) architecture and
 **Purpose:** Handles PPM format operations.  
 **Responsibilities:** Implements PPM-specific saving functionality.
 
-## model Package
+## Model Package
 
 ### ColorScheme Package
 
@@ -207,7 +217,7 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## Testing Package
 
-## Controller Package
+## Controller Test Package
 
 ### ImageControllerMockTest.java
 **Purpose:** To validate that ImageController correctly processes image manipulation commands by testing a mock ImageModel. Ensures expected outputs for key image transformations.
@@ -227,7 +237,7 @@ This application is built using the MVC (model-view-controller) architecture and
 
 **Tests:** Validates that the controller executes script commands properly, performing image operations and matching the expected console output.
 
-## Model Package
+## Model Test Package
 
 ### ImageExceptionTest.java
 **Purpose:** Tests error handling in the application.  
