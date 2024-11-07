@@ -11,7 +11,14 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.BiConsumer;
 
-public class ImageController implements ImageControllerInterface{
+/**
+ * The ImageController class handles user commands for image processing operations. It interacts
+ * with an ImageModel to perform various image manipulations, including transformations, color
+ * adjustments, and compression. The controller parses input commands, executes corresponding
+ * actions, and maintains a menu of available operations.
+ */
+public class ImageController implements ImageControllerInterface {
+
   private final ImageModel imageModel;
   private final Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
@@ -19,6 +26,14 @@ public class ImageController implements ImageControllerInterface{
   private final Appendable out;
   boolean exitFlag;
 
+  /**
+   * Constructs an ImageController with the specified ImageModel, input reader, and output
+   * appendable.
+   *
+   * @param image the ImageModel instance for performing image operations
+   * @param in    the Readable input source for user commands
+   * @param out   the Appendable output for displaying messages
+   */
   public ImageController(ImageModel image, Readable in, Appendable out) {
     this.imageModel = image;
     this.scanner = new Scanner(in);
@@ -29,6 +44,12 @@ public class ImageController implements ImageControllerInterface{
     initializeCommandMap();
   }
 
+  /**
+   * Constructs an ImageController with the specified ImageModel and default input/output sources.
+   * This constructor is intended for console-based input/output.
+   *
+   * @param image the ImageModel instance for performing image operations
+   */
   public ImageController(ImageModel image) {
     this.imageModel = image;
     this.out = null;
@@ -41,10 +62,19 @@ public class ImageController implements ImageControllerInterface{
     initializeCommandMap();
   }
 
+
+  /**
+   * Returns the command map containing available commands and their handlers.
+   *
+   * @return a map of command names to their corresponding handlers
+   */
   public Map<String, Consumer<String[]>> getCommandMap() {
     return commandMap;
   }
 
+  /**
+   * Initializes the operations map with image processing operations.
+   */
   private void initializeOperationsMap() {
     operationsMap.put("blur", imageModel::blur);
     operationsMap.put("sharpen", imageModel::sharpen);
@@ -60,33 +90,41 @@ public class ImageController implements ImageControllerInterface{
     operationsMap.put("histogram", imageModel::histogram);
   }
 
+  /**
+   * Initializes the command map with available commands and their associated methods.
+   */
   private void initializeCommandMap() {
     commandMap.put("load", this::handleLoad);
     commandMap.put("save", this::handleSave);
     commandMap.put("brighten", this::handleBrighten);
     commandMap.put("rgb-combine", this::handleCombine);
     commandMap.put("rgb-split", this::handleRGBSplit);
-    commandMap.put("blur", this :: applyOperation);
-    commandMap.put("sharpen", this :: applyOperation);
-    commandMap.put("greyscale", this :: applyOperation);
-    commandMap.put("sepia", this :: applyOperation);
+    commandMap.put("blur", this::applyOperation);
+    commandMap.put("sharpen", this::applyOperation);
+    commandMap.put("greyscale", this::applyOperation);
+    commandMap.put("sepia", this::applyOperation);
     commandMap.put("horizontal-flip", args -> handleFlip(args, Direction.HORIZONTAL));
     commandMap.put("vertical-flip", args -> handleFlip(args, Direction.VERTICAL));
-    commandMap.put("value-component",this :: applyOperation);
-    commandMap.put("luma-component", this :: applyOperation);
-    commandMap.put("intensity-component",this :: applyOperation);
-    commandMap.put("red-component",this :: applyOperation);
-    commandMap.put("green-component", this :: applyOperation);
-    commandMap.put("blue-component", this :: applyOperation);
+    commandMap.put("value-component", this::applyOperation);
+    commandMap.put("luma-component", this::applyOperation);
+    commandMap.put("intensity-component", this::applyOperation);
+    commandMap.put("red-component", this::applyOperation);
+    commandMap.put("green-component", this::applyOperation);
+    commandMap.put("blue-component", this::applyOperation);
     commandMap.put("compress", this::handleCompression);
-    commandMap.put("histogram", this :: applyOperation);
-    commandMap.put("color-correction", this :: applyOperation);
+    commandMap.put("histogram", this::applyOperation);
+    commandMap.put("color-correction", this::applyOperation);
     commandMap.put("levels-adjust", this::handleLevelsAdjust);
     commandMap.put("split", this::handleSplit);
     commandMap.put("run-script", this::handleScript);
     commandMap.put("exit", args -> exitFlag = true);
   }
 
+  /**
+   * Applies an image operation based on the provided arguments.
+   *
+   * @param args the arguments specifying the operation, source key, and destination key
+   */
   public void applyOperation(String[] args) {
     if (args.length > 3) {
       handleSplit(args); // Call handleSplit if arguments length is greater than 3
@@ -105,11 +143,17 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+
+  /**
+   * Continuously listens for and executes commands until the user exits.
+   */
   public void run() {
     while (!exitFlag) {  // Use the exitFlag instead of System.exit
       System.out.print("\nEnter command: ");
       String input = scanner.nextLine().trim();
-      if (input.isEmpty()) continue;
+      if (input.isEmpty()) {
+        continue;
+      }
 
       String[] parts = input.split("\\s+");
       String command = parts[0].toLowerCase();
@@ -126,7 +170,11 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
-
+  /**
+   * Loads an image from the specified file and stores it in the model.
+   *
+   * @param args the command arguments for loading an image
+   */
   public void handleLoad(String[] args) {
     if (args.length == 3) {
       try {
@@ -141,6 +189,11 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+  /**
+   * Saves an image from the model to the specified file.
+   *
+   * @param args the command arguments for saving an image
+   */
   public void handleSave(String[] args) {
     if (args.length == 3) {
       try {
@@ -159,6 +212,11 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+  /**
+   * Adjusts the brightness of an image.
+   *
+   * @param args the command arguments for brightening an image
+   */
   public void handleBrighten(String[] args) {
     if (args.length == 4) {
       try {
@@ -173,6 +231,14 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+  /**
+   * Flips an image either horizontally or vertically based on the specified direction and saves it
+   * with a new key.
+   *
+   * @param args      the command-line arguments for flipping the image in the format:
+   *                  <horizontal-flip|vertical-flip> <srcKey> <destKey>
+   * @param direction the direction of the flip, either horizontal or vertical
+   */
   public void handleFlip(String[] args, Direction direction) {
     if (args.length == 3) {
       try {
@@ -182,13 +248,21 @@ public class ImageController implements ImageControllerInterface{
         System.out.println("Error during flip operation: " + e.getMessage());
       }
     } else {
-      System.out.println("Invalid flip command. Usage: <horizontal-flip|vertical-flip> <srcKey> <destKey>");
+      System.out.println(
+          "Invalid flip command. Usage: <horizontal-flip|vertical-flip> <srcKey> <destKey>");
     }
   }
 
+  /**
+   * Splits an image into red, green, and blue channels and stores each channel with a unique key.
+   *
+   * @param args the command-line arguments for splitting the image in the format: rgb-split
+   *             <srcKey> <redKey> <greenKey> <blueKey>
+   */
   public void handleRGBSplit(String[] args) {
     if (args.length != 5) {
-      System.out.println("Invalid rgb-split command. Usage: rgb-split <srcKey> <redKey> <greenKey> <blueKey>");
+      System.out.println(
+          "Invalid rgb-split command. Usage: rgb-split <srcKey> <redKey> <greenKey> <blueKey>");
       return;
     }
 
@@ -207,15 +281,28 @@ public class ImageController implements ImageControllerInterface{
 
   }
 
+  /**
+   * Combines red, green, and blue channel images into one color image and saves it with a new key.
+   *
+   * @param args the command-line arguments for combining RGB channels in the format: rgb-combine
+   *             <destKey> <redKey> <greenKey> <blueKey>
+   */
   public void handleCombine(String[] args) {
     if (args.length == 5) {
       System.out.println("Combined Image " + args[2] + "," + args[3] + " and " + args[4]);
       imageModel.combine(args[1], args[2], args[3], args[4]);
     } else {
-      System.out.println("Invalid combine command. Usage: rgb-combine <destKey> <redKey> <greenKey> <blueKey>");
+      System.out.println(
+          "Invalid combine command. Usage: rgb-combine <destKey> <redKey> <greenKey> <blueKey>");
     }
   }
 
+  /**
+   * Compresses an image by a specified compression ratio and saves it with a new key.
+   *
+   * @param args the command-line arguments for compressing the image in the format: compress
+   *             <ratio> <srcKey> <destKey>
+   */
   public void handleCompression(String[] args) {
     if (args.length == 4) {
       try {
@@ -224,7 +311,8 @@ public class ImageController implements ImageControllerInterface{
           System.out.println("Invalid compression ratio. Must be between 0 and 100.");
           return;
         }
-        System.out.println("Applying compression to " + args[2] + " with ratio " + compressionRatio);
+        System.out.println(
+            "Applying compression to " + args[2] + " with ratio " + compressionRatio);
         imageModel.compress(args[2], args[3], compressionRatio);
       } catch (NumberFormatException e) {
         System.out.println("Invalid compression ratio. Please enter a number.");
@@ -235,17 +323,22 @@ public class ImageController implements ImageControllerInterface{
   }
 
 
-
+  /**
+   * Adjusts the levels of black, mid, and white points of an image and saves the adjusted image
+   * with a new key.
+   *
+   * @param args the command-line arguments for levels adjustment in the format: levels-adjust
+   *             <black> <mid> <white> <srcKey> <destKey>
+   */
   public void handleLevelsAdjust(String[] args) {
-    if(args.length >6 ){
+    if (args.length > 6) {
       int split = Integer.parseInt(args[7]);
       int black = Integer.parseInt(args[1]);
       int mid = Integer.parseInt(args[2]);
       int white = Integer.parseInt(args[3]);
-      imageModel.splitAndTransform(args[4],args[5],split,"levels-adjust",black, mid, white);
+      imageModel.splitAndTransform(args[4], args[5], split, "levels-adjust", black, mid, white);
       System.out.println("Adjusting levels for " + args[4]);
-    }else if (args.length == 6)
-    {
+    } else if (args.length == 6) {
       try {
         int black = Integer.parseInt(args[1]);
         int mid = Integer.parseInt(args[2]);
@@ -256,22 +349,33 @@ public class ImageController implements ImageControllerInterface{
             mid < 0 || mid > 255 ||
             white < 0 || white > 255 ||
             black >= mid || mid >= white) {
-          System.out.println("Invalid level values. Values must be between 0 and 255, and black < mid < white");
+          System.out.println(
+              "Invalid level values. Values must be between 0 and 255, and black < mid < white");
           return;
         }
 
         System.out.println("Adjusting levels for " + args[4]);
         imageModel.adjustLevel(black, mid, white, args[4], args[5]);
       } catch (NumberFormatException e) {
-        System.out.println("Invalid level values. Please enter integers for black, mid, and white points.");
+        System.out.println(
+            "Invalid level values. Please enter integers for black, mid, and white points.");
       }
     } else {
-      System.out.println("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+      System.out.println(
+          "Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
     }
   }
+
+  /**
+   * Splits an image based on a percentage, applies a transformation, and saves it with a new key.
+   *
+   * @param args the command-line arguments for splitting and transforming the image in the format:
+   *             <operation> <srcKey> <destKey> split <splitPercentage>
+   */
   public void handleSplit(String[] args) {
     if (args.length < 5) {
-      System.out.println("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
+      System.out.println(
+          "Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
       return;
     }
 
@@ -303,6 +407,13 @@ public class ImageController implements ImageControllerInterface{
       System.out.println("Error processing command: " + e.getMessage());
     }
   }
+
+  /**
+   * Executes a script containing multiple commands.
+   *
+   * @param args the command-line arguments for running the script in the format: run-script
+   *             <filename>
+   */
   public void handleScript(String[] args) {
     if (args.length != 2) {
       System.out.println("Invalid script command. Usage: script <filename>");
@@ -320,6 +431,9 @@ public class ImageController implements ImageControllerInterface{
     }
   }
 
+  /**
+   * Displays the available commands and options in the image processing menu.
+   */
   public void printMenu() {
     System.out.println("\n========== Image Processing Menu ==========");
     System.out.println("1. Load Image");

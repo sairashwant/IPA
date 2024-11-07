@@ -3,26 +3,35 @@ package model.imagetransformation.colortransformation;
 import model.colorscheme.Pixels;
 import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
 
 /**
- * AbstractColorTransformation is an abstract class that defines the structure for applying a color
- * transformation to an image. The transformation is carried out using a transformation matrix that
- * is applied to each pixel in the image. Subclasses must implement the `getMatrix()` method to
- * provide the specific transformation matrix.
+ * The {@code AbstractColorTransformation} class is an abstract class that provides a structure for
+ * applying a color transformation to an image using a transformation matrix. The matrix is applied
+ * to each pixel in the image, modifying its color values according to the specific transformation.
+ * Subclasses of this class must implement the {@code getMatrix()} method to provide the appropriate
+ * transformation matrix for the operation.
+ *
+ * <p>This class implements the {@link Transformation} interface, making it suitable for use in
+ * image processing pipelines where color transformations need to be applied to images.</p>
  */
 public abstract class AbstractColorTransformation implements Transformation {
 
 
   /**
-   * Applies a color transformation to the input image using a predefined matrix. The transformation
-   * is applied by multiplying each pixel's RGB values by the matrix.
+   * Applies the color transformation to the input image using a transformation matrix. The matrix
+   * is applied to each pixel's RGB values by performing matrix multiplication on the individual
+   * color components. The resulting transformed pixels are clamped between 0 and 255 to ensure
+   * valid RGB values.
    *
-   * @param key the key to identify the input image in the HashMap
-   * @param h1  a HashMap containing the input images, where the key refers to the image to
-   *            transform
-   * @return a 2D array of RGBPixel objects, representing the transformed image
-   * @throws IllegalArgumentException if the image pixels are not instances of RGBPixel
+   * <p>This method iterates over each pixel of the input image, applies the transformation matrix
+   * to
+   * the pixel's RGB values, and stores the resulting transformed pixel in a new 2D array.</p>
+   *
+   * @param input a 2D array of {@code Pixels}, representing the input image to be transformed
+   * @return a 2D array of {@code RGBPixel} objects representing the transformed image with the
+   * applied color transformation
+   * @throws IllegalArgumentException if any of the pixels in the input array are not instances of
+   *                                  {@code RGBPixel}
    */
   @Override
   public Pixels[][] apply(Pixels[][] input) {
@@ -56,10 +65,13 @@ public abstract class AbstractColorTransformation implements Transformation {
   }
 
   /**
-   * Abstract method to get the transformation matrix. Subclasses must override this method to
-   * provide the specific matrix for the color transformation.
+   * Abstract method to retrieve the transformation matrix used for the color transformation.
+   * Subclasses must override this method to provide the specific transformation matrix.
    *
-   * @return a 2D array representing the transformation matrix
+   * <p>The matrix is typically a 3x3 matrix, where each entry defines how the red, green, and blue
+   * components of a pixel should be weighted during the transformation.</p>
+   *
+   * @return a 2D array representing the transformation matrix for the color operation
    */
   protected abstract double[][] getMatrix();
 }

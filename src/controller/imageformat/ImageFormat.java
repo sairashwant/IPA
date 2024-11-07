@@ -4,23 +4,26 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * This interface represents all Image formats that will be processed by this app.
+ * The ImageFormat interface defines the structure for processing different image formats within the
+ * application. Implementing classes should provide methods to load an image as RGB pixel data and
+ * to save RGB pixel data back to an image file.
  */
 public interface ImageFormat {
 
   /**
-   * Loads an image and returns RGB pixel values.
+   * Loads an image file and converts it into a 2D array of RGB pixel values.
    *
-   * @param filename Name of file to load.
-   * @return RGB Pixel values.
+   * @param filename The name or path of the image file to load.
+   * @return A 2D array of {@link Pixels} representing the RGB values of each pixel in the image.
    */
   Pixels[][] load(String filename);
 
   /**
-   * This file saves the rgb pixel as an image in the given filename.
+   * Saves a 2D array of RGB pixel data to an image file.
    *
-   * @param filename Name of the file to save.
-   * @param pixels   Pixel values of the file to save.
+   * @param filename The name or path of the file where the image will be saved.
+   * @param pixels   A 2D array of {@link Pixels} representing the RGB values of each pixel to be
+   *                 saved in the image file.
    */
   void save(String filename, Pixels[][] pixels);
 

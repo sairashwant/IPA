@@ -10,12 +10,18 @@ import java.util.function.Consumer;
 
 /**
  * The ScriptReader class is responsible for reading commands from a script file and executing them
- * using the associated ImageController instance.
+ * using the associated ImageController instance. The script file contains commands that are mapped
+ * to specific image processing operations, which are executed in sequence.
  */
 public class ScriptReader {
 
   private final Map<String, Consumer<String[]>> commandMap;
 
+  /**
+   * Constructs a new ScriptReader that will execute commands using the provided ImageController.
+   *
+   * @param imageController the ImageController instance used to execute commands from the script
+   */
   public ScriptReader(ImageController imageController) {
     this.commandMap = imageController.getCommandMap();
   }
@@ -26,7 +32,9 @@ public class ScriptReader {
    * unrecognized, an error message is printed to the console.
    *
    * @param scriptPath the path to the script file to be read
-   * @throws IOException if an I/O error occurs reading from the file or a malformed or unmappable byte sequence is read
+   * @throws IOException if an I/O error occurs reading from the file, or if the file is malformed
+   *         or contains unmappable byte sequences
+   * @throws SecurityException if access to the script file is denied
    */
   public void readScript(String scriptPath) throws IOException {
     if (!Files.exists(Paths.get(scriptPath))) {

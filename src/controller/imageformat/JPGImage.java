@@ -8,17 +8,20 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * This class represents a jpg format.
+ * The JPGImage class provides functionality to save images in JPG format. It extends
+ * {@link AbstractCompressedImageFormat} and implements the `save` method to write RGB pixel data
+ * into a JPG file.
  */
 public class JPGImage extends AbstractCompressedImageFormat {
 
   /**
-   * This method handles save for the JPG Image format. We take the red, green and blue values from
-   * the pixels. We do bit-manipulation to get RGB values. We then store it using setRGB in buffered
-   * image class. Then the image is written as a file. The image is saved in jpg format.
+   * Saves the given RGB pixel data to a JPG image file. The method converts each pixel's red,
+   * green, and blue values into an RGB integer, which is then set on a BufferedImage. The image is
+   * then written to a file in JPG format.
    *
-   * @param filename Name of the file to save.
-   * @param pixels   Pixels of the file to save.
+   * @param filename The name or path of the file where the image will be saved.
+   * @param pixels   A 2D array of {@link Pixels} representing the RGB values of each pixel to be
+   *                 saved in the image file.
    */
   @Override
   public void save(String filename, Pixels[][] pixels) {

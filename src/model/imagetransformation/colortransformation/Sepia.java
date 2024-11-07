@@ -1,19 +1,30 @@
 package model.imagetransformation.colortransformation;
 
 /**
- * The Sepia class is a specific implementation of AbstractColorTransformation that applies a sepia
- * tone effect to an image. This transformation adjusts the red, green, and blue components of each
- * pixel using a sepia-tone matrix, which gives the image a warm, brownish tint often associated
- * with vintage photography.
+ * The {@code Sepia} class is a specific implementation of the {@code AbstractColorTransformation}
+ * class that applies a sepia tone effect to an image. This transformation modifies the red, green,
+ * and blue components of each pixel using a sepia-tone matrix, giving the image a warm, brownish
+ * tint often associated with vintage photography or classic photo effects.
+ *
+ * <p>The sepia effect is achieved by applying a transformation matrix that adjusts the RGB values
+ * of each pixel in such a way that the resulting image takes on the characteristic brownish tones
+ * of sepia images.</p>
+ *
+ * <p>After applying the sepia transformation, the colors in the image will shift, typically
+ * creating a more nostalgic or aged aesthetic.</p>
  */
 public class Sepia extends AbstractColorTransformation {
 
   /**
-   * Provides the transformation matrix used to apply the sepia effect. The matrix adjusts the red,
-   * green, and blue components of a pixel to give it a sepia tone. The coefficients are chosen to
-   * create the characteristic warm, brownish color of sepia images.
+   * Provides the transformation matrix used to apply the sepia effect. This matrix alters the red,
+   * green, and blue components of a pixel to create the sepia tone. The matrix coefficients are
+   * chosen to emphasize the warm brownish hues that define sepia-toned images.
    *
-   * @return a 3x3 transformation matrix used to apply the sepia tone to the image
+   * <p>The resulting matrix applies a weighted sum to each pixel's RGB values to transform them
+   * into the sepia tones.</p>
+   *
+   * @return a 3x3 transformation matrix that is used to apply the sepia tone effect to the image.
+   * The matrix coefficients are designed to create a warm, brownish tint for each pixel.
    */
   @Override
   protected double[][] getMatrix() {

@@ -6,22 +6,32 @@ import model.colorscheme.RGBPixel;
 import java.util.HashMap;
 
 /**
- * AbstractFiltering is an abstract class that provides a framework for applying a filtering
- * operation to an image. The filtering operation involves using a filter matrix (kernel) to compute
- * new pixel values based on a pixel's neighborhood. Subclasses must implement the `getFilter()`
- * method to provide the specific filter matrix.
+ * The {@code AbstractFiltering} class provides an abstract framework for applying a filtering
+ * operation to an image. The filter is applied to each pixel based on its neighboring pixels using
+ * a filter matrix (kernel). The class defines the general structure for filtering, leaving the
+ * specification of the filter matrix to be provided by subclasses.
+ *
+ * <p>This class applies a filter by considering the neighborhood of each pixel and calculating
+ * new color values using the corresponding filter matrix. The filter matrix (kernel) is used to
+ * calculate the new values for each pixel's red, green, and blue components.</p>
+ *
+ * <p>Subclasses are required to implement the {@code getFilter()} method to specify the actual
+ * filter matrix used for the filtering operation.</p>
+ *
+ * <p>Typical use cases for this class involve blurring, sharpening, edge detection, and other
+ * image filtering techniques.</p>
  */
 public abstract class AbstractFiltering implements Transformation {
 
   /**
    * Applies a filtering operation to the input image using a filter matrix (kernel). The filter is
-   * applied to each pixel by considering the neighboring pixels and applying the filter to
-   * calculate the new color values.
+   * applied by considering each pixel's neighbors and calculating the new color values based on the
+   * filter matrix.
    *
-   * @param input the key to identify the input image in the HashMap
-
-   * @return a 2D array of RGBPixel objects, representing the filtered image
-   * @throws IllegalArgumentException if the input image is invalid or contains non-RGBPixel
+   * @param input a 2D array representing the input image, where each element is a {@code Pixels}
+   *              object (typically {@code RGBPixel}).
+   * @return a 2D array of {@code RGBPixel} objects, representing the filtered image
+   * @throws IllegalArgumentException if the input image is invalid or contains non-{@code RGBPixel}
    *                                  objects
    */
   @Override
@@ -77,10 +87,15 @@ public abstract class AbstractFiltering implements Transformation {
   }
 
   /**
-   * Abstract method to get the filter matrix (kernel) for the filtering operation. Subclasses must
-   * override this method to provide the specific filter matrix.
+   * Abstract method to obtain the filter matrix (kernel) for the filtering operation. Subclasses
+   * must implement this method to define the specific filter matrix that will be applied to the
+   * image.
    *
-   * @return a 3x3 filter matrix (kernel) used to apply the filtering operation
+   * <p>The filter matrix is typically a 3x3 matrix that defines the weights of the neighboring
+   * pixels in the filtering operation.</p>
+   *
+   * @return a 3x3 filter matrix (kernel) that will be applied to the image during the filtering
+   * operation
    */
   protected abstract double[][] getFilter();
 }

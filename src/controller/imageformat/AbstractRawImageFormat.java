@@ -7,17 +7,20 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * This abstract class represents raw image formats like PPM. We define load for these types of
- * files here as it is the same. Save is defined in each file format's class.
+ * AbstractRawImageFormat is an abstract class for handling raw image formats like PPM. It provides
+ * a `load` method to read and convert PPM image data (in P3 format) into a 2D array of RGB pixels.
+ * Specific raw formats should implement the `save` method to define how files are written.
  */
 public abstract class AbstractRawImageFormat implements ImageFormat {
 
   /**
-   * We read each line from the given file. We first check if it is in P3 format. Then we read each
-   * value from the 2D array given and convert it into RGB values.
+   * Loads a PPM (P3 format) file and converts it into a 2D array of RGB pixels. This method reads
+   * the file, verifies the format, and extracts width, height, and color data for each pixel. Only
+   * files with a maximum color value of 255 are supported.
    *
-   * @param fileName Name of the ppm file.
-   * @return RGB pixels.
+   * @param fileName The name or path of the PPM file to load.
+   * @return A 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
+   * image, or null if an error occurs or if the file is in an unsupported format.
    */
   public Pixels[][] load(String fileName) {
     Scanner scanner = null;
@@ -87,10 +90,12 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
   }
 
   /**
-   * Function used to save files in RAW format.
+   * Saves a 2D array of RGB pixel data to an image file in a raw format. Subclasses must implement
+   * this method to specify the saving behavior for the specific file format.
    *
-   * @param filename name of the file to save.
-   * @param pixels   Pixels of the file to save.
+   * @param filename The name or path of the file to save the image.
+   * @param pixels   A 2D array of {@link Pixels} objects representing the RGB values of each pixel
+   *                 to be saved.
    */
   public abstract void save(String filename, Pixels[][] pixels);
 }

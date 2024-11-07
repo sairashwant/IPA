@@ -5,10 +5,21 @@ import controller.imageformat.JPGImage;
 import controller.imageformat.PNGImage;
 import controller.imageformat.PPMImage;
 
+/**
+ * Utility class for loading and saving image files in various formats. The class supports PNG, JPG,
+ * and PPM image formats and provides methods to load and save images as 2D arrays of Pixels.
+ */
 public class ImageUtil {
 
   /**
-   * Loads an image file and returns a 2D array of Pixels.
+   * Loads an image from the specified file and converts it into a 2D array of Pixels. The method
+   * detects the image format based on the file extension and delegates the loading process to the
+   * corresponding image format handler.
+   *
+   * @param filename the path to the image file to be loaded.
+   * @return a 2D array of Pixels representing the image.
+   * @throws IllegalArgumentException if the image format is unsupported or if there is an error
+   *                                  during loading.
    */
   public static Pixels[][] loadImage(String filename) {
     String fileExtension = filename.substring(filename.lastIndexOf("."));
@@ -39,7 +50,14 @@ public class ImageUtil {
   }
 
   /**
-   * Saves a 2D array of Pixels to an image file.
+   * Saves a 2D array of Pixels to an image file with the specified filename. The method detects the
+   * image format based on the file extension and delegates the saving process to the corresponding
+   * image format handler.
+   *
+   * @param filename the path where the image will be saved.
+   * @param pixels   a 2D array of Pixels representing the image to be saved.
+   * @throws IllegalArgumentException if the image format is unsupported or if there is an error
+   *                                  during saving.
    */
   public static void saveImage(String filename, Pixels[][] pixels) {
     String fileExtension = filename.substring(filename.lastIndexOf("."));

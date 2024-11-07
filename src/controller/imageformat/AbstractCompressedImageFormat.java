@@ -8,18 +8,22 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * This class represents compressed image formats such as jpg,png. The load function is common for
- * both jpg and png so it's written in this class.
+ * AbstractCompressedImageFormat serves as an abstract class representing compressed image formats
+ * such as JPG and PNG. It provides a common `load` method for loading image files into a 2D array
+ * of RGB pixels. Specific image formats that extend this class need to implement the `save` method
+ * to define how images are saved.
  */
 
 public abstract class AbstractCompressedImageFormat implements ImageFormat {
 
   /**
-   * Loads a file as RGB pixels. We use bufferedImage to load rgb values from the file. Then we use
-   * bit-manipulation to split red,green and blue values.
+   * Loads an image file and converts it into a 2D array of RGB pixels. The method uses
+   * BufferedImage to read pixel data from the file and performs bit manipulation to extract
+   * individual red, green, and blue values for each pixel.
    *
-   * @param filename Image file name.
-   * @returns RGBpixel type 2D Array.
+   * @param filename The name or path of the image file to load.
+   * @return A 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
+   * image, or null if an error occurs during loading.
    */
   public Pixels[][] load(String filename) {
     try {
@@ -48,10 +52,12 @@ public abstract class AbstractCompressedImageFormat implements ImageFormat {
   }
 
   /**
-   * This function saves a given 2d Array of RGB values.
+   * Saves a 2D array of RGB pixel data to an image file. This method must be implemented by any
+   * subclass to specify the details of saving pixel data to a particular compressed image format.
    *
-   * @param filename Name of the file to save.
-   * @param pixels   Pixels of the file to save.
+   * @param filename The name or path of the file to save the image.
+   * @param pixels   A 2D array of {@link Pixels} objects containing RGB values of the image to be
+   *                 saved.
    */
   public abstract void save(String filename, Pixels[][] pixels);
 }

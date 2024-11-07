@@ -2,7 +2,12 @@ package controller;
 
 /**
  * A functional interface representing an operation that accepts three input arguments and returns
- * no result. This is intended to be used as a target for lambda expressions or method references.
+ * no result. This interface is intended to be used as a target for lambda expressions or method
+ * references where an operation needs to be performed on three input values, but no return value is
+ * expected.
+ *
+ * <p>For example, this can be used to process three values in a single operation without returning
+ * a result.
  *
  * @param <T> the type of the first input argument
  * @param <U> the type of the second input argument

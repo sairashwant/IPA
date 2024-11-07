@@ -6,20 +6,20 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * The class handles the saving of images in the PPM format. Provides functionality specific to the
- * PPM format. The class writes image data to a file using the P3 ASCII format, which is a
- * human-readable format.
+ * The PPMImage class provides functionality for saving images in the PPM (Portable Pixmap) format.
+ * This class outputs image data in the P3 ASCII format, which is a human-readable representation
+ * of pixel color values.
  */
 
 public class PPMImage extends AbstractRawImageFormat {
 
   /**
-   * Saves the given pixel data as a PPM file at the specified filename. The method outputs the
-   * image data in P3 format, including the header and pixel color values.
+   * Saves the given pixel data as a PPM file at the specified filename. This method writes image
+   * data in the P3 format, including the PPM header and the RGB color values for each pixel.
    *
-   * @param filename the output file path where the PPM image will be saved
-   * @param pixels   a 2D array of {@code RGBPixel} representing the image pixel data (rows x
-   *                 columns). The pixel data must not be null or empty.
+   * @param filename The path of the output file where the PPM image will be saved.
+   * @param pixels   A 2D array of {@link RGBPixel} representing the image's pixel data in rows and
+   *                 columns. This array must be non-null and non-empty.
    */
   @Override
   public void save(String filename, Pixels[][] pixels) {

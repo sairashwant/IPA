@@ -4,10 +4,19 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
 /**
- * This class implements the levels adjustment transformation using quadratic curve fitting.
- * It allows adjustment of shadows, midtones, and highlights in an image.
+ * {@code AdjustLevel} implements a levels adjustment transformation for images using quadratic
+ * curve fitting. This transformation allows the adjustment of the shadows, midtones, and highlights
+ * in an image, enabling more precise control over the image's tonal range. The transformation
+ * adjusts the intensity of pixel values based on the specified shadow, midtone, and highlight
+ * points.
+ *
+ * <p>The transformation is achieved by fitting a quadratic curve to the input pixel values and
+ * adjusting
+ * the values accordingly. The three key points: black (shadow), mid (midtones), and white
+ * (highlight) are used to calculate a quadratic function that maps the input pixel values to the
+ * adjusted output.</p>
  */
-public class AdjustLevel implements Transformation{
+public class AdjustLevel implements Transformation {
 
   private final int blackPoint; // shadow point (black)
   private final int midPoint;   // midtone point
@@ -15,12 +24,17 @@ public class AdjustLevel implements Transformation{
   private double a, b2, c;      // quadratic curve coefficients
 
   /**
-   * Constructs an AdjustLevel object with specified shadow, midtone, and highlight points.
+   * Constructs an {@code AdjustLevel} object with specified shadow, midtone, and highlight points.
+   *
+   * <p>The values for black, mid, and white must be in the range [0, 255] and must follow the
+   * order:
+   * black < mid < white.</p>
    *
    * @param black Shadow point (0-255)
-   * @param mid Midtone point (0-255)
+   * @param mid   Midtone point (0-255)
    * @param white Highlight point (0-255)
-   * @throws IllegalArgumentException if values are outside the valid range or not in ascending order
+   * @throws IllegalArgumentException if any value is outside the valid range [0, 255], or if the
+   *                                  values are not in ascending order (black < mid < white).
    */
   public AdjustLevel(int black, int mid, int white) {
     if (black < 0 || black > 255 || mid < 0 || mid > 255 || white < 0 || white > 255) {
@@ -36,13 +50,13 @@ public class AdjustLevel implements Transformation{
     calculateQuadraticCoefficients();
   }
 
+
   /**
-   * Calculates the coefficients for the quadratic curve fitting.
+   * Calculates the coefficients for the quadratic curve fitting. The curve is calculated using
+   * three points: (blackPoint, 0), (midPoint, 128), and (whitePoint, 255).
    */
   private void calculateQuadraticCoefficients() {
-    // Solve the system of equations for quadratic curve fitting
-    // f(x) = ax² + bx + c
-    // Using three points: (blackPoint,0), (midPoint,128), (whitePoint,255)
+
     double[][] matrix = {
         {blackPoint * blackPoint, blackPoint, 1},
         {midPoint * midPoint, midPoint, 1},
@@ -50,7 +64,6 @@ public class AdjustLevel implements Transformation{
     };
     double[] values = {0, 128, 255};
 
-    // Calculate coefficients using Cramer's rule
     double det = matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
         - matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
         + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0]);
@@ -69,11 +82,15 @@ public class AdjustLevel implements Transformation{
   }
 
   /**
-   * Applies the levels adjustment transformation to the specified image pixels.
+   * Applies the levels adjustment transformation to the specified image pixels. Each pixel's red,
+   * green, and blue components are transformed using the quadratic curve calculated by
+   * {@code calculateQuadraticCoefficients}.
    *
-   * @param pixels The 2D array of Pixels objects representing the image pixels.
-   * @return A 2D array of RGBPixel objects representing the adjusted image pixels.
-   * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an RGBPixel.
+   * @param pixels A 2D array of {@link Pixels} objects representing the image pixels to be
+   *               transformed.
+   * @return A 2D array of {@link RGBPixel} objects representing the adjusted image pixels.
+   * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an
+   *                                  {@link RGBPixel}.
    */
   public Pixels[][] apply(Pixels[][] pixels) {
     if (pixels == null) {
@@ -92,7 +109,6 @@ public class AdjustLevel implements Transformation{
 
         RGBPixel rgbPixel = (RGBPixel) pixels[i][j];
 
-        // Apply quadratic transformation to each channel
         int newRed = adjustValue(rgbPixel.getRed());
         int newGreen = adjustValue(rgbPixel.getGreen());
         int newBlue = adjustValue(rgbPixel.getBlue());
@@ -105,16 +121,15 @@ public class AdjustLevel implements Transformation{
   }
 
   /**
-   * Adjusts a single color value using the quadratic curve.
+   * Adjusts a single color value (red, green, or blue) using the quadratic curve.
    *
-   * @param value the input color value
+   * @param value the input color value (between 0 and 255)
    * @return the adjusted color value, clamped to the range [0, 255]
    */
   private int adjustValue(int value) {
-    // Apply quadratic transformation
+
     double result = a * value * value + b2 * value + c;
 
-    // Clamp result to 0-255 range
     return Math.min(255, Math.max(0, (int) Math.round(result)));
   }
 }

@@ -1,4 +1,5 @@
 package model;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -23,15 +24,26 @@ import model.imagetransformation.basicoperation.Value;
 import java.util.HashMap;
 
 /**
+ * The {@code Image} class implements the {@link ImageModel} interface and provides various image
+ * transformation operations on pixel data. This class allows manipulation of RGB pixel data to
+ * apply operations such as color adjustment, filtering, transformation, and combining different
+ * image channels.
  *
+ * <p>Operations include basic image manipulations (e.g., blur, sharpen, brighten), color channel
+ * adjustments (e.g., sepia, grayscale, intensity), and more advanced effects (e.g., split &
+ * transform, histogram generation, and compression). The transformed images can be stored and
+ * accessed using unique keys, making it easy to apply a series of transformations in sequence.</p>
  */
-public class Image implements ImageModel{
+public class Image implements ImageModel {
 
   private Pixels[][] updatedPixel;
   HashMap<String, Pixels[][]> h1 = new HashMap<String, Pixels[][]>();
 
   /**
-   * Stores the pixel data under the specified key.
+   * Stores the pixel data associated with a specified key.
+   *
+   * @param key    the key under which the pixel data will be stored
+   * @param pixels the pixel data to be stored
    */
   public void storePixels(String key, Pixels[][] pixels) {
     this.updatedPixel = pixels;
@@ -39,18 +51,20 @@ public class Image implements ImageModel{
   }
 
   /**
-   * Gets the pixel data stored under the specified key.
+   * Retrieves the pixel data stored under the specified key.
+   *
+   * @param key the key used to retrieve the pixel data
+   * @return the pixel data associated with the key
    */
   public Pixels[][] getStoredPixels(String key) {
     return h1.get(key);
   }
 
   /**
-   * Extracts the red channel from the image associated with the specified key and saves it under
-   * the specified save key.
+   * Extracts the red color channel from the image and stores it under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param saveKey the key under which the red channel will be stored
+   * @param key     the key used to retrieve the image
+   * @param saveKey the key to store the red channel
    */
   public void getRedChannel(String key, String saveKey) {
     Split s1 = new Split();
@@ -61,11 +75,10 @@ public class Image implements ImageModel{
   }
 
   /**
-   * Extracts the green channel from the image associated with the specified key and saves it under
-   * the specified save key.
+   * Extracts the green color channel from the image and stores it under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param saveKey the key under which the green channel will be stored
+   * @param key     the key used to retrieve the image
+   * @param saveKey the key to store the green channel
    */
   public void getGreenChannel(String key, String saveKey) {
     Split s1 = new Split();
@@ -75,11 +88,10 @@ public class Image implements ImageModel{
   }
 
   /**
-   * Extracts the blue channel from the image associated with the specified key and saves it under
-   * the specified save key.
+   * Extracts the blue color channel from the image and stores it under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param saveKey the key under which the blue channel will be stored
+   * @param key     the key used to retrieve the image
+   * @param saveKey the key to store the blue channel
    */
   public void getBlueChannel(String key, String saveKey) {
     Split s1 = new Split();
@@ -88,43 +100,42 @@ public class Image implements ImageModel{
     h1.put(saveKey, blueChannel);
   }
 
+
   /**
-   * Applies a blur effect to the image associated with the specified key and saves the result under
-   * the specified save key.
+   * Applies a blur effect to the image and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the blurred image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the blurred image
    */
   public void blur(String key, String savekey) {
     Blur b1 = new Blur();
-    Pixels[][] temp1= h1.get(key);
+    Pixels[][] temp1 = h1.get(key);
     updatedPixel = b1.apply(temp1);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Brightens the image associated with the specified key by a given factor and saves the result
-   * under the specified save key.
+   * Brightens the image by a specified factor and stores the result under a specified key.
    *
-   * @param brightenFactor the amount to brighten the image
-   * @param key            the key used to retrieve the pixel data
-   * @param savekey        the key under which the brightened image will be stored
+   * @param brightenFactor the factor to brighten the image
+   * @param key            the key used to retrieve the image
+   * @param savekey        the key to store the brightened image
    */
   public void brighten(int brightenFactor, String key, String savekey) {
     Brighten b1 = new Brighten(brightenFactor);
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = b1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
+
   /**
-   * Splits the image associated with the specified key into three separate channels and stores them
-   * under the specified save keys.
+   * Splits the image into three color channels and stores each channel under specified keys.
    *
-   * @param key      the key used to retrieve the pixel data
-   * @param saveKey1 the key under which the first split channel will be stored
-   * @param saveKey2 the key under which the second split channel will be stored
-   * @param saveKey3 the key under which the third split channel will be stored
+   * @param key      the key used to retrieve the image
+   * @param saveKey1 the key to store the first color channel
+   * @param saveKey2 the key to store the second color channel
+   * @param saveKey3 the key to store the third color channel
    */
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
     Split s1 = new Split();
@@ -134,12 +145,12 @@ public class Image implements ImageModel{
   }
 
   /**
-   * Combines three color channels into a single image based on the specified keys.
+   * Combines three color channels into a single image and stores the result under a specified key.
    *
-   * @param key  the key under which the combined image will be stored
-   * @param key1 the key for the first channel
-   * @param key2 the key for the second channel
-   * @param key3 the key for the third channel
+   * @param key  the key to store the combined image
+   * @param key1 the key for the first color channel
+   * @param key2 the key for the second color channel
+   * @param key3 the key for the third color channel
    */
   public void combine(String key, String key1, String key2, String key3) {
     Combine c1 = new Combine();
@@ -147,142 +158,166 @@ public class Image implements ImageModel{
     h1.put(key, updatedPixel);
   }
 
+
   /**
-   * Flips the image associated with the specified key in the given direction and saves the result
-   * under the specified save key.
+   * Flips the image horizontally or vertically and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the flipped image will be stored
-   * @param d       the direction in which to flip the image (horizontal or vertical)
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the flipped image
+   * @param d       the direction of the flip (horizontal or vertical)
    */
   public void flip(String key, String savekey, Direction d) {
     Flip f1 = new Flip();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = f1.apply(temp, d);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Converts the image associated with the specified key to grayscale and saves the result under
-   * the specified save key.
+   * Converts the image to grayscale and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the grayscale image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the grayscale image
    */
   public void greyScale(String key, String savekey) {
     GreyScale g1 = new GreyScale();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = g1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Applies a sepia effect to the image associated with the specified key and saves the result
-   * under the specified save key.
+   * Applies a sepia tone effect to the image and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the sepia image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the sepia-toned image
    */
   public void sepia(String key, String savekey) {
     Sepia sp1 = new Sepia();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = sp1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Applies a sharpening effect to the image associated with the specified key and saves the result
-   * under the specified save key.
+   * Applies a sharpening effect to the image and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the sharpened image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the sharpened image
    */
   public void sharpen(String key, String savekey) {
     Sharpen sp1 = new Sharpen();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = sp1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Applies a Luma transformation to the image associated with the specified key and saves the
-   * result under the specified save key.
+   * Applies a luma transformation to the image and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the Luma image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the luma-transformed image
    */
   public void luma(String key, String savekey) {
     Luma l1 = new Luma();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Applies a value transformation to the image associated with the specified key and saves the
-   * result under the specified save key.
+   * Applies a value transformation to the image and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the value image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the value-transformed image
    */
   public void value(String key, String savekey) {
     Value l1 = new Value();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
   /**
-   * Applies an intensity transformation to the image associated with the specified key and saves
-   * the result under the specified save key.
+   * Adjusts the image color levels and stores the result under a specified key.
    *
-   * @param key     the key used to retrieve the pixel data
-   * @param savekey the key under which the intensity image will be stored
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the color-adjusted image
    */
   public void intensity(String key, String savekey) {
     Intensity l1 = new Intensity();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
+  /**
+   * Compresses the image and stores the result under a specified key.
+   *
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the compressed image
+   */
   public void compress(String key, String savekey, double compressionratio) {
-    if(compressionratio<0 || compressionratio>100)
-    {
+    if (compressionratio < 0 || compressionratio > 100) {
       throw new IllegalArgumentException("Compression level must be between 0 and 100");
     }
     Compression l1 = new Compression(compressionratio);
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = l1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
+  /**
+   * Applies color correction to the image and stores the result under a specified key. The color
+   * correction adjusts the image based on pre-defined algorithms to enhance colors.
+   *
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the color-corrected image
+   */
   public void colorCorrection(String key, String savekey) {
     ColorCorrection c1 = new ColorCorrection();
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = c1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
-  public void adjustLevel(int black, int mid, int white ,String key, String savekey ) {
+  /**
+   * Adjusts the color levels of the image (black, mid, white) and stores the result under a
+   * specified key. This method allows fine-tuning of image brightness and contrast by adjusting the
+   * levels of black, mid, and white points.
+   *
+   * @param black   the black point to adjust the image contrast
+   * @param mid     the mid point (gamma) adjustment for brightness
+   * @param white   the white point to control highlights in the image
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the adjusted image
+   */
+  public void adjustLevel(int black, int mid, int white, String key, String savekey) {
     AdjustLevel a1 = new AdjustLevel(black, mid, white);
-    Pixels[][] temp= h1.get(key);
+    Pixels[][] temp = h1.get(key);
     updatedPixel = a1.apply(temp);
     h1.put(savekey, updatedPixel);
   }
 
 
   /**
-   * Splits the image vertically into two parts based on the splitValue,
-   * applies transformations on each part, and combines them into a single image.
+   * Splits the image vertically into two parts based on the given split value, applies a specified
+   * transformation on each part, and then combines them back into a single image. The
+   * transformation operation can be blur, sharpen, sepia, greyscale, color correction, or levels
+   * adjustment. After the transformations, the two parts are rejoined to form the final image.
    *
-   * @param key           the key to retrieve the original image pixel data
-   * @param saveKey       the key to store the combined image after transformations
-   * @param splitValue    the vertical split percentage for the image
-   * @param operation     apply transformation on the first part if true
+   * @param key        the key used to retrieve the original image
+   * @param saveKey    the key to store the final combined image after transformation
+   * @param splitValue the percentage value (0-100) to determine the split location of the image
+   * @param operation  the transformation to apply to the split parts (e.g., "blur", "sharpen")
+   * @param params     additional parameters required for certain operations (e.g., black, mid,
+   *                   white for levels adjustment)
+   * @throws IllegalArgumentException if the split value is not between 0 and 100, or if levels
+   *                                  adjustment parameters are invalid
    */
-  public void splitAndTransform(String key, String saveKey, int splitValue, String operation, int... params) {
-    if (splitValue < 0 || splitValue >100){
+  public void splitAndTransform(String key, String saveKey, int splitValue, String operation,
+      int... params) {
+    if (splitValue < 0 || splitValue > 100) {
       throw new IllegalArgumentException("Invalid split value. It must be between 0 and 100.");
     }
 
@@ -323,7 +358,8 @@ public class Image implements ImageModel{
         break;
       case "levels-adjust":
         if (params.length != 3) {
-          throw new IllegalArgumentException("Levels-adjust requires 3 parameters: black, mid, and white points");
+          throw new IllegalArgumentException(
+              "Levels-adjust requires 3 parameters: black, mid, and white points");
         }
         adjustLevel(params[0], params[1], params[2], part2Key, part2Key);
         break;
@@ -341,19 +377,23 @@ public class Image implements ImageModel{
     h1.put(saveKey, combinedPixels);
   }
 
+  /**
+   * Generates a histogram for the image and stores the result under a specified key.
+   *
+   * @param key     the key used to retrieve the image
+   * @param savekey the key to store the histogram
+   */
   public void histogram(String key, String savekey) {
     Pixels[][] pixels = h1.get(key);
     if (pixels == null) {
       throw new IllegalArgumentException("No image found for key: " + key);
     }
 
-    // Initialize frequency arrays for each channel
     int[] redFreq = new int[256];
     int[] greenFreq = new int[256];
     int[] blueFreq = new int[256];
 
-    // Count frequency of each intensity value
-    if(pixels instanceof RGBPixel[][])
+    if (pixels instanceof RGBPixel[][]) {
       for (Pixels[] row : pixels) {
         for (Pixels pixel : row) {
           redFreq[((RGBPixel) pixel).getRed()]++;
@@ -361,8 +401,8 @@ public class Image implements ImageModel{
           blueFreq[((RGBPixel) pixel).getBlue()]++;
         }
       }
+    }
 
-    // Find the maximum frequency for scaling
     int maxFreq = 0;
     for (int i = 0; i < 256; i++) {
       maxFreq = Math.max(maxFreq, redFreq[i]);
@@ -370,26 +410,20 @@ public class Image implements ImageModel{
       maxFreq = Math.max(maxFreq, blueFreq[i]);
     }
 
-    // Create a new BufferedImage for the histogram
     BufferedImage histogramImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2d = histogramImage.createGraphics();
 
-    // Fill background with white
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, 256, 256);
 
-    // Draw grid
     drawGrid(g2d);
 
-    // Draw histogram lines
-    // Using thinner lines and full opacity for better visibility
     drawHistogramLine(g2d, redFreq, maxFreq, Color.RED);
     drawHistogramLine(g2d, greenFreq, maxFreq, Color.GREEN);
     drawHistogramLine(g2d, blueFreq, maxFreq, Color.BLUE);
 
     g2d.dispose();
 
-    // Convert BufferedImage to RGBPixel array
     RGBPixel[][] histogramPixels = new RGBPixel[256][256];
     for (int y = 0; y < 256; y++) {
       for (int x = 0; x < 256; x++) {
@@ -408,17 +442,15 @@ public class Image implements ImageModel{
    * @param g2d Graphics2D object to draw on
    */
   private void drawGrid(Graphics2D g2d) {
-    // Draw light grey grid lines
+
     g2d.setColor(new Color(220, 220, 220));
     g2d.setStroke(new BasicStroke(1.0f));
 
-    // Draw vertical grid lines with smaller increments (e.g., every 16 pixels)
-    for (int x = 0; x < 256; x += 16) { // Change 32 to 16 for smaller boxes
+    for (int x = 0; x < 256; x += 16) {
       g2d.drawLine(x, 0, x, 255);
     }
 
-    // Draw horizontal grid lines with smaller increments (e.g., every 16 pixels)
-    for (int y = 0; y < 256; y += 16) { // Change 32 to 16 for smaller boxes
+    for (int y = 0; y < 256; y += 16) {
       g2d.drawLine(0, y, 255, y);
     }
   }
@@ -433,21 +465,19 @@ public class Image implements ImageModel{
    */
   private void drawHistogramLine(Graphics2D g2d, int[] freq, int maxFreq, Color color) {
     g2d.setColor(color);
-    g2d.setStroke(new BasicStroke(1.0f)); // Thinner line for better visibility
+    g2d.setStroke(new BasicStroke(1.0f));
 
     int[] xPoints = new int[256];
     int[] yPoints = new int[256];
 
-    // Prepare points for smoother line
     for (int i = 0; i < 256; i++) {
       xPoints[i] = i;
-      // Invert Y coordinates since (0,0) is at top-left
-      yPoints[i] = 255 - (int)((freq[i] * 255.0) / maxFreq);
+
+      yPoints[i] = 255 - (int) ((freq[i] * 255.0) / maxFreq);
     }
 
-    // Draw the line connecting all points
     for (int i = 1; i < 256; i++) {
-      g2d.drawLine(xPoints[i-1], yPoints[i-1], xPoints[i], yPoints[i]);
+      g2d.drawLine(xPoints[i - 1], yPoints[i - 1], xPoints[i], yPoints[i]);
     }
   }
 
