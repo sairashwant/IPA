@@ -2,7 +2,6 @@ package model.imagetransformation;
 
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
 
 /**
  * An interface that represents a transformation operation to be applied to an image.

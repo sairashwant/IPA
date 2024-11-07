@@ -7,8 +7,8 @@ import model.colorscheme.RGBPixel;
 
 /**
  * The PPMImage class provides functionality for saving images in the PPM (Portable Pixmap) format.
- * This class outputs image data in the P3 ASCII format, which is a human-readable representation
- * of pixel color values.
+ * This class outputs image data in the P3 ASCII format, which is a human-readable representation of
+ * pixel color values.
  */
 
 public class PPMImage extends AbstractRawImageFormat {

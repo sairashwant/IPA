@@ -32,8 +32,8 @@ public class ScriptReader {
    * unrecognized, an error message is printed to the console.
    *
    * @param scriptPath the path to the script file to be read
-   * @throws IOException if an I/O error occurs reading from the file, or if the file is malformed
-   *         or contains unmappable byte sequences
+   * @throws IOException       if an I/O error occurs reading from the file, or if the file is
+   *                           malformed or contains unmappable byte sequences
    * @throws SecurityException if access to the script file is denied
    */
   public void readScript(String scriptPath) throws IOException {

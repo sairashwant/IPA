@@ -1,9 +1,9 @@
 package controller;
 
-import model.colorscheme.Pixels;
 import controller.imageformat.JPGImage;
 import controller.imageformat.PNGImage;
 import controller.imageformat.PPMImage;
+import model.colorscheme.Pixels;
 
 /**
  * Utility class for loading and saving image files in various formats. The class supports PNG, JPG,

@@ -1,8 +1,8 @@
 package model.imagetransformation.colortransformation;
 
 import model.colorscheme.Pixels;
-import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.Transformation;
 
 /**
  * The {@code AbstractColorTransformation} class is an abstract class that provides a structure for
@@ -24,8 +24,7 @@ public abstract class AbstractColorTransformation implements Transformation {
    * valid RGB values.
    *
    * <p>This method iterates over each pixel of the input image, applies the transformation matrix
-   * to
-   * the pixel's RGB values, and stores the resulting transformed pixel in a new 2D array.</p>
+   * to the pixel's RGB values, and stores the resulting transformed pixel in a new 2D array.</p>
    *
    * @param input a 2D array of {@code Pixels}, representing the input image to be transformed
    * @return a 2D array of {@code RGBPixel} objects representing the transformed image with the

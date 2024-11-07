@@ -1,15 +1,14 @@
 package controller;
 
 import java.io.IOException;
-import model.ImageModel;
-import model.colorscheme.Pixels;
-import model.imagetransformation.basicoperation.Flip.Direction;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Consumer;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import model.ImageModel;
+import model.colorscheme.Pixels;
+import model.imagetransformation.basicoperation.Flip.Direction;
 
 /**
  * The ImageController class handles user commands for image processing operations. It interacts
@@ -344,7 +343,6 @@ public class ImageController implements ImageControllerInterface {
         int mid = Integer.parseInt(args[2]);
         int white = Integer.parseInt(args[3]);
 
-        // Validate the level values
         if (black < 0 || black > 255 ||
             mid < 0 || mid > 255 ||
             white < 0 || white > 255 ||

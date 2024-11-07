@@ -7,13 +7,11 @@ package model.imagetransformation.basicoperation;
  * equivalent.
  *
  * <p>The value component is a common approach in color image processing, especially when
- * transforming
- * an image into a grayscale representation based on the intensity of the brightest color channel in
- * each pixel.</p>
+ * transforming an image into a grayscale representation based on the intensity of the brightest
+ * color channel in each pixel.</p>
  *
  * <p>This class extends {@code AbstractBasicOperation} and provides a transformation that
- * calculates
- * the maximum of the RGB components of a pixel.</p>
+ * calculates the maximum of the RGB components of a pixel.</p>
  */
 public class Value extends AbstractBasicOperation {
 

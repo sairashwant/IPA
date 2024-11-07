@@ -7,14 +7,12 @@ package model.imagetransformation.colortransformation;
  * pixel based on a weighted sum of its red, green, and blue components.
  *
  * <p>The transformation is carried out by applying a 3x3 matrix to each pixel in the image. This
- * matrix
- * uses the standard coefficients for luminance calculation: 0.2126 for red, 0.7152 for green, and
- * 0.0722 for blue. These values reflect the perceived brightness of each color component to the
- * human eye.</p>
+ * matrix uses the standard coefficients for luminance calculation: 0.2126 for red, 0.7152 for
+ * green, and 0.0722 for blue. These values reflect the perceived brightness of each color component
+ * to the human eye.</p>
  *
  * <p>After the transformation, each pixel in the image will have the same value for the red,
- * green,
- * and blue components, producing a grayscale image.</p>
+ * green, and blue components, producing a grayscale image.</p>
  */
 
 public class GreyScale extends AbstractColorTransformation {

@@ -21,8 +21,7 @@ public class RGBPixel implements Pixels {
    * components.
    *
    * <p>If any of the values are outside the valid range (0-255), they will be adjusted to the
-   * nearest
-   * boundary value (0 for values below 0, and 255 for values above 255).</p>
+   * nearest boundary value (0 for values below 0, and 255 for values above 255).</p>
    *
    * @param r the red component (0-255)
    * @param g the green component (0-255)

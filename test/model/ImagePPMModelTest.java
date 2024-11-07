@@ -1,24 +1,23 @@
 package model;
 
-import controller.ImageController;
-import controller.ImageUtil;
-import model.colorscheme.Pixels;
-import model.colorscheme.RGBPixel;
-import model.imagetransformation.filtering.Blur;
-import model.imagetransformation.basicoperation.Flip;
-import model.imagetransformation.basicoperation.Brighten;
-import model.imagetransformation.colortransformation.GreyScale;
-import model.imagetransformation.colortransformation.Sepia;
-import model.imagetransformation.filtering.Sharpen;
-import model.imagetransformation.basicoperation.Luma;
-import model.imagetransformation.basicoperation.Split;
-import model.imagetransformation.basicoperation.Combine;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 
+import controller.ImageController;
+import controller.ImageUtil;
 import java.util.HashMap;
+import model.colorscheme.Pixels;
+import model.colorscheme.RGBPixel;
+import model.imagetransformation.basicoperation.Brighten;
+import model.imagetransformation.basicoperation.Combine;
+import model.imagetransformation.basicoperation.Flip;
+import model.imagetransformation.basicoperation.Luma;
+import model.imagetransformation.basicoperation.Split;
+import model.imagetransformation.colortransformation.GreyScale;
+import model.imagetransformation.colortransformation.Sepia;
+import model.imagetransformation.filtering.Blur;
+import model.imagetransformation.filtering.Sharpen;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Unit tests for the {@link Image} model and the {@link ImageController} operations specifically

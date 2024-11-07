@@ -33,10 +33,6 @@ This application is built using the MVC (model-view-controller) architecture and
 - Routes user inputs to corresponding image operations.
 - Supports advanced features like RGB split/merge, compression, color adjustments, and script execution.
 
-### TriConsumer.java (Interface)
-**Purpose:** Functional interface for three-parameter operations.  
-**Usage:** Used for operations like `brighten` that require multiple inputs.
-
 
 ### ImageUtil.java
 **Purpose:** Utility class for loading and saving image files in various formats.

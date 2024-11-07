@@ -1,9 +1,8 @@
 package model.imagetransformation.filtering;
 
 import model.colorscheme.Pixels;
-import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
-import java.util.HashMap;
+import model.imagetransformation.Transformation;
 
 /**
  * The {@code AbstractFiltering} class provides an abstract framework for applying a filtering

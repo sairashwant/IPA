@@ -4,24 +4,24 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.advancedoperations.AdjustLevel;
 import model.imagetransformation.advancedoperations.ColorCorrection;
 import model.imagetransformation.advancedoperations.Compression;
-import model.imagetransformation.basicoperation.Luma;
-import model.imagetransformation.basicoperation.Split;
-import model.imagetransformation.filtering.Blur;
 import model.imagetransformation.basicoperation.Brighten;
 import model.imagetransformation.basicoperation.Combine;
 import model.imagetransformation.basicoperation.Flip;
 import model.imagetransformation.basicoperation.Flip.Direction;
-import model.imagetransformation.colortransformation.GreyScale;
 import model.imagetransformation.basicoperation.Intensity;
-import model.imagetransformation.colortransformation.Sepia;
-import model.imagetransformation.filtering.Sharpen;
+import model.imagetransformation.basicoperation.Luma;
+import model.imagetransformation.basicoperation.Split;
 import model.imagetransformation.basicoperation.Value;
-import java.util.HashMap;
+import model.imagetransformation.colortransformation.GreyScale;
+import model.imagetransformation.colortransformation.Sepia;
+import model.imagetransformation.filtering.Blur;
+import model.imagetransformation.filtering.Sharpen;
 
 /**
  * The {@code Image} class implements the {@link ImageModel} interface and provides various image

@@ -12,8 +12,7 @@ import model.imagetransformation.Transformation;
  * points.
  *
  * <p>The transformation is achieved by fitting a quadratic curve to the input pixel values and
- * adjusting
- * the values accordingly. The three key points: black (shadow), mid (midtones), and white
+ * adjusting the values accordingly. The three key points: black (shadow), mid (midtones), and white
  * (highlight) are used to calculate a quadratic function that maps the input pixel values to the
  * adjusted output.</p>
  */
@@ -28,8 +27,7 @@ public class AdjustLevel implements Transformation {
    * Constructs an {@code AdjustLevel} object with specified shadow, midtone, and highlight points.
    *
    * <p>The values for black, mid, and white must be in the range [0, 255] and must follow the
-   * order:
-   * black < mid < white.</p>
+   * order: black < mid < white.</p>
    *
    * @param black Shadow point (0-255)
    * @param mid   Midtone point (0-255)

@@ -1,8 +1,8 @@
 package model.imagetransformation.advancedoperations;
 
+import java.util.Arrays;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import java.util.Arrays;
 import model.imagetransformation.Transformation;
 
 /**
@@ -63,7 +63,6 @@ public class Compression implements Transformation {
    */
   @Override
   public Pixels[][] apply(Pixels[][] originalImage) {
-    // Add null check for input
     if (originalImage == null || originalImage.length == 0) {
       throw new IllegalArgumentException("Invalid image data");
     }
@@ -81,7 +80,7 @@ public class Compression implements Transformation {
 
     for (int i = 0; i < paddedHeight; i++) {
       for (int j = 0; j < paddedWidth; j++) {
-        RGBPixel pixel = (RGBPixel) paddedImage[i][j]; // Cast to RGBPixel
+        RGBPixel pixel = (RGBPixel) paddedImage[i][j];
         redChannel[i][j] = pixel.getRed();
         greenChannel[i][j] = pixel.getGreen();
         blueChannel[i][j] = pixel.getBlue();

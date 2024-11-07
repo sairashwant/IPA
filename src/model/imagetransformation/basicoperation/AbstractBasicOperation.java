@@ -1,14 +1,14 @@
 package model.imagetransformation.basicoperation;
 
 import model.colorscheme.Pixels;
-import model.imagetransformation.Transformation;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.Transformation;
 
 /**
  * The {@code AbstractBasicOperation} class provides a base implementation for basic image
- * transformation operations. It implements the {@code Transformation} interface and defines
- * common logic for applying pixel-wise operations on an image. This class is abstract and
- * intended to be extended by specific transformation operations that modify pixel values.
+ * transformation operations. It implements the {@code Transformation} interface and defines common
+ * logic for applying pixel-wise operations on an image. This class is abstract and intended to be
+ * extended by specific transformation operations that modify pixel values.
  *
  * <p>The {@code apply} method processes each pixel of the image based on its RGB components,
  * transforming them according to the logic defined in subclasses.</p>
@@ -16,10 +16,10 @@ import model.colorscheme.RGBPixel;
 public abstract class AbstractBasicOperation implements Transformation {
 
   /**
-   * Applies a transformation to the specified image, identified by the given key, and returns
-   * the transformed image. The transformation is applied to each pixel, and the resulting pixel's
-   * color is calculated based on the original pixel values. The transformed image is returned
-   * as a new 2D array of {@code RGBPixel} objects.
+   * Applies a transformation to the specified image, identified by the given key, and returns the
+   * transformed image. The transformation is applied to each pixel, and the resulting pixel's color
+   * is calculated based on the original pixel values. The transformed image is returned as a new 2D
+   * array of {@code RGBPixel} objects.
    *
    * <p>This method processes the image pixel-by-pixel and applies the transformation logic
    * defined in the {@code properties} method. Subclasses should override the {@code properties}
@@ -63,7 +63,8 @@ public abstract class AbstractBasicOperation implements Transformation {
    * conversion, brightness adjustment, etc.
    *
    * <p>The base implementation of this method returns 0, which means it doesn't perform any actual
-   * transformation. Subclasses should override this method to implement the desired transformation.</p>
+   * transformation. Subclasses should override this method to implement the desired
+   * transformation.</p>
    *
    * @param r the red component of the pixel's color (0-255)
    * @param g the green component of the pixel's color (0-255)

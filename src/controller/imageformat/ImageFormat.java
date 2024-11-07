@@ -1,7 +1,6 @@
 package controller.imageformat;
 
 import model.colorscheme.Pixels;
-import model.colorscheme.RGBPixel;
 
 /**
  * The ImageFormat interface defines the structure for processing different image formats within the
