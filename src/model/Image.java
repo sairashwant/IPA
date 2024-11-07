@@ -37,7 +37,7 @@ import java.util.HashMap;
 public class Image implements ImageModel {
 
   private Pixels[][] updatedPixel;
-  HashMap<String, Pixels[][]> h1 = new HashMap<String, Pixels[][]>();
+  HashMap<String, Pixels[][]> h1 = new HashMap<>();
 
   /**
    * Stores the pixel data associated with a specified key.
@@ -68,7 +68,6 @@ public class Image implements ImageModel {
    */
   public void getRedChannel(String key, String saveKey) {
     Split s1 = new Split();
-    Pixels[][] temp1 = h1.get(key);
     HashMap<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
     Pixels[][] redChannel = temp.get(saveKey);
     h1.put(saveKey, redChannel);
