@@ -1,8 +1,9 @@
-package model.imagetransformation;
+package model.imagetransformation.advancedoperations;
 
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import java.util.Arrays;
+import model.imagetransformation.Transformation;
 
 /**
  * {@code Compression} applies a compression transformation to an image by utilizing the Haar

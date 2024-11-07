@@ -338,7 +338,7 @@ public class ImageControllerTest {
   // Testing script execution
   @Test
   public void testScriptExecution() {
-    String input = "run-script Resources/PNGScript.txt\nexit";
+    String input = "run-script res/PNGScript.txt\nexit";
     runControllerWithInput(input);
     assertTrue(output.toString().contains("Script executed successfully"));
   }

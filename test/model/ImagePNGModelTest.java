@@ -1,8 +1,6 @@
 package model;
 
-import controller.ImageControllerInterface;
 import controller.ImageUtil;
-import java.io.IOException;
 import java.util.HashMap;
 import controller.ImageController;
 import model.colorscheme.Pixels;
@@ -298,6 +296,30 @@ public class ImagePNGModelTest {
 
     assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
   }
+
+  @Test
+  public void testMultipleOperationsSharpenBrightenBy50(){
+    image.sharpen("testKey","sharpen-key");
+    image.brighten(50,"sharpen-key","brighten-key");
+    operationPixels = image.getStoredPixels("brighten-key");
+    image.storePixels("expected-combination-key",ImageUtil.loadImage("test/Test_Image/png_op/Landscape-multiple-operations.png"));
+    expectedPixels = image.getStoredPixels("expected-combination-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
+  @Test
+  public void testMultipleOperationsCompressBy50LevelsAdjustHistogram(){
+    image.compress("testKey","compress-key",80);
+    image.adjustLevel(20,100,255 ,"compress-key","levels-adjust-key");
+    image.histogram("levels-adjust-key","histogram-key");
+    operationPixels = image.getStoredPixels("histogram-key");
+    image.storePixels("expected-histogram-key",ImageUtil.loadImage("test/Test_Image/png_op/Landscape-compress-histogram.png"));
+    expectedPixels = image.getStoredPixels("expected-histogram-key");
+
+    assertImageEquals(convertToRGBPixelArray(expectedPixels), convertToRGBPixelArray(operationPixels));
+  }
+
 
 
   private RGBPixel[][] convertToRGBPixelArray(Pixels[][] pixelsArray) {

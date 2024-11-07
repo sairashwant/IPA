@@ -11,6 +11,7 @@ This application is built using the MVC (model-view-controller) architecture and
 - [Controller Test Package](#controller-test-package)
 - [Model Test Package](#model-test-package)
 - [Resource Package](#resources-package)
+- [Change Log](#change-log)
 - [Script Commands](#script-commands-with-examples)
 
 ## Controller Package
@@ -36,14 +37,6 @@ This application is built using the MVC (model-view-controller) architecture and
 **Purpose:** Functional interface for three-parameter operations.  
 **Usage:** Used for operations like `brighten` that require multiple inputs.
 
-### ImageView.java
-**Purpose:** Handles the user interface.  
-**Responsibilities:**
-- Displays user prompts
-- Processes user input
-- Shows operation results
-- Reports errors
-- Manages the command-line interface
 
 ### ImageUtil.java
 **Purpose:** Utility class for loading and saving image files in various formats.
@@ -185,6 +178,32 @@ This application is built using the MVC (model-view-controller) architecture and
 **Purpose:** Applies a sharpening effect to the image.  
 **Responsibilities:** Uses a sharpen kernel matrix for the effect.
 
+
+### Advanced Operation
+
+### AdjustLevel
+**Purpose:** Adjusts image tonal range using shadow, midtone, and highlight points to enhance contrast.
+
+**Responsibilities:**
+- Initialize: Validates points, calculates quadratic curve coefficients.
+- Transform: Adjusts each pixel’s RGB values based on the curve for refined tonal control.
+
+### ColorCorrection
+**Purpose:** Adjusts image color balance by aligning RGB channel peaks, enhancing color consistency.
+
+**Responsibilities:**
+- Analyze: Extracts histograms and finds peaks for RGB channels within a range.
+- Adjust: Calculates target peak and shifts channels to match, clamping to valid RGB values.
+
+### Compression
+**Purpose:** The Compression class applies a Haar wavelet transform to compress an image based on a specified compression ratio.
+
+**Responsibilities:**
+-Pads the image to the nearest power of two for processing.
+- Separates and compresses the red, green, and blue color channels independently.
+- Applies the Haar transform, compresses coefficients, and reconstructs the image.
+- Restores the image to its original dimensions after compression.
+
 ## Main model Class
 
 ### ImageModel.java (Interface)
@@ -267,7 +286,7 @@ This application is built using the MVC (model-view-controller) architecture and
 ## Resources Package
 
 ### PNGScript.txt
-- Contrains the script that is text file.
+- Contains the script that is text file.
 
 ### ReadMe.Md
 - Has the description of the design of the whole project.
@@ -278,6 +297,24 @@ This application is built using the MVC (model-view-controller) architecture and
 ### Class_Diagram.png
 - It is the class diagram of the project representing the connection between each classes in the project.
 
+
+## Change log
+
+### Changed AbstractPixel (Abstract Class) to Pixels (Interface)
+- The RGBPixel class, previously extending an abstract class, was refactored to implement an interface, as inheritance was unnecessary.
+- All instances of the 2D array representations were updated to use the interface instead of directly referencing RGBPixel.
+
+### I/O Operations was moved from model to controller
+- The I/O operations for loading and saving images were initially handled within the model.
+- These operations were refactored and moved to the controller, ensuring that the controller can manage image loading and saving independently, without needing to directly access the model.
+
+### Top level interface created for the model and controller
+- The Image.java class, which was originally the top-level class of the model, did not implement any interface. To address this, a new interface called ImageModel was created, and the Image.java class was updated to implement it.
+- Similarly, a new interface named ImageControllerInterface was introduced for the controller, and the ImageController class was modified to implement this interface.
+
+### All operations except the main was moved from View to the Controller
+- The ScriptReader.java class was relocated from the view to the controller, as input parsing should be handled by the controller, not the view.
+- The ImageView.java class was removed, and its functionality was integrated into the ImageController.java class within the controller, centralizing all related operations.
 
 ### Installation
 - Run Main class.

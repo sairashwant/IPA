@@ -1,7 +1,8 @@
-package model.imagetransformation;
+package model.imagetransformation.advancedoperations;
 
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.Transformation;
 
 /**
  * {@code AdjustLevel} implements a levels adjustment transformation for images using quadratic
