@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 /**
  * Unit tests for the {@link ImageController} class, specifically focused on verifying the behavior
  * of the controller when running scripts that perform various image operations. This test class
@@ -43,10 +44,17 @@ public class ImageScriptTest {
     controller = new ImageController(image);
   }
 
+
   /**
    * Tests the execution of a script that performs various operations on the image. This test checks
    * if the output messages from the script execution match the expected output, validating the
    * correctness of the operations performed by the controller on the image.
+   *
+   * <p>
+   * This test simulates running a script file (e.g., "Resources/PNGScript.txt") and compares the
+   * actual console output against the expected output to ensure that all operations are applied
+   * correctly and the expected feedback is printed.
+   * </p>
    */
   @Test
   public void testRunScript() {

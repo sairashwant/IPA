@@ -1,4 +1,5 @@
 package controller;
+
 import static org.junit.Assert.*;
 
 import java.io.OutputStream;
@@ -9,6 +10,12 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import org.junit.Before;
 import org.junit.Test;
+
+/**
+ * Unit test class for testing the functionality of the ImageController. This class tests the
+ * various operations of the ImageController, ensuring that the image manipulation and processing
+ * behaviors are functioning correctly.
+ */
 public class ImageControllerTest {
 
   private StringBuilder output;
@@ -30,6 +37,7 @@ public class ImageControllerTest {
       }
     }
   }
+
   private void runControllerWithInput(String input) {
     output = new StringBuilder(); // Reset the output
     System.setOut(new PrintStream(new OutputStream() {
@@ -60,7 +68,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Blurred-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-blur.png"));
     expectedPixels = image.getStoredPixels("expected-Blurred-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -71,7 +79,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Sharpened-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-sharper.png"));
     expectedPixels = image.getStoredPixels("expected-Sharpened-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -82,7 +90,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Greyscale-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-greyscale.png"));
     expectedPixels = image.getStoredPixels("expected-Greyscale-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -93,7 +101,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Sepia-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-sepia.png"));
     expectedPixels = image.getStoredPixels("expected-Sepia-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -104,7 +112,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Brightened-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-brighter.png"));
     expectedPixels = image.getStoredPixels("expected-Brightened-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -115,7 +123,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Horizontal-Flip-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-horizontal-flip.png"));
     expectedPixels = image.getStoredPixels("expected-Horizontal-Flip-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -138,7 +146,6 @@ public class ImageControllerTest {
     Pixels[][] greenPixels = image.getStoredPixels("greenKey");
     Pixels[][] bluePixels = image.getStoredPixels("blueKey");
 
-
     Pixels[][] expectedRedPixels = ImageUtil.loadImage(
         "test/Test_Image/png_op/landscape-red-component.png");
     Pixels[][] expectedGreenPixels = ImageUtil.loadImage(
@@ -146,9 +153,9 @@ public class ImageControllerTest {
     Pixels[][] expectedBluePixels = ImageUtil.loadImage(
         "test/Test_Image/png_op/landscape-blue-component.png");
 
-    assertImageEquals( expectedRedPixels, redPixels);
-    assertImageEquals(expectedGreenPixels,greenPixels);
-    assertImageEquals( expectedBluePixels,bluePixels);
+    assertImageEquals(expectedRedPixels, redPixels);
+    assertImageEquals(expectedGreenPixels, greenPixels);
+    assertImageEquals(expectedBluePixels, bluePixels);
   }
 
   @Test
@@ -158,7 +165,7 @@ public class ImageControllerTest {
 
         "rgb-split testKey redKey greenKey blueKey\n" +
 
-        "rgb-combine combinedKey redKey greenKey blueKey\n"+
+        "rgb-combine combinedKey redKey greenKey blueKey\n" +
         "exit";
 
     runControllerWithInput(input);
@@ -169,7 +176,7 @@ public class ImageControllerTest {
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-combined.png"));
     expectedPixels = image.getStoredPixels("expected-Combined-Key");
 
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -191,7 +198,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Levels-Adjusted-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-levels-adjusted.png"));
     expectedPixels = image.getStoredPixels("expected-Levels-Adjusted-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -213,7 +220,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Histogram-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-histogram.png"));
     expectedPixels = image.getStoredPixels("expected-Histogram-Key");
-    assertImageEquals( expectedPixels, operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
 
@@ -565,9 +572,10 @@ public class ImageControllerTest {
     System.out.println("Actual output for non-existent key test: " + output.toString());
 
     // Let's check for multiple possible error messages since the actual message might vary
-    boolean hasExpectedError = output.toString().contains("Retrieved pixels with key: nonexistentKey") ||
-        output.toString().contains("No image found") ||
-        output.toString().contains("Error processing command");
+    boolean hasExpectedError =
+        output.toString().contains("Retrieved pixels with key: nonexistentKey") ||
+            output.toString().contains("No image found") ||
+            output.toString().contains("Error processing command");
     assertTrue("Should reject non-existent key", hasExpectedError);
 
     // Reset output for next test
@@ -666,6 +674,7 @@ public class ImageControllerTest {
 
     assertTrue("Should reject missing blue component key", hasInvalidCommandError);
   }
+
   @Test
   public void testInvalidRGBSplit() {
     // First clear any existing output
@@ -738,6 +747,7 @@ public class ImageControllerTest {
     assertTrue("Should reject missing blue component key\nActual output: " + actualOutput,
         hasInvalidCommandError);
   }
+
   @Test
   public void testInvalidComponentExtraction() {
     String[] components = {"red", "green", "blue", "value", "intensity", "luma"};
@@ -789,13 +799,14 @@ public class ImageControllerTest {
       System.out.println("Input command: " + input);
       System.out.println("Actual output:\n" + actualOutput);
 
-      boolean hasInvalidCommandError = actualOutput.contains("Invalid " + component + "-component command") ||
-          actualOutput.contains("Invalid command") ||
-          actualOutput.contains("Error processing command") ||
-          actualOutput.contains("insufficient arguments") ||
-          actualOutput.toLowerCase().contains("error") ||
-          actualOutput.contains("Usage:") ||
-          !actualOutput.contains("Operation " + component + "-component");
+      boolean hasInvalidCommandError =
+          actualOutput.contains("Invalid " + component + "-component command") ||
+              actualOutput.contains("Invalid command") ||
+              actualOutput.contains("Error processing command") ||
+              actualOutput.contains("insufficient arguments") ||
+              actualOutput.toLowerCase().contains("error") ||
+              actualOutput.contains("Usage:") ||
+              !actualOutput.contains("Operation " + component + "-component");
 
       System.out.println("\nError checking for missing destination key:");
       System.out.println("Contains 'Invalid " + component + "-component command': " +
@@ -910,6 +921,7 @@ public class ImageControllerTest {
     assertTrue("Should reject invalid split keyword\nActual output: " + actualOutput,
         hasKeywordError);
   }
+
   @Test
   public void testInvalidFileFormats() {
     String[] invalidFormats = {".gif", ".bmp", ".tiff", ".raw"};
@@ -953,14 +965,15 @@ public class ImageControllerTest {
     // This test's behavior depends on whether your application supports non-ASCII filenames
     // Adjust the assertion based on your implementation
     assertTrue("Should handle or reject non-ASCII characters in filenames",
-        output.toString().contains("Error loading image") || output.toString().contains("Loaded Image testKey"));
+        output.toString().contains("Error loading image") || output.toString()
+            .contains("Loaded Image testKey"));
   }
 
   @Test
   public void testSplitWithBasicOperations() {
     // Test split with blur
     String input = source +
-        "blur testKey split-blur split 50\n"+
+        "blur testKey split-blur split 50\n" +
         "exit\n";
     runControllerWithInput(input);
     operationPixels = image.getStoredPixels("split-blur");
@@ -982,7 +995,7 @@ public class ImageControllerTest {
 
     // Test split with sepia
     input = source +
-        "sepia testKey split-sepia split 50\n"+
+        "sepia testKey split-sepia split 50\n" +
         "exit\n";
     runControllerWithInput(input);
     operationPixels = image.getStoredPixels("split-sepia");
@@ -993,7 +1006,7 @@ public class ImageControllerTest {
 
     // Test split with greyscale
     input = source +
-        "greyscale testKey split-greyscale split 50\n"+
+        "greyscale testKey split-greyscale split 50\n" +
         "exit\n";
     runControllerWithInput(input);
     operationPixels = image.getStoredPixels("split-greyscale");
@@ -1034,7 +1047,7 @@ public class ImageControllerTest {
 
       // Test with 75% split
       input = source +
-          "sharpen testKey split-75 split 75\n"+
+          "sharpen testKey split-75 split 75\n" +
           "exit\n";
       runControllerWithInput(input);
 

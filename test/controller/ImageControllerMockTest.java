@@ -1,5 +1,7 @@
 package controller;
+
 import static org.junit.Assert.assertEquals;
+
 import java.io.StringReader;
 import model.ImageModel;
 import model.colorscheme.Pixels;
@@ -7,6 +9,12 @@ import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit test class for testing the behavior of the ImageController with a mock image model. This
+ * class tests the interaction between the ImageController and a mock implementation of the
+ * ImageModel. It allows testing the controller's methods and the expected behavior when interacting
+ * with the model.
+ */
 public class ImageControllerMockTest {
 
   private StringBuilder output;
@@ -24,6 +32,7 @@ public class ImageControllerMockTest {
 
   // Mock image class implementing ImageModel
   private static class MockImage implements ImageModel {
+
     private final StringBuilder output;
 
     @Override
@@ -65,7 +74,8 @@ public class ImageControllerMockTest {
     @Override
     public void compress(String key, String saveKey, double compressionRatio) {
 
-      output.append("Applying compression to test1 with ratio ").append(compressionRatio).append("\n");
+      output.append("Applying compression to test1 with ratio ").append(compressionRatio)
+          .append("\n");
 
     }
 
@@ -114,22 +124,26 @@ public class ImageControllerMockTest {
 
     @Override
     public void getRedChannel(String key, String saveKey) {
-      output.append("Red component extracted from ").append(key).append(" saved as ").append(saveKey).append("\n");
+      output.append("Red component extracted from ").append(key).append(" saved as ")
+          .append(saveKey).append("\n");
     }
 
     @Override
     public void getGreenChannel(String key, String saveKey) {
-      output.append("Green component extracted from ").append(key).append(" saved as ").append(saveKey).append("\n");
+      output.append("Green component extracted from ").append(key).append(" saved as ")
+          .append(saveKey).append("\n");
     }
 
     @Override
     public void getBlueChannel(String key, String saveKey) {
-      output.append("Blue component extracted from ").append(key).append(" saved as ").append(saveKey).append("\n");
+      output.append("Blue component extracted from ").append(key).append(" saved as ")
+          .append(saveKey).append("\n");
     }
 
     @Override
     public void blur(String key, String saveKey) {
-      output.append("Blur applied to ").append(key).append(" saved as ").append(saveKey).append("\n");
+      output.append("Blur applied to ").append(key).append(" saved as ").append(saveKey)
+          .append("\n");
     }
 
     @Override
@@ -141,7 +155,8 @@ public class ImageControllerMockTest {
     @Override
     public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
       output.append("Split ").append(key).append(" into ")
-          .append(saveKey1).append(", ").append(saveKey2).append(" and ").append(saveKey3).append("\n");
+          .append(saveKey1).append(", ").append(saveKey2).append(" and ").append(saveKey3)
+          .append("\n");
     }
 
     @Override
@@ -152,7 +167,8 @@ public class ImageControllerMockTest {
 
     @Override
     public void flip(String key, String saveKey, Direction d) {
-      output.append("Flipped ").append(key).append(" ").append(d).append(" saved as ").append(saveKey).append("\n");
+      output.append("Flipped ").append(key).append(" ").append(d).append(" saved as ")
+          .append(saveKey).append("\n");
     }
 
 
@@ -183,7 +199,8 @@ public class ImageControllerMockTest {
   public void testRGBSplit() {
     String input = "rgb-split test1 red green blue\nexit";
     runControllerWithInput(input);
-    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n", output.toString());
+    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n",
+        output.toString());
   }
 
   private void runControllerWithInput(String input) {
@@ -260,7 +277,8 @@ public class ImageControllerMockTest {
   public void Split() {
     String input = "rgb-split test1 red green blue \nexit";
     runControllerWithInput(input);
-    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n", output.toString());
+    assertEquals("Retrieved pixels with key: test1\nSplit test1 into red, green and blue\n",
+        output.toString());
   }
 
   @Test
@@ -316,15 +334,18 @@ public class ImageControllerMockTest {
   public void testCombine() {
     String input = "rgb-combine combinedImage redImage greenImage blueImage\nexit";
     runControllerWithInput(input);
-    assertEquals("Combined redImage, greenImage, blueImage saved as combinedImage\n", output.toString());
+    assertEquals("Combined redImage, greenImage, blueImage saved as combinedImage\n",
+        output.toString());
   }
 
   @Test
   public void testSplitandTransform() {
     String input = "Split Image splitimage split 30\nexit";
     runControllerWithInput(input);
-    assertEquals("Retrieved pixels with key: Image\nSplit and transformed with key: Image\n", output.toString());
+    assertEquals("Retrieved pixels with key: Image\nSplit and transformed with key: Image\n",
+        output.toString());
   }
+
   @Test
   public void testGetStoredPixels() {
     String input = "save test/Test_Image/png_op/Lanscape-new.png test1\nexit";
