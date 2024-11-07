@@ -60,7 +60,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Blurred-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-blur.png"));
     expectedPixels = image.getStoredPixels("expected-Blurred-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -71,7 +71,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Sharpened-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-sharper.png"));
     expectedPixels = image.getStoredPixels("expected-Sharpened-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -82,7 +82,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Greyscale-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-greyscale.png"));
     expectedPixels = image.getStoredPixels("expected-Greyscale-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -93,7 +93,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Sepia-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-sepia.png"));
     expectedPixels = image.getStoredPixels("expected-Sepia-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -104,7 +104,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Brightened-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-brighter.png"));
     expectedPixels = image.getStoredPixels("expected-Brightened-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -115,7 +115,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Horizontal-Flip-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-horizontal-flip.png"));
     expectedPixels = image.getStoredPixels("expected-Horizontal-Flip-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -126,7 +126,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Vertical-Flip-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-vertical-flip.png"));
     expectedPixels = image.getStoredPixels("expected-Vertical-Flip-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals(expectedPixels, operationPixels);
   }
 
   @Test
@@ -146,9 +146,9 @@ public class ImageControllerTest {
     Pixels[][] expectedBluePixels = ImageUtil.loadImage(
         "test/Test_Image/png_op/landscape-blue-component.png");
 
-    assertImageEquals((RGBPixel[][]) expectedRedPixels, (RGBPixel[][]) redPixels);
-    assertImageEquals((RGBPixel[][]) expectedGreenPixels, (RGBPixel[][]) greenPixels);
-    assertImageEquals((RGBPixel[][]) expectedBluePixels, (RGBPixel[][]) bluePixels);
+    assertImageEquals( expectedRedPixels, redPixels);
+    assertImageEquals(expectedGreenPixels,greenPixels);
+    assertImageEquals( expectedBluePixels,bluePixels);
   }
 
   @Test
@@ -169,7 +169,7 @@ public class ImageControllerTest {
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-combined.png"));
     expectedPixels = image.getStoredPixels("expected-Combined-Key");
 
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -191,7 +191,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Levels-Adjusted-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-levels-adjusted.png"));
     expectedPixels = image.getStoredPixels("expected-Levels-Adjusted-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
   @Test
@@ -213,7 +213,7 @@ public class ImageControllerTest {
     image.storePixels("expected-Histogram-Key",
         ImageUtil.loadImage("test/Test_Image/png_op/landscape-histogram.png"));
     expectedPixels = image.getStoredPixels("expected-Histogram-Key");
-    assertImageEquals((RGBPixel[][]) expectedPixels, (RGBPixel[][]) operationPixels);
+    assertImageEquals( expectedPixels, operationPixels);
   }
 
 
