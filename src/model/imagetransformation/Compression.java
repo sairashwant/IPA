@@ -123,6 +123,13 @@ public class Compression implements Transformation {
     int totalElements = height * width;
     int elementsToZero = (int)(totalElements * (compressionRatio / 100.0));
 
+    if (elementsToZero == totalElements) {
+      for (int i = 0; i < height; i++) {
+        Arrays.fill(data[i], 0);
+      }
+      return;
+    }
+
     // Collect all values
     int[] allValues = new int[totalElements];
     int index = 0;

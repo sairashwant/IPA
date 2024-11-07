@@ -98,7 +98,7 @@ public class ImageControllerTest {
 
   @Test
   public void testBrighten() {
-    String input = source + "brighten 50 testKey brightened-test\nexit";
+    String input = source + "brighten 20 testKey brightened-test\nexit";
     runControllerWithInput(input);
     operationPixels = image.getStoredPixels("brightened-test");
     image.storePixels("expected-Brightened-Key",
@@ -1058,6 +1058,4 @@ public class ImageControllerTest {
       fail("Test failed with exception: " + e.getMessage());
     }
   }
-
-
 }
