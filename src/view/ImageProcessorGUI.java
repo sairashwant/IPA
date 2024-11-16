@@ -1,19 +1,25 @@
 package view;
 
+import controller.ImageController;
+import controller.ImageControllerInterface;
+import controller.ImageGUIController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
+import model.Image;
+import model.ImageModel;
+import model.imagetransformation.basicoperation.Flip.Direction;
 
 public class ImageProcessorGUI extends JFrame {
   private JLabel imageLabel; // To display the image
   private JPanel histogramPanel; // To display the histogram
   private JScrollPane imageScrollPane; // For scrolling the image
   private BufferedImage currentImage; // Currently displayed image
+  private ImageGUIController controller; // Reference to the controller
 
-  public ImageProcessorGUI() {
+  public ImageProcessorGUI(ImageGUIController controller) {
+    this.controller = controller; // Store the controller reference
     setTitle("Image Processor");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(800, 600);
@@ -39,7 +45,8 @@ public class ImageProcessorGUI extends JFrame {
     JButton sharpenButton = new JButton("Sharpen");
     JButton greyscaleButton = new JButton("Greyscale");
     JButton sepiaButton = new JButton("Sepia");
-    JButton flipButton = new JButton("Flip");
+    JButton flipVerticalButton = new JButton("Flip-Vertical");
+    JButton flipHorizontalButton = new JButton("Flip-Horizontal");
     JButton compressButton = new JButton("Compress");
 
     controlPanel.add(loadButton);
@@ -48,117 +55,24 @@ public class ImageProcessorGUI extends JFrame {
     controlPanel.add(sharpenButton);
     controlPanel.add(greyscaleButton);
     controlPanel.add(sepiaButton);
-    controlPanel.add(flipButton);
+    controlPanel.add(flipVerticalButton);
+    controlPanel.add(flipHorizontalButton);
     controlPanel.add(compressButton);
 
     add(controlPanel, BorderLayout.SOUTH);
 
     // Add Action Listeners using lambda functions
-    loadButton.addActionListener(e -> loadImage());
-    saveButton.addActionListener(e -> saveImage());
-    blurButton.addActionListener(e -> blurImage());
-    sharpenButton.addActionListener(e -> sharpenImage());
-    greyscaleButton.addActionListener(e -> convertToGreyscale());
-    sepiaButton.addActionListener(e -> applySepia());
-    flipButton.addActionListener(e -> flipImage());
-    compressButton.addActionListener(e -> compressImage());
+    loadButton.addActionListener(e -> controller.handleLoad(new String[]{})); // Pass appropriate arguments
+    saveButton.addActionListener(e -> controller.handleSave(new String[]{})); // Pass appropriate arguments
+    blurButton.addActionListener(e -> controller.applyOperation(new String[]{"blur", "sourceKey", "destKey"})); // Example arguments
+    sharpenButton.addActionListener(e -> controller.applyOperation(new String[]{"sharpen", "sourceKey", "destKey"})); // Example arguments
+    greyscaleButton.addActionListener(e -> controller.applyOperation(new String[]{"greyscale", "sourceKey", "destKey"})); // Example arguments
+    sepiaButton.addActionListener(e -> controller.applyOperation(new String[]{"sepia", "sourceKey", "destKey"})); // Example arguments
+    flipVerticalButton.addActionListener(e -> controller.handleFlip(new String[]{"flip", "sourceKey", "destKey"},Direction.VERTICAL)); // Example arguments
+    flipHorizontalButton.addActionListener(e -> controller.handleFlip(new String[]{"flip", "sourceKey", "destKey"},Direction.HORIZONTAL)); // Example arguments
+    compressButton.addActionListener(e -> controller.handleCompression(new String[]{"compress", "ratio", "sourceKey", "destKey"})); // Example arguments
 
     setVisible(true);
-  }
-
-  private void loadImage() {
-    JFileChooser fileChooser = new JFileChooser();
-    int returnValue = fileChooser.showOpenDialog(null);
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      try {
-        currentImage = ImageIO.read(selectedFile);
-        imageLabel.setIcon(new ImageIcon(currentImage));
-        updateHistogram();
-      } catch (Exception ex) {
-        showError("Error loading image: " + ex.getMessage());
-      }
-    }
-  }
-
-  private void saveImage() {
-    if (currentImage == null) {
-      showError("No image to save.");
-      return;
-    }
-    JFileChooser fileChooser = new JFileChooser();
-    int returnValue = fileChooser.showSaveDialog(null);
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      try {
-        String filePath = selectedFile.getAbsolutePath();
-        String fileExtension = filePath.substring(filePath.lastIndexOf(".") + 1);
-        ImageIO.write(currentImage, fileExtension, selectedFile);
-      } catch (Exception ex) {
-        showError("Error saving image: " + ex.getMessage());
-      }
-    }
-  }
-
-  private void blurImage() {
-    if (currentImage == null) {
-      showError("No image to blur.");
-      return;
-    }
-    // Implement blur logic here
-    showMessage("Blur operation applied (not implemented).");
-  }
-
-  private void sharpenImage() {
-    if (currentImage == null) {
-      showError("No image to sharpen.");
-      return;
-    }
-    // Implement sharpen logic here
-    showMessage("Sharpen operation applied (not implemented).");
-  }
-
-  private void convertToGreyscale() {
-    if (currentImage == null) {
-      showError("No image to convert to greyscale.");
-      return;
-    }
-    // Implement greyscale logic here
-    showMessage("Greyscale operation applied (not implemented).");
-  }
-
-  private void applySepia() {
-    if (currentImage == null) {
-      showError("No image to apply sepia.");
-      return;
-    }
-    // Implement sep ia logic here
-    showMessage("Sepia operation applied (not implemented).");
-  }
-
-  private void flipImage() {
-    if (currentImage == null) {
-      showError("No image to flip.");
-      return;
-    }
-    // Implement flip logic here
-    showMessage("Flip operation applied (not implemented).");
-  }
-
-  private void compressImage() {
-    if (currentImage == null) {
-      showError("No image to compress.");
-      return;
-    }
-    // Implement compression logic here
-    showMessage("Compression applied (not implemented).");
-  }
-
-  private void updateHistogram() {
-    // Implement histogram drawing logic here
-    histogramPanel.removeAll();
-    histogramPanel.revalidate();
-    histogramPanel.repaint();
   }
 
   private void showError(String message) {
@@ -170,6 +84,9 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   public static void main(String[] args) {
-    SwingUtilities.invokeLater(() -> new ImageProcessorGUI());
+    ImageModel model = new Image(); // Create an instance of the Image model
+    ImageControllerInterface controller = new ImageController(model); // Create the controller
+    ImageGUIController guiController = new ImageGUIController((ImageController) controller); // Create the GUI controller
+    SwingUtilities.invokeLater(() -> new ImageProcessorGUI(guiController)); // Launch the GUI
   }
 }

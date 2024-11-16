@@ -2,6 +2,7 @@ package controller;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import model.imagetransformation.basicoperation.Flip.Direction;
 
 /**
  * Interface for image processing controllers that handle user commands and manage image
@@ -116,6 +117,8 @@ public interface ImageControllerInterface {
    *             key.
    */
   void applyOperation(String[] args);
+
+  void handleFlip(String[] args, Direction direction);
 
   /**
    * Displays a menu of available commands for image processing, listing each command and its usage
