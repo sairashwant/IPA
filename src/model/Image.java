@@ -36,8 +36,8 @@ import model.imagetransformation.filtering.Sharpen;
  */
 public class Image implements ImageModel {
 
-  private Pixels[][] updatedPixel;
-  HashMap<String, Pixels[][]> h1 = new HashMap<>();
+  protected Pixels[][] updatedPixel;
+  protected HashMap<String, Pixels[][]> h1 = new HashMap<>();
 
   /**
    * Stores the pixel data associated with a specified key.
