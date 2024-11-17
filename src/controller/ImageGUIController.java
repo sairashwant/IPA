@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import model.EnhancedImageModel;
 import model.Image;
-import model.ImageModel;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Flip.Direction;
@@ -18,6 +16,7 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
   String latest;
   String original;
   private final ImageController imageController;
+  ImageProcessorGUI gui;
   Image i1;
 
 
@@ -32,7 +31,8 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
    * This method opens a file chooser dialog, retrieves the selected file,
    * and instructs the ImageController to load the image.
    */
-  public void handleLoad(ImageProcessorGUI gui) {
+  public void handleLoad(ImageProcessorGUI gui,String key) {
+    this.gui = gui;
     // Use JFileChooser to allow the user to select an image file
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
@@ -43,13 +43,11 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
       String filename = selectedFile.getAbsolutePath(); // Get the full path of the selected file
 
       // Extract the file name without the path and file extension
-      String key = selectedFile.getName();
       int lastDotIndex = key.lastIndexOf('.');
       if (lastDotIndex > 0) {
         key = key.substring(0, lastDotIndex); // Remove the file extension
       }
-      original = key;
-      latest = key;
+      latest=key;
 
       try {
         // Call the controller's handleLoad method with the appropriate arguments
@@ -171,8 +169,37 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
     String key = latest;
     String dest = key + "-" + operation;
     latest = dest;
-    String[] command = {operation,key,dest};
+    String[] command = {operation, key, dest};
+
+    // Apply the operation using the image controller
     imageController.applyOperation(command);
+
+    // Update the GUI to display the latest image
+    // Assuming you have a reference to the GUI controller and a method to display the image
+    displayImageByKey(gui, key); // Update this line with the actual method to refresh the image display
+
+    latest = dest;
+  }
+  public void displayImageByKey(ImageProcessorGUI gui, String key) {
+    try {
+      // Retrieve the stored pixels using the key
+      Pixels[][] pixels = i1.getStoredPixels(key);
+
+      // Check if pixels are available
+      if (pixels == null) {
+        throw new IllegalArgumentException("No image found with key: " + key);
+      }
+
+      // Convert to BufferedImage
+      BufferedImage image = convertPixelsToBufferedImage(pixels);
+
+      // Display the loaded image in the GUI
+      gui.displayImage(image);
+    } catch (IllegalArgumentException ex) {
+      showError("Error displaying image: " + ex.getMessage());
+    } catch (Exception ex) {
+      showError("An unexpected error occurred: " + ex.getMessage());
+    }
   }
 
   @Override
