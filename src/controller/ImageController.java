@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import model.EnhancedImageModel;
 import model.ImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
@@ -18,7 +19,7 @@ import model.imagetransformation.basicoperation.Flip.Direction;
  */
 public class ImageController implements ImageControllerInterface {
 
-  private final ImageModel imageModel;
+  private final EnhancedImageModel imageModel;
   private final Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
   private final Map<String, BiConsumer<String, String>> operationsMap;
@@ -33,7 +34,7 @@ public class ImageController implements ImageControllerInterface {
    * @param in    the Readable input source for user commands
    * @param out   the Appendable output for displaying messages
    */
-  public ImageController(ImageModel image, Readable in, Appendable out) {
+  public ImageController(EnhancedImageModel image, Readable in, Appendable out) {
     this.imageModel = image;
     this.scanner = new Scanner(in);
     this.out = out;
@@ -49,7 +50,7 @@ public class ImageController implements ImageControllerInterface {
    *
    * @param image the ImageModel instance for performing image operations
    */
-  public ImageController(ImageModel image) {
+  public ImageController(EnhancedImageModel image) {
     this.imageModel = image;
     this.out = null;
     this.scanner = new Scanner(System.in);
@@ -409,6 +410,11 @@ public class ImageController implements ImageControllerInterface {
     } catch (Exception e) {
       System.out.println("Error processing command: " + e.getMessage());
     }
+  }
+
+  public String getLatestKey(){
+    String key = imageModel.getLatestKey();
+    return key;
   }
 
   /**

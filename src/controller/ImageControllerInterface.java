@@ -9,7 +9,7 @@ import model.imagetransformation.basicoperation.Flip.Direction;
  * transformations. It provides methods to load, save, transform, and manipulate images, as well as
  * to manage command execution from a user input loop.
  */
-public interface ImageControllerInterface {
+public interface ImageControllerInterface{
 
   /**
    * Retrieves the map of available image processing commands. Each command name is mapped to its

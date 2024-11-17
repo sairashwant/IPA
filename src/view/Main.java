@@ -2,6 +2,8 @@ package view;
 
 import controller.ImageController;
 import controller.ImageControllerInterface;
+import model.EnhancedImage;
+import model.EnhancedImageModel;
 import model.Image;
 import model.ImageModel;
 
@@ -28,7 +30,7 @@ public class Main {
 
   public static void main(String[] args) {
 
-    ImageModel model = new Image();
+    EnhancedImageModel model = new EnhancedImage();
     ImageControllerInterface controller = new ImageController(model);
     controller.printMenu();
     controller.run();

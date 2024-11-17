@@ -3,6 +3,7 @@ package controller;
 import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
+import model.EnhancedImageModel;
 import model.ImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
@@ -20,7 +21,7 @@ public class ImageControllerMockTest {
   private StringBuilder output;
   private Readable in;
   private ImageController imageController;
-  private ImageModel mockImage;
+  private EnhancedImageModel mockImage;
 
   @Before
   public void setUp() {
@@ -31,7 +32,7 @@ public class ImageControllerMockTest {
   }
 
   // Mock image class implementing ImageModel
-  private static class MockImage implements ImageModel {
+  private static class MockImage implements EnhancedImageModel {
 
     private final StringBuilder output;
 
@@ -172,6 +173,20 @@ public class ImageControllerMockTest {
     }
 
 
+    @Override
+    public void downscale(String key, int newwidth, int newht, String savekey) {
+
+    }
+
+    @Override
+    public void maskedOperation(String key, String operation, String maskKey, String saveKey) {
+
+    }
+
+    @Override
+    public String getLatestKey() {
+      return "";
+    }
   }
 
   @Test

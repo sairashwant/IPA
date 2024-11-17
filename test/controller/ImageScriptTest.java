@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import model.EnhancedImage;
+import model.EnhancedImageModel;
 import model.Image;
 import org.junit.After;
 import org.junit.Before;
@@ -40,7 +42,7 @@ public class ImageScriptTest {
   public void setUp() {
     System.setOut(new PrintStream(outputStreamCaptor));
 
-    Image image = new Image();
+    EnhancedImageModel image = new EnhancedImage();
     controller = new ImageController(image);
   }
 

@@ -6,8 +6,11 @@ import controller.ImageGUIController;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import model.EnhancedImage;
+import model.EnhancedImageModel;
 import model.Image;
 import model.ImageModel;
+import model.colorscheme.Pixels;
 
 public class ImageProcessorGUI {
   private ImageGUIController controller;
@@ -28,11 +31,27 @@ public class ImageProcessorGUI {
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
     frame.add(imageLabel, BorderLayout.CENTER);
 
+    // Button to load image
     JButton loadButton = new JButton("Load Image");
-    loadButton.addActionListener(e -> controller.handleLoad(this)); // Pass the GUI instance
-    frame.add(loadButton, BorderLayout.SOUTH);
+    loadButton.addActionListener(e -> loadListener()); // Pass the GUI instance
+    frame.add(loadButton, BorderLayout.NORTH);
+
+    // Button to apply blur
+    JButton blurButton = new JButton("Blur");
+    blurButton.addActionListener(e -> blurListener()); // Replace with actual keys
+    frame.add(blurButton, BorderLayout.SOUTH);
 
     frame.setVisible(true);
+  }
+
+  private void loadListener(){
+    controller.handleLoad(this);
+  }
+  
+  private void blurListener(){
+    String[] args = {"blur"};
+    controller.applyOperation(args);
+    String latestKey = controller.getLatestKey();
   }
 
   public void displayImage(BufferedImage image) {
@@ -43,7 +62,7 @@ public class ImageProcessorGUI {
   }
 
   public static void main(String[] args) {
-    ImageModel model = new Image(); // Create an instance of the Image model
+    EnhancedImageModel model = new EnhancedImage(); // Create an instance of the Image model
     ImageController imageController = new ImageController(model); // Create the controller
     ImageGUIController controller = new ImageGUIController(imageController); // Create the GUI controller with the image controller
     new ImageProcessorGUI(controller); // Launch the GUI

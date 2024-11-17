@@ -8,6 +8,8 @@ import static org.junit.Assert.fail;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringReader;
+import model.EnhancedImage;
+import model.EnhancedImageModel;
 import model.Image;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
@@ -24,7 +26,7 @@ public class ImageControllerTest {
   private StringBuilder output;
   private Readable in;
   private ImageController controller;
-  private Image image;
+  private EnhancedImageModel image;
   Pixels[][] operationPixels;
   Pixels[][] expectedPixels;
   String source = "load test/Test_Image/Landscape.png testKey\n";
@@ -57,7 +59,7 @@ public class ImageControllerTest {
   @Before
   public void setUp() {
     output = new StringBuilder();
-    image = new Image();
+    image = new EnhancedImage();
     in = new StringReader("");
     controller = new ImageController(image, in, output);
   }

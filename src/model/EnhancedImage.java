@@ -29,4 +29,15 @@ public class EnhancedImage extends Image implements EnhancedImageModel{
     h1.put(saveKey, updatedPixels);
   }
 
+  @Override
+  public String getLatestKey() {
+    if (h1.isEmpty()) {
+      return null;
+    }
+    String latestKey = null;
+    for (String key : h1.keySet()) {
+      latestKey = key; // This will end up with the last key in the iteration
+    }
+    return latestKey;
+  }
 }

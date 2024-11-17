@@ -27,7 +27,7 @@ public class ImageExceptionTest {
   /**
    * The Image model instance used in the tests.
    */
-  private Image image;
+  private EnhancedImageModel image;
   /**
    * The pixels of the image used during operations.
    */
@@ -65,7 +65,7 @@ public class ImageExceptionTest {
    */
   @Before
   public void setUp() {
-    image = new Image();
+    image = new EnhancedImage();
     ImageController controller = new ImageController(image);
     Pixels[][] pixels = ImageUtil.loadImage(load);
   }
