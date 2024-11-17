@@ -2,145 +2,100 @@ package controller;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.function.Consumer;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import model.Image;
 import model.colorscheme.Pixels;
-import model.imagetransformation.basicoperation.Flip.Direction;
+import model.colorscheme.RGBPixel;
+import view.ImageProcessorGUI;
 
-public class ImageGUIController implements ImageGUIControllerInterface {
-  private JLabel imageLabel;
-  private BufferedImage currentImage;
-
-  private final ImageController imageController;// Reference to the ImageController
+public class ImageGUIController {
+  private final ImageController imageController;
+  Image i1;
 
   public ImageGUIController(ImageController imageController) {
     this.imageController = imageController;
+    i1= new Image();
   }
 
-
-  @Override
-  public Map<String, Consumer<String[]>> getCommandMap() {
-    return imageController.getCommandMap(); // Delegating to the ImageController's command map
-  }
-
-  @Override
-  public void run() {
-
-  }
-
-  @Override
-  public void handleLoad(String[] args) {
-    imageLabel = new JLabel();
+  /**
+   * Handles the loading of an image file when triggered by the GUI.
+   * This method opens a file chooser dialog, retrieves the selected file,
+   * and instructs the ImageController to load the image.
+   */
+  public void handleLoad(ImageProcessorGUI gui) {
+    // Use JFileChooser to allow user to select an image file
     JFileChooser fileChooser = new JFileChooser();
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    int returnValue = fileChooser.showOpenDialog(null);
+
+    // Check if the user selected a file
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
-      if (selectedFile == null || !selectedFile.exists()) {
-        showError("Error: File does not exist.");
-        return;
-      }
+      String filename = selectedFile.getAbsolutePath(); // Get the full path of the selected file
 
-      try {
-        currentImage = ImageIO.read(selectedFile); // Load the image
-        if (currentImage != null) {
-          imageLabel.setIcon(new ImageIcon(currentImage)); // Display the image
-          imageLabel.revalidate();
-          imageLabel.repaint();
-        } else {
-          showError("Error: Unsupported image format.");
+      // Prompt user for a key to store the image
+      String key = JOptionPane.showInputDialog("Enter the key to store the image:");
+
+      // Validate the key input
+      if (key != null && !key.trim().isEmpty()) {
+        try {
+          // Call the controller's handleLoad method with the appropriate arguments
+          imageController.handleLoad(new String[]{"load", filename, key});
+
+          // After loading, retrieve the stored pixels using the key directly from the model
+          i1.storePixels(key,ImageUtil.loadImage(filename));
+          Pixels[][] pixels = i1.getStoredPixels(key);
+
+          // Convert to BufferedImage and display the loaded image in the GUI
+          BufferedImage image = convertPixelsToBufferedImage(pixels);
+          gui.displayImage(image);
+        } catch (IllegalArgumentException ex) {
+          showError("Error loading image: " + ex.getMessage());
+        } catch (Exception ex) {
+          showError("An unexpected error occurred: " + ex.getMessage());
         }
-      } catch (IOException e) {
-        showError("Error loading image: " + e.getMessage());
-      }
-    }
-  }
-
-
-
-  @Override
-  public void handleSave(String[] args) {
-    JFileChooser fileChooser = new JFileChooser(); // Create a file chooser for saving images
-    int returnValue = fileChooser.showSaveDialog(null); // Show the dialog to choose a file
-    if (returnValue == JFileChooser.APPROVE_OPTION) { // If a file is selected
-      File selectedFile = fileChooser.getSelectedFile(); // Get the selected file
-      String filename = selectedFile.getAbsolutePath(); // Get the absolute path of the file
-      String key = JOptionPane.showInputDialog("Enter the key of the image to save:"); // Prompt for a key
-      if (key != null && !key.trim().isEmpty()) { // Ensure the key is not empty
-        imageController.handleSave(new String[]{"save", filename, key}); // Call handleSave in ImageController
       } else {
-        showError("Invalid key! "); // Show error if the key is invalid
+        showError("Invalid key! Please enter a valid key to store the image.");
       }
     }
   }
 
-  @Override
-  public void handleBrighten(String[] args) {
-    // Implementation for brightening images
-  }
-
-  @Override
-  public void handleRGBSplit(String[] args) {
-    // Implementation for RGB splitting
-  }
-
-  @Override
-  public void handleCombine(String[] args) {
-    // Implementation for combining images
-  }
-
-  @Override
-  public void handleCompression(String[] args) {
-    // Implementation for compressing images
-  }
-
-  @Override
-  public void handleLevelsAdjust(String[] args) {
-    // Implementation for adjusting levels
-  }
-
-  @Override
-  public void handleSplit(String[] args) {
-    // Implementation for splitting images
-  }
-
-  @Override
-  public void handleScript(String[] args) {
-    // Implementation for running scripts
-  }
-
-  @Override
-  public void applyOperation(String[] args) {
-    String operation = args[0];
-    String srcKey = args[1];
-    String destKey = args[2];
-
-    if (operation != null && srcKey != null && destKey != null) { // Ensure all inputs are provided
-      // Construct the args array for the operation
-      String[] operationArgs = new String[]{operation, srcKey, destKey};
-      imageController.applyOperation(operationArgs); // Call applyOperation in ImageController
-    } else {
-      showError("Invalid input! "); // Show error if any input is invalid
+  /**
+   * Converts a 2D array of Pixels to a BufferedImage.
+   *
+   * @param pixels the 2D array of Pixels to convert
+   * @return the resulting BufferedImage
+   */
+  private BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
+    if (pixels == null || pixels.length == 0) {
+      throw new IllegalArgumentException("No pixels to convert.");
     }
+
+    int height = pixels.length;
+    int width = pixels[0].length;
+    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        if (pixels[y][x] instanceof RGBPixel) {
+          RGBPixel rgbPixel = (RGBPixel) pixels[y][x];
+          int rgb = (rgbPixel.getRed() << 16) | (rgbPixel.getGreen() << 8) | rgbPixel.getBlue();
+          image.setRGB(x, y, rgb);
+        } else {
+          throw new IllegalArgumentException("Expected an RGBPixel.");
+        }
+      }
+    }
+
+    return image;
   }
 
-  @Override
-  public void handleFlip(String[] args, Direction direction) {
-    // Implementation for flipping images
-  }
-
-  @Override
-  public void printMenu() {
-    // Implementation for displaying the menu
-  }
-
+  /**
+   * Displays an error message dialog with the specified message.
+   *
+   * @param message The error message to display.
+   */
   private void showError(String message) {
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE); // Show error message
+    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
-
-  // Additional methods to handle other functionalities can be added here
 }

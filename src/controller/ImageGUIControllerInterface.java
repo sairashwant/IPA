@@ -1,7 +1,8 @@
 package controller;
 
-public interface ImageGUIControllerInterface extends ImageControllerInterface {
+import java.awt.event.ActionEvent;
 
+public interface ImageGUIControllerInterface {
 
-
+  public void handleLoad(ActionEvent e);
 }
