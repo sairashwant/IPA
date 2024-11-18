@@ -1,63 +1,48 @@
 package controller;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Map;
-import java.util.function.Consumer;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import model.Image;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import view.ImageProcessorGUI;
 
-public class ImageGUIController  implements ImageGUIControllerInterface{
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Map;
+import java.util.function.Consumer;
+
+public class ImageGUIController implements ImageGUIControllerInterface {
   String latest;
-  String original;
   private final ImageController imageController;
   ImageProcessorGUI gui;
   Image i1;
 
-
   public ImageGUIController(ImageController imageController) {
-    super();
     this.imageController = imageController;
-    i1= new Image();
+    i1 = new Image();
   }
-
-  /**
-   * Handles the loading of an image file when triggered by the GUI.
-   * This method opens a file chooser dialog, retrieves the selected file,
-   * and instructs the ImageController to load the image.
-   */
-  public void handleLoad(ImageProcessorGUI gui,String key) {
+    @Override
+    public void handleLoad(ImageProcessorGUI gui, String key) {
     this.gui = gui;
-    // Use JFileChooser to allow the user to select an image file
+
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
 
-    // Check if the user selected a file
     if (returnValue == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
-      String filename = selectedFile.getAbsolutePath(); // Get the full path of the selected file
+      String filename = selectedFile.getAbsolutePath();
 
-      // Extract the file name without the path and file extension
       int lastDotIndex = key.lastIndexOf('.');
       if (lastDotIndex > 0) {
         key = key.substring(0, lastDotIndex); // Remove the file extension
       }
-      latest=key;
+      latest = key;
 
       try {
-        // Call the controller's handleLoad method with the appropriate arguments
         imageController.handleLoad(new String[]{"load", filename, key});
-
-        // After loading, retrieve the stored pixels using the key directly from the model
         i1.storePixels(key, ImageUtil.loadImage(filename));
         Pixels[][] pixels = i1.getStoredPixels(key);
-
-        // Convert to BufferedImage and display the loaded image in the GUI
         BufferedImage image = convertPixelsToBufferedImage(pixels);
         gui.displayImage(image);
       } catch (IllegalArgumentException ex) {
@@ -68,13 +53,6 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
     }
   }
 
-
-  /**
-   * Converts a 2D array of Pixels to a BufferedImage.
-   *
-   * @param pixels the 2D array of Pixels to convert
-   * @return the resulting BufferedImage
-   */
   private BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
     if (pixels == null || pixels.length == 0) {
       throw new IllegalArgumentException("No pixels to convert.");
@@ -90,8 +68,6 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
           RGBPixel rgbPixel = (RGBPixel) pixels[y][x];
           int rgb = (rgbPixel.getRed() << 16) | (rgbPixel.getGreen() << 8) | rgbPixel.getBlue();
           image.setRGB(x, y, rgb);
-        } else {
-          throw new IllegalArgumentException("Expected an RGBPixel.");
         }
       }
     }
@@ -99,68 +75,12 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
     return image;
   }
 
-  /**
-   * Displays an error message dialog with the specified message.
-   *
-   * @param message The error message to display.
-   */
   private void showError(String message) {
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
-  @Override
-  public Map<String, Consumer<String[]>> getCommandMap() {
-    return Map.of();
-  }
-
-  @Override
-  public void run() {
-
-  }
-
-  @Override
-  public void handleLoad(String[] args) {
-
-  }
-
-  @Override
-  public void handleSave(String[] args) {
-
-  }
-
-  @Override
-  public void handleBrighten(String[] args) {
-
-  }
-
-  @Override
-  public void handleRGBSplit(String[] args) {
-
-  }
-
-  @Override
-  public void handleCombine(String[] args) {
-
-  }
-
-  @Override
-  public void handleCompression(String[] args) {
-
-  }
-
-  @Override
-  public void handleLevelsAdjust(String[] args) {
-
-  }
-
-  @Override
-  public void handleSplit(String[] args) {
-
-  }
-
-  @Override
-  public void handleScript(String[] args) {
-
+  public String getLatestKey() {
+    return imageController.getLatestKey();
   }
 
   @Override
@@ -170,30 +90,18 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
     String dest = key + "-" + operation;
     latest = dest;
     String[] command = {operation, key, dest};
-
-    // Apply the operation using the image controller
     imageController.applyOperation(command);
-
-    // Update the GUI to display the latest image
-    // Assuming you have a reference to the GUI controller and a method to display the image
-    displayImageByKey(gui, key); // Update this line with the actual method to refresh the image display
-
+    displayImageByKey(gui, key);
     latest = dest;
   }
+
   public void displayImageByKey(ImageProcessorGUI gui, String key) {
     try {
-      // Retrieve the stored pixels using the key
       Pixels[][] pixels = i1.getStoredPixels(key);
-
-      // Check if pixels are available
       if (pixels == null) {
         throw new IllegalArgumentException("No image found with key: " + key);
       }
-
-      // Convert to BufferedImage
       BufferedImage image = convertPixelsToBufferedImage(pixels);
-
-      // Display the loaded image in the GUI
       gui.displayImage(image);
     } catch (IllegalArgumentException ex) {
       showError("Error displaying image: " + ex.getMessage());
@@ -203,16 +111,47 @@ public class ImageGUIController  implements ImageGUIControllerInterface{
   }
 
   @Override
-  public void handleFlip(String[] args, Direction direction) {
+  public Map<String, Consumer<String[]>> getCommandMap() {
+    return Map.of();
+  }
+
+  @Override
+  public void run() {}
+
+  @Override
+  public void handleLoad(String[] args) {
 
   }
 
   @Override
+  public void handleSave(String[] args) {}
+
+  @Override
+  public void handleBrighten(String[] args) {}
+
+  @Override
+  public void handleRGBSplit(String[] args) {}
+
+  @Override
+  public void handleCombine(String[] args) {}
+
+  @Override
+  public void handleCompression(String[] args) {}
+
+  @Override
+  public void handleLevelsAdjust(String[] args) {}
+
+  @Override
+  public void handleSplit(String[] args) {}
+
+  @Override
+  public void handleScript(String[] args) {}
+
+  @Override
+  public void handleFlip(String[] args, Direction direction) {}
+
+  @Override
   public void printMenu() {
 
-  }
-
-  public String getLatestKey(){
-    return imageController.getLatestKey();
   }
 }

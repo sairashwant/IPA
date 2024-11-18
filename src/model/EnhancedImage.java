@@ -1,6 +1,4 @@
 package model;
-
-import java.util.HashMap;
 import model.colorscheme.Pixels;
 import model.imagetransformation.advancedoperations.Downscale;
 import model.imagetransformation.advancedoperations.MaskedOperation;
