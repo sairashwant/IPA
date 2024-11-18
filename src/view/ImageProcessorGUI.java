@@ -40,7 +40,6 @@ public class ImageProcessorGUI extends JFrame {
     JCheckBox greyscaleSplitToggle = new JCheckBox("Split");
     JButton sepiaButton = new JButton("Sepia");
     JCheckBox sepiaSplitToggle = new JCheckBox("Split");
-    JButton histogramButton = new JButton("Histogram");
     JButton horizontalFlipButton = new JButton("Horizontal Flip");
     JButton verticalFlipButton = new JButton("Vertical Flip");
     JButton redComponentButton = new JButton("Red Component");
@@ -61,7 +60,6 @@ public class ImageProcessorGUI extends JFrame {
     sharpenButton.addActionListener(e -> handleSharpen(sharpenSplitToggle.isSelected()));
     greyscaleButton.addActionListener(e -> handleGreyscale(greyscaleSplitToggle.isSelected()));
     sepiaButton.addActionListener(e -> handleSepia(sepiaSplitToggle.isSelected()));
-    histogramButton.addActionListener(e -> controller.applyOperation(new String[]{"histogram", controller.getLatestKey(), "histogram"}));
     horizontalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"horizontal-flip", controller.getLatestKey(), "flipped-horizontal"}, Direction.HORIZONTAL));
     verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"vertical-flip", controller.getLatestKey(), "flipped-vertical"}, Direction.VERTICAL));
     redComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"red-component", controller.getLatestKey(), "red"}));
@@ -88,8 +86,6 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(greyscaleSplitToggle);
     buttonPanel.add(sepiaButton);
     buttonPanel.add(sepiaSplitToggle);
-    buttonPanel.add(histogramButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(horizontalFlipButton);
     buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(verticalFlipButton);

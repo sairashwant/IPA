@@ -126,7 +126,31 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   public void handleLoad(String[] args) { }
 
   @Override
-  public void handleSave(String[] args) {}
+  public void handleSave(String[] args) {
+    // Check if the latest key is not null or empty
+    if (latest == null || latest.isEmpty()) {
+      showError("No image loaded to save. Please load an image first.");
+      return;
+    }
+
+    // Prompt the user for a filename to save the image
+    String filename = JOptionPane.showInputDialog("Enter filename to save the image (with extension):");
+
+    if (filename != null && !filename.trim().isEmpty()) {
+      // Create the command array to call the controller's handleSave method
+      String[] command = {"save", filename, latest};
+      try {
+        // Call the controller's handleSave method
+        imageController.handleSave(command);
+        // Display the saved image
+        displayImageByKey(gui, latest);
+      } catch (Exception e) {
+        showError("An error occurred while saving the image: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid filename. Please provide a valid filename to save the image.");
+    }
+  }
 
   @Override
   public void handleBrighten(String[] args) {
@@ -248,6 +272,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   @Override
   public void printMenu() {
-
   }
+
 }
