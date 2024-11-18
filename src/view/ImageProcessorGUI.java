@@ -26,117 +26,89 @@ public class ImageProcessorGUI extends JFrame {
 
     // Create a panel for buttons
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(0, 2, 5, 5)); // Two-column layout: buttons in left column, toggles in right
+    buttonPanel.setLayout(new GridLayout(0, 1, 5, 5)); // Single column layout
 
-    // Initialize buttons for all functions
+    // Initialize buttons
     JButton loadButton = new JButton("Load Image");
     JButton saveButton = new JButton("Save Image");
     JButton brightenButton = new JButton("Brighten");
-    JButton blurButton = new JButton("Blur");
-    JCheckBox blurSplitToggle = new JCheckBox("Split");
-    JButton sharpenButton = new JButton("Sharpen");
-    JCheckBox sharpenSplitToggle = new JCheckBox("Split");
-    JButton greyscaleButton = new JButton("Greyscale");
-    JCheckBox greyscaleSplitToggle = new JCheckBox("Split");
-    JButton sepiaButton = new JButton("Sepia");
-    JCheckBox sepiaSplitToggle = new JCheckBox("Split");
     JButton horizontalFlipButton = new JButton("Horizontal Flip");
     JButton verticalFlipButton = new JButton("Vertical Flip");
     JButton redComponentButton = new JButton("Red Component");
     JButton greenComponentButton = new JButton("Green Component");
     JButton blueComponentButton = new JButton("Blue Component");
     JButton compressButton = new JButton("Compress");
-    JButton rgbSplitButton = new JButton("RGB Split");
-    JButton rgbCombineButton = new JButton("RGB Combine");
+    JButton blurButton = new JButton("Blur");
+    JButton sharpenButton = new JButton("Sharpen");
+    JButton greyscaleButton = new JButton("Greyscale");
+    JButton sepiaButton = new JButton("Sepia");
     JButton levelsAdjustButton = new JButton("Levels Adjust");
-    JCheckBox levelsAdjustSplitToggle = new JCheckBox("Split");
     JButton exitButton = new JButton("Exit");
 
-    // Add action listeners to buttons
-    loadButton.addActionListener(e -> controller.handleLoad(this,"load1"));
+    // Add action listeners
+    loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
     saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     brightenButton.addActionListener(e -> handleBrighten());
-    blurButton.addActionListener(e -> handleBlur(blurSplitToggle.isSelected()));
-    sharpenButton.addActionListener(e -> handleSharpen(sharpenSplitToggle.isSelected()));
-    greyscaleButton.addActionListener(e -> handleGreyscale(greyscaleSplitToggle.isSelected()));
-    sepiaButton.addActionListener(e -> handleSepia(sepiaSplitToggle.isSelected()));
+    blurButton.addActionListener(e -> handlePopupOperation("Blur"));
+    sharpenButton.addActionListener(e -> handlePopupOperation("Sharpen"));
+    greyscaleButton.addActionListener(e -> handlePopupOperation("Greyscale"));
+    sepiaButton.addActionListener(e -> handlePopupOperation("Sepia"));
+    levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
     horizontalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"horizontal-flip", controller.getLatestKey(), "flipped-horizontal"}, Direction.HORIZONTAL));
     verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"vertical-flip", controller.getLatestKey(), "flipped-vertical"}, Direction.VERTICAL));
     redComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"red-component", controller.getLatestKey(), "red"}));
     greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green"}));
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
-    rgbSplitButton.addActionListener(e -> handleRGBSplit());
-    rgbCombineButton.addActionListener(e -> handleRGBCombine());
-    levelsAdjustButton.addActionListener(e -> handleLevelsAdjust(levelsAdjustSplitToggle.isSelected()));
     exitButton.addActionListener(e -> System.exit(0)); // Exit the application
 
-    // Add buttons and checkboxes to the button panel (buttons in left column, checkboxes in right column)
+    // Add buttons to the button panel
     buttonPanel.add(loadButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(saveButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(brightenButton);
-    buttonPanel.add(new JPanel()); // Empty space
-    buttonPanel.add(blurButton);
-    buttonPanel.add(blurSplitToggle);
-    buttonPanel.add(sharpenButton);
-    buttonPanel.add(sharpenSplitToggle);
-    buttonPanel.add(greyscaleButton);
-    buttonPanel.add(greyscaleSplitToggle);
-    buttonPanel.add(sepiaButton);
-    buttonPanel.add(sepiaSplitToggle);
     buttonPanel.add(horizontalFlipButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(verticalFlipButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(redComponentButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(greenComponentButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(blueComponentButton);
-    buttonPanel.add(new JPanel()); // Empty space
     buttonPanel.add(compressButton);
-    buttonPanel.add(new JPanel()); // Empty space
-    buttonPanel.add(rgbSplitButton);
-    buttonPanel.add(new JPanel()); // Empty space
-    buttonPanel.add(rgbCombineButton);
-    buttonPanel.add(new JPanel()); // Empty space
+    buttonPanel.add(blurButton);
+    buttonPanel.add(sharpenButton);
+    buttonPanel.add(greyscaleButton);
+    buttonPanel.add(sepiaButton);
     buttonPanel.add(levelsAdjustButton);
-    buttonPanel.add(levelsAdjustSplitToggle);
     buttonPanel.add(exitButton);
-    buttonPanel.add(new JPanel()); // Empty space
 
     // Set up the image display area
     imageLabel = new JLabel();
-    imageLabel.setHorizontalAlignment(JLabel.CENTER); // Center the image
-    imageLabel.setPreferredSize(new Dimension(900, 900)); // Set preferred size for the image area
+    imageLabel.setHorizontalAlignment(JLabel.CENTER);
+    imageLabel.setPreferredSize(new Dimension(900, 900));
 
     // Set up the histogram display area
     histogramLabel = new JLabel();
-    histogramLabel.setHorizontalAlignment(JLabel.CENTER); // Position the histogram
-    histogramLabel.setPreferredSize(new Dimension(50, 50)); // Set preferred size for the histogram area
+    histogramLabel.setHorizontalAlignment(JLabel.CENTER);
+    histogramLabel.setPreferredSize(new Dimension(75, 75));
 
     // Wrap the image and histogram labels in JScrollPane to enable scrolling
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
-    imageScrollPane.setPreferredSize(new Dimension(800, 800)); // Set preferred size for the scrollable area
+    imageScrollPane.setPreferredSize(new Dimension(600, 600));
     imageScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     imageScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
     JScrollPane histogramScrollPane = new JScrollPane(histogramLabel);
-    histogramScrollPane.setPreferredSize(new Dimension(400, 400)); // Set preferred size for the scrollable histogram area
+    histogramScrollPane.setPreferredSize(new Dimension(400, 400));
     histogramScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     histogramScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
     // Create a panel for the image and histogram with BorderLayout
     JPanel imagePanel = new JPanel();
-    imagePanel.setLayout(new BorderLayout(10, 10)); // Use BorderLayout to align image and histogram side by side
-    imagePanel.add(imageScrollPane, BorderLayout.CENTER); // Image in the center
-    imagePanel.add(histogramScrollPane, BorderLayout.EAST); // Histogram to the right
+    imagePanel.setLayout(new BorderLayout(10, 10));
+    imagePanel.add(imageScrollPane, BorderLayout.CENTER);
+    imagePanel.add(histogramScrollPane, BorderLayout.EAST);
 
     // Add panels to the main frame
-    add(buttonPanel, BorderLayout.WEST); // Place button panel on the left
-    add(imagePanel, BorderLayout.CENTER); // Center panel for image and histogram
+    add(buttonPanel, BorderLayout.WEST);
+    add(imagePanel, BorderLayout.CENTER);
 
     // Set the frame visibility
     setVisible(true);
@@ -161,40 +133,30 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handleBlur(boolean isSplit) {
-    String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
-    if (percentage != null) {
-      controller.applyOperation(new String[]{"blur", controller.getLatestKey(), "blurred", percentage});
+  private void handlePopupOperation(String operation) {
+    int isSplit = JOptionPane.showConfirmDialog(this, "Do you want to use split and transform?", operation, JOptionPane.YES_NO_OPTION);
+
+    if (isSplit == JOptionPane.YES_OPTION) {
+      String input = JOptionPane.showInputDialog("Enter split percentage (0-100):");
+      try {
+        int value = Integer.parseInt(input);
+        String percentage = input;
+        if (value < 0 || value > 100) {
+          throw new NumberFormatException("Percentage out of range");
+        }
+        controller.handleSplit(new String[]{operation.toLowerCase(), percentage});
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
+      }
+    } else if (isSplit == JOptionPane.NO_OPTION) {
+      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
       handleHistogram();
     }
   }
 
-  private void handleSharpen(boolean isSplit) {
-    String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
-    if (percentage != null) {
-      controller.applyOperation(new String[]{"sharpen", controller.getLatestKey(), "sharpened", percentage});
-      handleHistogram();
-    }
-  }
-
-  private void handleGreyscale(boolean isSplit) {
-    String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
-    if (percentage != null) {
-      controller.applyOperation(new String[]{"greyscale", controller.getLatestKey(), "greyscale", percentage});
-      handleHistogram();
-    }
-  }
 
   private void handleHistogram() {
     controller.applyHistogram(new String[]{"histogram", controller.getLatestKey(), "histogram"});
-  }
-
-  private void handleSepia(boolean isSplit) {
-    String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
-    if (percentage != null) {
-      controller.applyOperation(new String[]{"sepia", controller.getLatestKey(), "sepia", percentage});
-      handleHistogram();
-    }
   }
 
   private void handleCompression() {
@@ -205,29 +167,11 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handleRGBSplit() {
-    String redKey = JOptionPane.showInputDialog("Enter red channel key:");
-    String greenKey = JOptionPane.showInputDialog("Enter green channel key:");
-    String blueKey = JOptionPane.showInputDialog("Enter blue channel key:");
-    if (redKey != null && greenKey != null && blueKey != null) {
-      controller.handleRGBSplit(new String[]{"rgb-split", controller.getLatestKey(), redKey, greenKey, blueKey});
-    }
-  }
-
-  private void handleRGBCombine() {
-    String redKey = JOptionPane.showInputDialog("Enter red channel key:");
-    String greenKey = JOptionPane.showInputDialog("Enter green channel key:");
-    String blueKey = JOptionPane.showInputDialog("Enter blue channel key:");
-    if (redKey != null && greenKey != null && blueKey != null) {
-      controller.handleCombine(new String[]{"rgb-combine", controller.getLatestKey(), redKey, greenKey, blueKey});
-    }
-  }
-
-  private void handleLevelsAdjust(boolean isSplit) {
+  private void handleLevelsAdjust() {
     String black = JOptionPane.showInputDialog("Enter black level (0-255):");
     String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
-    String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
+    String percentage = JOptionPane.showInputDialog("Enter split percentage (0-100):");
     if (black != null && mid != null && white != null && percentage != null) {
       controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white, percentage});
     }

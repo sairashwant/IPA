@@ -245,15 +245,15 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   @Override
   public void handleSplit(String[] args) {
-    if (args.length >= 5) {
+    if (args.length >= 2) {
       String operation = args[0];
-      String srcKey = args[1];
-      String destKey = args[2];
-      String splitPercentage = args[4];
+      String key = latest;
+      String dest = key + "-split-" + operation ;
+      String splitPercentage = args[1];
       try {
-        String[] command = {operation, srcKey, destKey, "split", splitPercentage};
+        String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
-        displayImageByKey(gui, destKey);
+        displayImageByKey(gui, dest);
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
