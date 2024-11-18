@@ -1,6 +1,7 @@
 package controller;
 
-import model.Image;
+import model.EnhancedImage;
+import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Flip.Direction;
@@ -12,16 +13,20 @@ import java.io.File;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ImageGUIController implements ImageGUIControllerInterface {
+public class ImageGUIController extends ImageController implements ImageGUIControllerInterface {
   String latest;
   private final ImageController imageController;
   ImageProcessorGUI gui;
-  Image i1;
+  EnhancedImageModel i1;
+  Pixels[][] pixels;
 
-  public ImageGUIController(ImageController imageController) {
+  public ImageGUIController(EnhancedImageModel image, ImageController imageController) {
+    super(image);
     this.imageController = imageController;
-    i1 = new Image();
+    i1 = new EnhancedImage();
   }
+
+
     @Override
     public void handleLoad(ImageProcessorGUI gui, String key) {
     this.gui = gui;
@@ -91,13 +96,12 @@ public class ImageGUIController implements ImageGUIControllerInterface {
     latest = dest;
     String[] command = {operation, key, dest};
     imageController.applyOperation(command);
-    displayImageByKey(gui, key);
-    latest = dest;
+    displayImageByKey(gui, latest);
   }
 
   public void displayImageByKey(ImageProcessorGUI gui, String key) {
     try {
-      Pixels[][] pixels = i1.getStoredPixels(key);
+      Pixels[][] pixels = imageModel.getStoredPixels(key);
       if (pixels == null) {
         throw new IllegalArgumentException("No image found with key: " + key);
       }
@@ -119,15 +123,30 @@ public class ImageGUIController implements ImageGUIControllerInterface {
   public void run() {}
 
   @Override
-  public void handleLoad(String[] args) {
-
-  }
+  public void handleLoad(String[] args) { }
 
   @Override
   public void handleSave(String[] args) {}
 
   @Override
-  public void handleBrighten(String[] args) {}
+  public void handleBrighten(String[] args) {
+    if (args.length == 4) {
+      try {
+        int factor = Integer.parseInt(args[1]);
+        String key = latest; // Use the latest key
+        latest = key + "-brightened";
+        String[] command = {"brighten", String.valueOf(factor), key, latest};
+        imageController.handleBrighten(command);
+        displayImageByKey(gui, latest);
+      } catch (NumberFormatException e) {
+        showError("Invalid brighten command. Please enter a valid integer for the factor.");
+      } catch (Exception e) {
+        showError("An unexpected error occurred: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
+    }
+  }
 
   @Override
   public void handleRGBSplit(String[] args) {}
@@ -136,19 +155,96 @@ public class ImageGUIController implements ImageGUIControllerInterface {
   public void handleCombine(String[] args) {}
 
   @Override
-  public void handleCompression(String[] args) {}
+  public void handleCompression(String[] args) {
+    if (args.length == 4) {
+      try {
+        double compressionRatio = Double.parseDouble(args[1]);
+        String key = latest; // Use the latest key
+        String dest = key + "-compressed";
+        latest = dest; // Update the latest key
+        String[] command = {"compress", String.valueOf(compressionRatio), key, dest};
+        imageController.handleCompression(command);
+        displayImageByKey(gui, latest);
+      } catch (NumberFormatException e) {
+        showError("Invalid compression ratio. Please enter a valid number.");
+      } catch (Exception e) {
+        showError("An unexpected error occurred: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
+    }
+  }
 
   @Override
-  public void handleLevelsAdjust(String[] args) {}
+  public void handleLevelsAdjust(String[] args) {
+    if (args.length == 5) {
+      try {
+        int black = Integer.parseInt(args[1]);
+        int mid = Integer.parseInt(args[2]);
+        int white = Integer.parseInt(args[3]);
+        String key = latest;
+        String dest = key + "-levels-adjusted";
+        latest = dest; // Update the latest key
+        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
+        imageController.handleLevelsAdjust(command);
+        displayImageByKey(gui, latest);
+      } catch (NumberFormatException e) {
+        showError("Invalid level values. Please enter integers for black, mid, and white points.");
+      } catch (Exception e) {
+        showError("An unexpected error occurred: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+    }
+  }
 
   @Override
-  public void handleSplit(String[] args) {}
+  public void handleSplit(String[] args) {
+    if (args.length >= 5) {
+      String operation = args[0];
+      String srcKey = args[1];
+      String destKey = args[2];
+      String splitPercentage = args[4];
+      try {
+        String[] command = {operation, srcKey, destKey, "split", splitPercentage};
+        imageController.handleSplit(command);
+        displayImageByKey(gui, destKey);
+      } catch (Exception e) {
+        showError("Error processing split command: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
+    }
+  }
 
   @Override
   public void handleScript(String[] args) {}
 
   @Override
-  public void handleFlip(String[] args, Direction direction) {}
+  public void handleFlip(String[] args, Direction direction) {
+    if (latest == null || latest.isEmpty()) {
+      showError("No image loaded to flip. Please load an image first.");
+      return;
+    }
+
+    if (args.length == 3) {
+      // Use the latest key as the source key
+      String srcKey = latest;
+      String destKey = srcKey + "-flipped"; // Generate the destination key
+      latest = destKey; // Update the latest key to the destination key
+      String[] command = {"flip", srcKey, destKey};
+
+      try {
+        imageController.handleFlip(command, direction); // Perform the flip operation
+        displayImageByKey(gui, latest); // Display the flipped image
+      } catch (Exception e) {
+        showError("Error processing flip command: " + e.getMessage());
+      }
+    } else {
+      showError("Invalid flip command. Usage: <horizontal-flip|vertical-flip>");
+    }
+  }
+
 
   @Override
   public void printMenu() {

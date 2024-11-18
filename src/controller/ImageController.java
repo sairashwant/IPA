@@ -19,7 +19,7 @@ import model.imagetransformation.basicoperation.Flip.Direction;
  */
 public class ImageController implements ImageControllerInterface {
 
-  private final EnhancedImageModel imageModel;
+  protected final EnhancedImageModel imageModel;
   private final Scanner scanner;
   private final Map<String, Consumer<String[]>> commandMap;
   private final Map<String, BiConsumer<String, String>> operationsMap;

@@ -212,14 +212,14 @@ public class ImageProcessorGUI extends JFrame {
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (black != null && mid != null && white != null && percentage != null) {
-      controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white, controller.getLatestKey(), "adjusted", percentage});
+      controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white,percentage});
     }
   }
 
   public static void main(String[] args) {
     EnhancedImageModel i1 = new EnhancedImage();
-    // Create an instance of the controller
-    ImageGUIController controller = new ImageGUIController(new ImageController(i1));
+    ImageController image = new ImageController(i1);
+    ImageGUIController controller = new ImageGUIController(i1,image);
     new ImageProcessorGUI(controller); // Launch the GUI with the controller
   }
 }
