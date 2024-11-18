@@ -19,7 +19,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   ImageProcessorGUI gui;
   EnhancedImageModel i1;
   String latesthistogram;
-  Pixels[][] pixels;
 
   public ImageGUIController(EnhancedImageModel image, ImageController imageController) {
     super(image);
