@@ -110,18 +110,29 @@ public class ImageProcessorGUI extends JFrame {
     // Set up the image display area
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER); // Center the image
-    imageLabel.setPreferredSize(new Dimension(400, 400)); // Set preferred size for the image area
+    imageLabel.setPreferredSize(new Dimension(900, 900)); // Set preferred size for the image area
 
     // Set up the histogram display area
     histogramLabel = new JLabel();
-    histogramLabel.setHorizontalAlignment(JLabel.CENTER); // Center the histogram
-    histogramLabel.setPreferredSize(new Dimension(400, 200)); // Set preferred size for the histogram area
+    histogramLabel.setHorizontalAlignment(JLabel.CENTER); // Position the histogram
+    histogramLabel.setPreferredSize(new Dimension(50, 50)); // Set preferred size for the histogram area
 
-    // Create a panel for the image and histogram
+    // Wrap the image and histogram labels in JScrollPane to enable scrolling
+    JScrollPane imageScrollPane = new JScrollPane(imageLabel);
+    imageScrollPane.setPreferredSize(new Dimension(800, 800)); // Set preferred size for the scrollable area
+    imageScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    imageScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+    JScrollPane histogramScrollPane = new JScrollPane(histogramLabel);
+    histogramScrollPane.setPreferredSize(new Dimension(400, 400)); // Set preferred size for the scrollable histogram area
+    histogramScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    histogramScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+    // Create a panel for the image and histogram with BorderLayout
     JPanel imagePanel = new JPanel();
-    imagePanel.setLayout(new BorderLayout());
-    imagePanel.add(imageLabel, BorderLayout.NORTH);
-    imagePanel.add(histogramLabel, BorderLayout.SOUTH);
+    imagePanel.setLayout(new BorderLayout(10, 10)); // Use BorderLayout to align image and histogram side by side
+    imagePanel.add(imageScrollPane, BorderLayout.CENTER); // Image in the center
+    imagePanel.add(histogramScrollPane, BorderLayout.EAST); // Histogram to the right
 
     // Add panels to the main frame
     add(buttonPanel, BorderLayout.WEST); // Place button panel on the left
@@ -146,6 +157,7 @@ public class ImageProcessorGUI extends JFrame {
     String factor = JOptionPane.showInputDialog("Enter brightness factor:");
     if (factor != null) {
       controller.handleBrighten(new String[]{"brighten", factor, controller.getLatestKey(), "brightened"});
+      handleHistogram();
     }
   }
 
@@ -153,6 +165,7 @@ public class ImageProcessorGUI extends JFrame {
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (percentage != null) {
       controller.applyOperation(new String[]{"blur", controller.getLatestKey(), "blurred", percentage});
+      handleHistogram();
     }
   }
 
@@ -160,6 +173,7 @@ public class ImageProcessorGUI extends JFrame {
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (percentage != null) {
       controller.applyOperation(new String[]{"sharpen", controller.getLatestKey(), "sharpened", percentage});
+      handleHistogram();
     }
   }
 
@@ -167,13 +181,19 @@ public class ImageProcessorGUI extends JFrame {
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (percentage != null) {
       controller.applyOperation(new String[]{"greyscale", controller.getLatestKey(), "greyscale", percentage});
+      handleHistogram();
     }
+  }
+
+  private void handleHistogram() {
+    controller.applyHistogram(new String[]{"histogram", controller.getLatestKey(), "histogram"});
   }
 
   private void handleSepia(boolean isSplit) {
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (percentage != null) {
       controller.applyOperation(new String[]{"sepia", controller.getLatestKey(), "sepia", percentage});
+      handleHistogram();
     }
   }
 
@@ -181,6 +201,7 @@ public class ImageProcessorGUI extends JFrame {
     String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
     if (ratio != null) {
       controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
+      handleHistogram();
     }
   }
 
@@ -208,14 +229,14 @@ public class ImageProcessorGUI extends JFrame {
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
     String percentage = isSplit ? JOptionPane.showInputDialog("Enter split percentage (0-100):") : "100";
     if (black != null && mid != null && white != null && percentage != null) {
-      controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white,percentage});
+      controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white, percentage});
     }
   }
 
   public static void main(String[] args) {
     EnhancedImageModel i1 = new EnhancedImage();
     ImageController image = new ImageController(i1);
-    ImageGUIController controller = new ImageGUIController(i1,image);
+    ImageGUIController controller = new ImageGUIController(i1, image);
     new ImageProcessorGUI(controller); // Launch the GUI with the controller
   }
 }

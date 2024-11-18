@@ -7,7 +7,6 @@ import model.imagetransformation.filtering.Blur; // Assuming you have a Blur cla
 import model.imagetransformation.filtering.Sharpen; // Assuming you have a Sharpen class
 import model.imagetransformation.colortransformation.GreyScale; // Assuming you have a GreyScale class
 import model.imagetransformation.colortransformation.Sepia; // Assuming you have a Sepia class
-import model.imagetransformation.filtering.Sharpen;
 
 public class MaskedOperation implements Transformation {
   private String operation;

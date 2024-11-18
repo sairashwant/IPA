@@ -18,6 +18,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   private final ImageController imageController;
   ImageProcessorGUI gui;
   EnhancedImageModel i1;
+  String latesthistogram;
   Pixels[][] pixels;
 
   public ImageGUIController(EnhancedImageModel image, ImageController imageController) {
@@ -96,7 +97,25 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     latest = dest;
     String[] command = {operation, key, dest};
     imageController.applyOperation(command);
+    if(operation.contentEquals("histogram"))
+    {
+      Pixels[][] pixels = imageModel.getStoredPixels(latest);
+      BufferedImage image = convertPixelsToBufferedImage(pixels);
+      gui.displayHistogram(image);
+    }
     displayImageByKey(gui, latest);
+  }
+
+  public void applyHistogram(String[] args) {
+    String operation = args[0];
+    String key = latest;
+    String dest = latest + "-" +operation;
+    latesthistogram = dest;
+    String[] command = {operation, key, dest};
+    imageController.applyOperation(command);
+    Pixels[][] pixels = imageModel.getStoredPixels(latesthistogram);
+    BufferedImage image = convertPixelsToBufferedImage(pixels);
+    gui.displayHistogram(image);
   }
 
   public void displayImageByKey(ImageProcessorGUI gui, String key) {
@@ -113,6 +132,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       showError("An unexpected error occurred: " + ex.getMessage());
     }
   }
+
+
 
   @Override
   public Map<String, Consumer<String[]>> getCommandMap() {
