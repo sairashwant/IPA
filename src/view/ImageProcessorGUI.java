@@ -117,6 +117,7 @@ public class ImageProcessorGUI extends JFrame {
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
     imageLabel.setIcon(new ImageIcon(image));
+    handleHistogram();
   }
 
   // Method to display the histogram
@@ -129,7 +130,6 @@ public class ImageProcessorGUI extends JFrame {
     String factor = JOptionPane.showInputDialog("Enter brightness factor:");
     if (factor != null) {
       controller.handleBrighten(new String[]{"brighten", factor, controller.getLatestKey(), "brightened"});
-      handleHistogram();
     }
   }
 
@@ -150,7 +150,6 @@ public class ImageProcessorGUI extends JFrame {
       }
     } else if (isSplit == JOptionPane.NO_OPTION) {
       controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
-      handleHistogram();
     }
   }
 
@@ -163,7 +162,6 @@ public class ImageProcessorGUI extends JFrame {
     String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
     if (ratio != null) {
       controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
-      handleHistogram();
     }
   }
 

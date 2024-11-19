@@ -253,6 +253,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
         displayImageByKey(gui, dest);
+
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
