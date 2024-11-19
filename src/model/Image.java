@@ -389,20 +389,26 @@ public class Image implements ImageModel {
       throw new IllegalArgumentException("No image found for key: " + key);
     }
 
+    // Initialize frequency arrays for each color channel
     int[] redFreq = new int[256];
     int[] greenFreq = new int[256];
     int[] blueFreq = new int[256];
 
-    if (pixels instanceof RGBPixel[][]) {
-      for (Pixels[] row : pixels) {
-        for (Pixels pixel : row) {
-          redFreq[((RGBPixel) pixel).getRed()]++;
-          greenFreq[((RGBPixel) pixel).getGreen()]++;
-          blueFreq[((RGBPixel) pixel).getBlue()]++;
+    // Iterate through the pixel array and calculate the frequency of each color value
+    for (Pixels[] row : pixels) {
+      for (Pixels pixel : row) {
+        if (pixel instanceof RGBPixel) {
+          RGBPixel rgbPixel = (RGBPixel) pixel;
+          redFreq[rgbPixel.getRed()]++;
+          greenFreq[rgbPixel.getGreen()]++;
+          blueFreq[rgbPixel.getBlue()]++;
+        } else {
+          throw new IllegalArgumentException("Expected an RGBPixel. ");
         }
       }
     }
 
+    // Find the maximum frequency for scaling the histogram
     int maxFreq = 0;
     for (int i = 0; i < 256; i++) {
       maxFreq = Math.max(maxFreq, redFreq[i]);
@@ -410,20 +416,23 @@ public class Image implements ImageModel {
       maxFreq = Math.max(maxFreq, blueFreq[i]);
     }
 
+    // Create a BufferedImage for the histogram
     BufferedImage histogramImage = new BufferedImage(256, 256, BufferedImage.TYPE_INT_RGB);
     Graphics2D g2d = histogramImage.createGraphics();
 
+    // Set background color and draw grid
     g2d.setColor(Color.WHITE);
     g2d.fillRect(0, 0, 256, 256);
-
     drawGrid(g2d);
 
+    // Draw histogram lines for each color channel
     drawHistogramLine(g2d, redFreq, maxFreq, Color.RED);
     drawHistogramLine(g2d, greenFreq, maxFreq, Color.GREEN);
     drawHistogramLine(g2d, blueFreq, maxFreq, Color.BLUE);
 
     g2d.dispose();
 
+    // Convert histogram image to RGBPixel array and store it
     RGBPixel[][] histogramPixels = new RGBPixel[256][256];
     for (int y = 0; y < 256; y++) {
       for (int x = 0; x < 256; x++) {
@@ -435,7 +444,6 @@ public class Image implements ImageModel {
 
     h1.put(savekey, histogramPixels);
   }
-
   /**
    * Draws the grid pattern for the histogram background.
    *

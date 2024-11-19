@@ -60,7 +60,7 @@ public class ImageProcessorGUI extends JFrame {
     greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green"}));
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
-    exitButton.addActionListener(e -> System.exit(0)); // Exit the application
+    exitButton.addActionListener(e -> System.exit(0));
 
     // Add buttons to the button panel
     buttonPanel.add(loadButton);
@@ -183,7 +183,7 @@ public class ImageProcessorGUI extends JFrame {
           throw new NumberFormatException("Percentage out of range");
         }
         // Now, pass the split percentage to the controller method
-        controller.handleLevelsAdjustSplit(new String[]{"levels-adjust", black, mid, white, percentage});
+        controller.handleLevelsAdjust(new String[]{"levels-adjust", percentage});
       } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
       }

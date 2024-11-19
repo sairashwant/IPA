@@ -19,7 +19,6 @@ public class ColorCorrection implements Transformation {
   private static final int MIN_MEANINGFUL_VALUE = 10;
   private static final int MAX_MEANINGFUL_VALUE = 245;
 
-
   /**
    * Finds the peak value in a histogram array within a meaningful range.
    *
@@ -43,7 +42,6 @@ public class ColorCorrection implements Transformation {
     return peakValue;
   }
 
-
   /**
    * Extracts histogram data for a single channel from the pixel array.
    *
@@ -57,7 +55,6 @@ public class ColorCorrection implements Transformation {
    * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an instance
    *         of {@link RGBPixel}
    */
-
   private int[] getChannelHistogram(Pixels[][] pixels, int channel) {
     int[] histogram = new int[256];
     for (Pixels[] row : pixels) {
@@ -86,15 +83,13 @@ public class ColorCorrection implements Transformation {
     return histogram;
   }
 
-
   /**
    * Applies the color correction transformation to the given image pixels.
    *
    * <p>The method calculates the peak value for each color channel (red, green, blue),
    * computes a target peak as the average of these peaks, and adjusts the pixel values accordingly.
    * Each channel is adjusted by the difference between the target peak and the peak for that
-   * channel. The corrected pixel values are then clamped to the valid range [0, 255] to ensure
-   * valid RGB values.</p>
+   * channel. The corrected pixel values are then clamped to the valid range [0 , 255] to ensure valid RGB values.</p>
    *
    * @param pixels the 2D array of {@link Pixels} representing the image to be corrected
    * @return a 2D array of corrected {@link RGBPixel} objects representing the adjusted image
@@ -102,7 +97,6 @@ public class ColorCorrection implements Transformation {
    * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an instance
    *         of {@link RGBPixel}
    */
-
   @Override
   public Pixels[][] apply(Pixels[][] pixels) {
     if (pixels == null) {
