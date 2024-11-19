@@ -153,7 +153,6 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-
   private void handleHistogram() {
     controller.applyHistogram(new String[]{"histogram", controller.getLatestKey(), "histogram"});
   }
@@ -169,9 +168,25 @@ public class ImageProcessorGUI extends JFrame {
     String black = JOptionPane.showInputDialog("Enter black level (0-255):");
     String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+
+    if (black != null && mid != null && white != null) {
+      handleSplitForLevelsAdjust(); // Call the method for split handling
+    }
+  }
+
+  private void handleSplitForLevelsAdjust() {
     String percentage = JOptionPane.showInputDialog("Enter split percentage (0-100):");
-    if (black != null && mid != null && white != null && percentage != null) {
-      controller.handleLevelsAdjust(new String[]{"levels-adjust", black, mid, white, percentage});
+    if (percentage != null) {
+      try {
+        int value = Integer.parseInt(percentage);
+        if (value < 0 || value > 100) {
+          throw new NumberFormatException("Percentage out of range");
+        }
+        // Now, pass the split percentage to the controller method
+        controller.handleLevelsAdjustSplit(new String[]{"levels-adjust", black, mid, white, percentage});
+      } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 
