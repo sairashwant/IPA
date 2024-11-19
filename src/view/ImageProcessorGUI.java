@@ -207,7 +207,7 @@ public class ImageProcessorGUI extends JFrame {
     if (black != null && mid != null && white != null) {
       // Pass the level values to the controller without split
       controller.handleLevelsAdjust(new String[]{
-          "levels-adjust", black, mid, white, "0"});
+          "levels-adjust", black, mid, white});
     }
   }
 

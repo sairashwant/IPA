@@ -345,23 +345,23 @@ public class Image implements ImageModel {
         blur(part1Key, part1Key);
         break;
       case "sharpen":
-        sharpen(part2Key, part2Key);
+        sharpen(part1Key, part1Key);
         break;
       case "sepia":
         sepia(part1Key, part1Key);
         break;
       case "greyscale":
-        greyScale(part2Key, part2Key);
+        greyScale(part1Key, part1Key);
         break;
       case "color-correction":
-        colorCorrection(part2Key, part2Key);
+        colorCorrection(part1Key, part1Key);
         break;
       case "levels-adjust":
         if (params.length != 3) {
           throw new IllegalArgumentException(
               "Levels-adjust requires 3 parameters: black, mid, and white points");
         }
-        adjustLevel(params[0], params[1], params[2], part2Key, part2Key);
+        adjustLevel(params[0], params[1], params[2], part1Key, part1Key);
         break;
       default:
         System.out.println("Invalid operation");

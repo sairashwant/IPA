@@ -221,7 +221,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   @Override
   public void handleLevelsAdjust(String[] args) {
-    if (args.length == 5) {
+    if (args.length == 4) {
       try {
         int black = Integer.parseInt(args[1]);
         int mid = Integer.parseInt(args[2]);
@@ -230,6 +230,23 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String dest = key + "-levels-adjusted";
         latest = dest; // Update the latest key
         String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
+        imageController.handleLevelsAdjust(command);
+        displayImageByKey(gui, latest);
+      } catch (NumberFormatException e) {
+        showError("Invalid level values. Please enter integers for black, mid, and white points.");
+      } catch (Exception e) {
+        showError("An unexpected error occurred: " + e.getMessage());
+      }
+    } else if (args.length == 5) {
+      try {
+        int black = Integer.parseInt(args[1]);
+        int mid = Integer.parseInt(args[2]);
+        int white = Integer.parseInt(args[3]);
+        int percentage = Integer.parseInt(args[4]);
+        String key = latest;
+        String dest = key + "-levels-adjusted";
+        latest = dest; // Update the latest key
+        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest, "split",String.valueOf(percentage)};
         imageController.handleLevelsAdjust(command);
         displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
@@ -248,6 +265,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       String operation = args[0];
       String key = latest;
       String dest = key + "-split-" + operation ;
+      latest = dest;
       String splitPercentage = args[1];
       try {
         String[] command = {operation, key, dest, "split", splitPercentage};
