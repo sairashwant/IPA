@@ -4,8 +4,6 @@ import controller.ImageController;
 import controller.ImageControllerInterface;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
-import model.Image;
-import model.ImageModel;
 
 /**
  * The entry point of the image processing application. It initializes the model, controller, and

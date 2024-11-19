@@ -13,6 +13,7 @@ public class ImageProcessorGUI extends JFrame {
   private JLabel imageLabel; // To display the loaded image
   private JLabel histogramLabel; // To display the histogram
   private BufferedImage currentImage; // To store the current loaded image
+  private JRadioButton previewBlurButton, previewSharpenButton, previewSepiaButton, previewGreyscaleButton, previewLevelsAdjustButton;
 
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller; // Initialize the controller
@@ -28,32 +29,47 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.setLayout(new GridLayout(0, 1, 5, 5)); // Single column layout
 
     // Initialize buttons
-    JButton loadButton = new JButton("Load Image");
-    JButton saveButton = new JButton("Save Image");
-    JButton undoButton = new JButton("Undo");
-    JButton originalImageButton = new JButton("Revert to Original Image");
-    JButton brightenButton = new JButton("Brighten");
-    JButton horizontalFlipButton = new JButton("Horizontal Flip");
-    JButton verticalFlipButton = new JButton("Vertical Flip");
-    JButton redComponentButton = new JButton("Red Component");
-    JButton greenComponentButton = new JButton("Green Component");
-    JButton blueComponentButton = new JButton("Blue Component");
-    JButton compressButton = new JButton("Compress");
-    JButton blurButton = new JButton("Blur");
-    JButton sharpenButton = new JButton("Sharpen");
-    JButton greyscaleButton = new JButton("Greyscale");
-    JButton sepiaButton = new JButton("Sepia");
-    JButton levelsAdjustButton = new JButton("Levels Adjust");
-    JButton exitButton = new JButton("Exit");
+    JButton loadButton = createButton("Load Image");
+    JButton saveButton = createButton("Save Image");
+    JButton undoButton = createButton("Undo");
+    JButton originalImageButton = createButton("Revert to Original Image");
+    JButton brightenButton = createButton("Brighten");
+    JButton horizontalFlipButton = createButton("Horizontal Flip");
+    JButton verticalFlipButton = createButton("Vertical Flip");
+    JButton redComponentButton = createButton("Red Component");
+    JButton greenComponentButton = createButton("Green Component");
+    JButton blueComponentButton = createButton("Blue Component");
+    JButton compressButton = createButton("Compress");
+    JButton blurButton = createButton("Blur");
+    JButton sharpenButton = createButton("Sharpen");
+    JButton greyscaleButton = createButton("Greyscale");
+    JButton sepiaButton = createButton("Sepia");
+    JButton levelsAdjustButton = createButton("Levels Adjust");
+    JButton exitButton = createButton("Exit");
+
+    // Initialize preview toggle radio buttons for each operation
+    previewBlurButton = new JRadioButton("Preview");
+    previewSharpenButton = new JRadioButton("Preview");
+    previewSepiaButton = new JRadioButton("Preview");
+    previewGreyscaleButton = new JRadioButton("Preview");
+    previewLevelsAdjustButton = new JRadioButton("Preview");
+
+    // Group the preview radio buttons together
+    ButtonGroup previewGroup = new ButtonGroup();
+    previewGroup.add(previewBlurButton);
+    previewGroup.add(previewSharpenButton);
+    previewGroup.add(previewSepiaButton);
+    previewGroup.add(previewGreyscaleButton);
+    previewGroup.add(previewLevelsAdjustButton);
 
     // Add action listeners
     loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
     saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     brightenButton.addActionListener(e -> handleBrighten());
-    blurButton.addActionListener(e -> handlePopupOperation("Blur"));
-    sharpenButton.addActionListener(e -> handlePopupOperation("Sharpen"));
-    greyscaleButton.addActionListener(e -> handlePopupOperation("Greyscale"));
-    sepiaButton.addActionListener(e -> handlePopupOperation("Sepia"));
+    blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
+    sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
+    greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
+    sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
     horizontalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"horizontal-flip", controller.getLatestKey(), "flipped-horizontal"}, Direction.HORIZONTAL));
     verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"vertical-flip", controller.getLatestKey(), "flipped-vertical"}, Direction.VERTICAL));
@@ -70,18 +86,20 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(saveButton);
     buttonPanel.add(undoButton);
     buttonPanel.add(originalImageButton); // Add the new button
-    buttonPanel.add(brightenButton);
+
+    // Group operation buttons with preview toggle buttons in a sub-panel
+    buttonPanel.add(createOperationWithPreviewPanel(blurButton, previewBlurButton));
+    buttonPanel.add(createOperationWithPreviewPanel(sharpenButton, previewSharpenButton));
+    buttonPanel.add(createOperationWithPreviewPanel(sepiaButton, previewSepiaButton));
+    buttonPanel.add(createOperationWithPreviewPanel(greyscaleButton, previewGreyscaleButton));
+    buttonPanel.add(createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustButton));
+
     buttonPanel.add(horizontalFlipButton);
     buttonPanel.add(verticalFlipButton);
     buttonPanel.add(redComponentButton);
     buttonPanel.add(greenComponentButton);
     buttonPanel.add(blueComponentButton);
     buttonPanel.add(compressButton);
-    buttonPanel.add(blurButton);
-    buttonPanel.add(sharpenButton);
-    buttonPanel.add(greyscaleButton);
-    buttonPanel.add(sepiaButton);
-    buttonPanel.add(levelsAdjustButton);
     buttonPanel.add(exitButton);
 
     // Set up the image display area
@@ -118,10 +136,26 @@ public class ImageProcessorGUI extends JFrame {
     setVisible(true);
   }
 
+  private JButton createButton(String text) {
+    JButton button = new JButton(text);
+    button.setPreferredSize(new Dimension(200, 50)); // Set a fixed size for buttons
+    button.setMinimumSize(new Dimension(200, 50));  // Ensure the minimum size for buttons
+    button.setMaximumSize(new Dimension(200, 50));  // Ensure the maximum size for buttons
+    return button;
+  }
 
-  public void undo(){
+  private JPanel createOperationWithPreviewPanel(JButton operationButton, JRadioButton previewButton) {
+    JPanel panel = new JPanel();
+    panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+    panel.add(operationButton);
+    panel.add(previewButton);
+    return panel;
+  }
+
+  public void undo() {
     controller.handleUndo();
   }
+
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
     currentImage = image; // Save the current image
@@ -140,7 +174,7 @@ public class ImageProcessorGUI extends JFrame {
 
   // Method to handle displaying the original image
   private void handleShowOriginalImage() {
-    controller.handleShowOriginalImage();// Fetch the original image from the controller
+    controller.handleShowOriginalImage(); // Fetch the original image from the controller
   }
 
   // Helper methods for advanced operations
@@ -151,35 +185,41 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handlePopupOperation(String operation) {
-    int isSplit = JOptionPane.showConfirmDialog(this, "Do you want to use split and transform?", operation, JOptionPane.YES_NO_OPTION);
-
-    if (isSplit == JOptionPane.YES_OPTION) {
-      String input = JOptionPane.showInputDialog("Enter split percentage (0-100):");
-      try {
-        int value = Integer.parseInt(input);
-        String percentage = input;
-        if (value < 0 || value > 100) {
-          throw new NumberFormatException("Percentage out of range");
-        }
-        controller.handleSplit(new String[]{operation.toLowerCase(), percentage});
-      } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
-      }
-    } else if (isSplit == JOptionPane.NO_OPTION) {
+  private void handleOperationWithPreview(String operation) {
+    JRadioButton previewButton = getPreviewButtonForOperation(operation);
+    if (previewButton != null && previewButton.isSelected()) {
+      // Generate the preview and show it in a popup
+      BufferedImage previewImage = controller.getPreviewImage(operation);
+      showPreviewInPopup(previewImage);
+    } else {
       controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
     }
   }
 
-  private void handleHistogram() {
-    controller.applyHistogram(new String[]{"histogram"});
+  private JRadioButton getPreviewButtonForOperation(String operation) {
+    switch (operation.toLowerCase()) {
+      case "blur":
+        return previewBlurButton;
+      case "sharpen":
+        return previewSharpenButton;
+      case "sepia":
+        return previewSepiaButton;
+      case "greyscale":
+        return previewGreyscaleButton;
+      case "levels adjust":
+        return previewLevelsAdjustButton;
+      default:
+        return null;
+    }
   }
 
-  private void handleCompression() {
-    String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
-    if (ratio != null) {
-      controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
-    }
+  private void showPreviewInPopup(BufferedImage previewImage) {
+    // Create a new frame to show the preview image
+    JFrame previewFrame = new JFrame("Preview");
+    previewFrame.setSize(600, 600);
+    JLabel previewLabel = new JLabel(new ImageIcon(previewImage));
+    previewFrame.add(previewLabel, BorderLayout.CENTER);
+    previewFrame.setVisible(true);
   }
 
   private void handleLevelsAdjust() {
@@ -187,7 +227,7 @@ public class ImageProcessorGUI extends JFrame {
 
     if (isSplit == JOptionPane.YES_OPTION) {
       handleLevelsAdjustWithSplit();
-    } else if (isSplit == JOptionPane.NO_OPTION) {
+    } else {
       handleLevelsAdjustWithoutSplit();
     }
   }
@@ -224,9 +264,21 @@ public class ImageProcessorGUI extends JFrame {
       controller.handleLevelsAdjust(new String[]{black, mid, white});
     }
   }
+
+  private void handleHistogram() {
+    controller.applyHistogram(new String[]{"histogram"});
+  }
+
+  private void handleCompression() {
+    String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
+    if (ratio != null) {
+      controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
+    }
+  }
+
   public static void main(String[] args) {
     // Create an instance of the controller
-    EnhancedImage i1= new EnhancedImage();
+    EnhancedImage i1 = new EnhancedImage();
     ImageController imageController = new ImageController(i1);
     ImageGUIController guiController = new ImageGUIController(i1, imageController);
 
@@ -236,5 +288,3 @@ public class ImageProcessorGUI extends JFrame {
     });
   }
 }
-
-

@@ -27,9 +27,25 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     i1 = new EnhancedImage();
   }
 
+  // New method to handle image preview
+  public void previewOperation(String operation) {
+    try {
+      // Get the preview image based on the operation
+      BufferedImage previewImage = imageController.getPreviewImage(operation);
+      if (previewImage != null) {
+        gui.displayImage(previewImage); // Display the preview image in the GUI
+      } else {
+        showError("Error generating preview.");
+      }
+    } catch (IllegalArgumentException ex) {
+      showError("Error generating preview: " + ex.getMessage());
+    } catch (Exception ex) {
+      showError("An unexpected error occurred while generating preview: " + ex.getMessage());
+    }
+  }
 
-    @Override
-    public void handleLoad(ImageProcessorGUI gui, String key) {
+  @Override
+  public void handleLoad(ImageProcessorGUI gui, String key) {
     this.gui = gui;
     original = key;
     JFileChooser fileChooser = new JFileChooser();
@@ -96,12 +112,10 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     String dest = key + "_" + operation;
     String[] command = {operation, key, dest};
     imageController.applyOperation(command);
-//    if(operation.contentEquals("histogram"))
-//    {
-//      Pixels[][] pixels = imageModel.getStoredPixels(dest);
-//      BufferedImage image = convertPixelsToBufferedImage(pixels);
-//      gui.displayHistogram(image);
-//    }
+
+    // Preview the image after applying the operation
+    previewOperation(operation);  // This will display the preview after operation
+
     latest = dest;
     displayImageByKey(gui, dest);
   }
@@ -130,8 +144,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       showError("An unexpected error occurred: " + ex.getMessage());
     }
   }
-
-
 
   @Override
   public Map<String, Consumer<String[]>> getCommandMap() {
@@ -216,160 +228,20 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     }
   }
 
-
-
-
-
-
+  // Handle undo, and other methods...
   @Override
-  public void handleBrighten(String[] args) {
-    if (args.length == 4) {
-      try {
-        int factor = Integer.parseInt(args[1]);
-        String key = latest; // Use the latest key
-        String dest = key + "_brightened";
-        String[] command = {"brighten", String.valueOf(factor), key, dest};
-        imageController.handleBrighten(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
-      } catch (NumberFormatException e) {
-        showError("Invalid brighten command. Please enter a valid integer for the factor.");
-      } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
-      }
-    } else {
-      showError("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
-    }
-  }
-
-  @Override
-  public void handleRGBSplit(String[] args) {}
-
-  @Override
-  public void handleCombine(String[] args) {}
-
-  @Override
-  public void handleCompression(String[] args) {
-    if (args.length == 4) {
-      try {
-        double compressionRatio = Double.parseDouble(args[1]);
-        String key = latest; // Use the latest key
-        String dest = key + "_compressed";
-        String[] command = {"compress", String.valueOf(compressionRatio), key, dest};
-        imageController.handleCompression(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
-      } catch (NumberFormatException e) {
-        showError("Invalid compression ratio. Please enter a valid number.");
-      } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
-      }
-    } else {
-      showError("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
-    }
-  }
-
-  @Override
-  public void handleLevelsAdjust(String[] args) {
-    if (args.length == 3) {
-      try {
-        int black = Integer.parseInt(args[0]);
-        int mid = Integer.parseInt(args[1]);
-        int white = Integer.parseInt(args[2]);
-        String key = latest;
-        String dest = key + "_levels-adjusted";
-        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
-        imageController.handleLevelsAdjust(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
-      } catch (NumberFormatException e) {
-        showError("Invalid level values. Please enter integers for black, mid, and white points.");
-      } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
-      }
-    } else if (args.length == 4) {
-      try {
-        int black = Integer.parseInt(args[0]);
-        int mid = Integer.parseInt(args[1]);
-        int white = Integer.parseInt(args[2]);
-        int percentage = Integer.parseInt(args[3]);
-        String key = latest;
-        String dest = key + "_split-"+"levels-adjusted";
-        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest, "split",String.valueOf(percentage)};
-        imageController.handleLevelsAdjust(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
-      } catch (NumberFormatException e) {
-        showError("Invalid level values. Please enter integers for black, mid, and white points.");
-      } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
-      }
-    } else {
-      showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
-    }
-  }
-
-  @Override
-  public void handleSplit(String[] args) {
-    if (args.length >= 2) {
-      String operation = args[0];
-      String key = latest;
-      String dest = key + "_split-" + operation ;
-      String splitPercentage = args[1];
-      try {
-        String[] command = {operation, key, dest, "split", splitPercentage};
-        imageController.handleSplit(command);
-        latest = dest;
-        displayImageByKey(gui, dest);
-      } catch (Exception e) {
-        showError("Error processing split command: " + e.getMessage());
-      }
-    } else {
-      showError("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
-    }
-  }
-
-  @Override
-  public void handleScript(String[] args) {}
-
-  @Override
-  public void handleFlip(String[] args, Direction direction) {
-    if (latest == null || latest.isEmpty()) {
-      showError("No image loaded to flip. Please load an image first.");
-      return;
-    }
-
-    if (args.length == 3) {
-      // Use the latest key as the source key
-      String srcKey = latest;
-      String dest = srcKey + "_flipped-"+ direction; // Generate the destination key
-      String[] command = {"flip", srcKey, dest};
-
-      try {
-        imageController.handleFlip(command, direction); // Perform the flip operation
-        latest = dest;
-        displayImageByKey(gui, dest);// Display the flipped image
-      } catch (Exception e) {
-        showError("Error processing flip command: " + e.getMessage());
-      }
-    } else {
-      showError("Invalid flip command. Usage: <horizontal-flip|vertical-flip>");
-    }
-  }
-
   public void handleUndo(){
-
+    // Logic for undo
   }
-
 
   @Override
-  public void printMenu() {
-  }
+  public void printMenu() {}
 
   @Override
   public void handleShowOriginalImage() {
-    String key = latest;
-    String dest = key + "_original";
+    String key = original;
+    String dest = key;
+    latest = key;
     i1.storePixels(dest,i1.getStoredPixels(key));
     BufferedImage originalImage = convertPixelsToBufferedImage(i1.getStoredPixels(dest)); // Fetch the original image from the controller
     if (originalImage != null) {
@@ -379,6 +251,5 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       showError("No original image available.");
     }
   }
-
 
 }
