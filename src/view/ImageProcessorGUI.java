@@ -33,6 +33,7 @@ public class ImageProcessorGUI extends JFrame {
     // Initialize buttons
     JButton loadButton = new JButton("Load Image");
     JButton saveButton = new JButton("Save Image");
+    JButton originalImageButton = new JButton("Show Original Image");
     JButton brightenButton = new JButton("Brighten");
     JButton horizontalFlipButton = new JButton("Horizontal Flip");
     JButton verticalFlipButton = new JButton("Vertical Flip");
@@ -46,7 +47,6 @@ public class ImageProcessorGUI extends JFrame {
     JButton sepiaButton = new JButton("Sepia");
     JButton levelsAdjustButton = new JButton("Levels Adjust");
     JButton exitButton = new JButton("Exit");
-    JButton originalImageButton = new JButton("Show Original Image"); // New button
 
     // Add action listeners
     loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));

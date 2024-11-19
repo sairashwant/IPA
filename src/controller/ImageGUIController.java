@@ -222,11 +222,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   @Override
   public void handleLevelsAdjust(String[] args) {
-    if (args.length == 4) {
+    if (args.length == 3) {
       try {
-        int black = Integer.parseInt(args[1]);
-        int mid = Integer.parseInt(args[2]);
-        int white = Integer.parseInt(args[3]);
+        int black = Integer.parseInt(args[0]);
+        int mid = Integer.parseInt(args[1]);
+        int white = Integer.parseInt(args[2]);
         String key = latest;
         String dest = key + "-levels-adjusted";
         latest = dest; // Update the latest key
@@ -238,12 +238,12 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       } catch (Exception e) {
         showError("An unexpected error occurred: " + e.getMessage());
       }
-    } else if (args.length == 5) {
+    } else if (args.length == 4) {
       try {
-        int black = Integer.parseInt(args[1]);
-        int mid = Integer.parseInt(args[2]);
-        int white = Integer.parseInt(args[3]);
-        int percentage = Integer.parseInt(args[4]);
+        int black = Integer.parseInt(args[0]);
+        int mid = Integer.parseInt(args[1]);
+        int white = Integer.parseInt(args[2]);
+        int percentage = Integer.parseInt(args[3]);
         String key = latest;
         String dest = key + "-levels-adjusted";
         latest = dest; // Update the latest key
