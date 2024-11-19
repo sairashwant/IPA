@@ -158,6 +158,19 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Save Image");
 
+    // Add file filters for different image formats
+    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter("PNG Images", "png");
+    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter("JPG Images", "jpg");
+    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter("PPM Images", "ppm");
+
+    // Add the file filters to the file chooser
+    fileChooser.addChoosableFileFilter(pngFilter);
+    fileChooser.addChoosableFileFilter(jpgFilter);
+    fileChooser.addChoosableFileFilter(ppmFilter);
+
+    // Set the default filter (optional, you can choose one to start with)
+    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
+
     // Open the file chooser dialog to select the file to save
     int userSelection = fileChooser.showSaveDialog(null);
 
@@ -165,46 +178,47 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       // User selected a file
       File fileToSave = fileChooser.getSelectedFile();
 
-      // Prompt user to input a file format (e.g., PNG, JPEG, BMP, etc.)
-      String fileFormat = JOptionPane.showInputDialog("Enter the file format (e.g., png, jpeg, bmp):");
+      // Get the selected file filter
+      javax.swing.filechooser.FileFilter selectedFilter = fileChooser.getFileFilter();
 
-      if (fileFormat != null && !fileFormat.trim().isEmpty()) {
-        // Validate the file format
-        fileFormat = fileFormat.trim().toLowerCase();
+      // Determine the file extension based on the selected filter
+      String extension = "";
+      if (selectedFilter == pngFilter) {
+        extension = "png";
+      } else if (selectedFilter == jpgFilter) {
+        extension = "jpg";
+      } else if (selectedFilter == ppmFilter) {
+        extension = "ppm";
+      }
 
-        // Check if the file format is valid
-        if (fileFormat.equals("png") || fileFormat.equals("jpeg") || fileFormat.equals("jpg") || fileFormat.equals("bmp")) {
-          // Append the correct file extension if necessary
-          if (!fileToSave.getName().endsWith("." + fileFormat)) {
-            fileToSave = new File(fileToSave.getAbsolutePath() + "." + fileFormat);
-          }
+      // If the file does not already have the correct extension, append it
+      String fileName = fileToSave.getName();
+      if (!fileName.toLowerCase().endsWith("." + extension)) {
+        fileToSave = new File(fileToSave.getAbsolutePath() + "." + extension);
+      }
 
-          // Create the command array to call the controller's handleSave method
-          String[] command = {"save", fileToSave.getAbsolutePath(), latest};
+      // Create the command array to call the controller's handleSave method
+      String[] command = {"save", fileToSave.getAbsolutePath(), latest};
 
-          try {
-            // Call the controller's handleSave method to save the image
-            imageController.handleSave(command);
-            // Optionally, display the saved image (if needed)
-            displayImageByKey(gui, latest);
+      try {
+        // Call the controller's handleSave method to save the image
+        imageController.handleSave(command);
+        // Optionally, display the saved image (if needed)
+        displayImageByKey(gui, latest);
 
-            // Show a success message
-            JOptionPane.showMessageDialog(null, "Image saved successfully to " + fileToSave.getAbsolutePath(),
-                "Save Success", JOptionPane.INFORMATION_MESSAGE);
-          } catch (Exception e) {
-            showError("An error occurred while saving the image: " + e.getMessage());
-          }
-        } else {
-          showError("Invalid file format. Please use one of the following: png, jpeg, jpg, bmp.");
-        }
-      } else {
-        showError("Invalid input. Please enter a valid file format.");
+        // Show a success message
+        JOptionPane.showMessageDialog(null, "Image saved successfully to " + fileToSave.getAbsolutePath(),
+            "Save Success", JOptionPane.INFORMATION_MESSAGE);
+      } catch (Exception e) {
+        showError("An error occurred while saving the image: " + e.getMessage());
       }
     } else {
       // The user canceled the file save operation
       showError("Save operation was canceled.");
     }
   }
+
+
 
 
 
