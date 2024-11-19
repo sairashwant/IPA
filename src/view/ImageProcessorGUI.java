@@ -43,6 +43,7 @@ public class ImageProcessorGUI extends JFrame {
     JButton greyscaleButton = new JButton("Greyscale");
     JButton sepiaButton = new JButton("Sepia");
     JButton levelsAdjustButton = new JButton("Levels Adjust");
+    JButton undoButton = new JButton("Undo");
     JButton exitButton = new JButton("Exit");
 
     // Add action listeners
@@ -60,6 +61,7 @@ public class ImageProcessorGUI extends JFrame {
     greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green"}));
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
+    undoButton.addActionListener(e -> Handleundo());
     exitButton.addActionListener(e -> System.exit(0));
     originalImageButton.addActionListener(e -> handleShowOriginalImage()); // Action listener for the new button
 
@@ -115,6 +117,10 @@ public class ImageProcessorGUI extends JFrame {
     setVisible(true);
   }
 
+
+  public void undo(){
+    controller.handleundo();
+  }
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
     currentImage = image; // Save the current image
