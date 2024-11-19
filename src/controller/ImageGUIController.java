@@ -93,27 +93,25 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   public void applyOperation(String[] args) {
     String operation = args[0];
     String key = latest;
-    String dest = key + "-" + operation;
-    latest = dest;
+    String dest = key + "_" + operation;
     String[] command = {operation, key, dest};
     imageController.applyOperation(command);
-    if(operation.contentEquals("histogram"))
-    {
-      Pixels[][] pixels = imageModel.getStoredPixels(latest);
-      BufferedImage image = convertPixelsToBufferedImage(pixels);
-      gui.displayHistogram(image);
-    }
-    displayImageByKey(gui, latest);
+//    if(operation.contentEquals("histogram"))
+//    {
+//      Pixels[][] pixels = imageModel.getStoredPixels(dest);
+//      BufferedImage image = convertPixelsToBufferedImage(pixels);
+//      gui.displayHistogram(image);
+//    }
+    latest = dest;
+    displayImageByKey(gui, dest);
   }
 
   public void applyHistogram(String[] args) {
-    String operation = args[0];
     String key = latest;
-    String dest = latest + "-" +operation;
-    latesthistogram = dest;
-    String[] command = {operation, key, dest};
+    String dest = latest + "_histogram";
+    String[] command = {"histogram", key, dest};
     imageController.applyOperation(command);
-    Pixels[][] pixels = imageModel.getStoredPixels(latesthistogram);
+    Pixels[][] pixels = imageModel.getStoredPixels(dest);
     BufferedImage image = convertPixelsToBufferedImage(pixels);
     gui.displayHistogram(image);
   }
@@ -229,10 +227,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       try {
         int factor = Integer.parseInt(args[1]);
         String key = latest; // Use the latest key
-        latest = key + "-brightened";
-        String[] command = {"brighten", String.valueOf(factor), key, latest};
+        String dest = key + "_brightened";
+        String[] command = {"brighten", String.valueOf(factor), key, dest};
         imageController.handleBrighten(command);
         displayImageByKey(gui, latest);
+        latest = dest;
       } catch (NumberFormatException e) {
         showError("Invalid brighten command. Please enter a valid integer for the factor.");
       } catch (Exception e) {
@@ -255,11 +254,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       try {
         double compressionRatio = Double.parseDouble(args[1]);
         String key = latest; // Use the latest key
-        String dest = key + "-compressed";
-        latest = dest; // Update the latest key
+        String dest = key + "_compressed";
         String[] command = {"compress", String.valueOf(compressionRatio), key, dest};
         imageController.handleCompression(command);
         displayImageByKey(gui, latest);
+        latest = dest;
       } catch (NumberFormatException e) {
         showError("Invalid compression ratio. Please enter a valid number.");
       } catch (Exception e) {
@@ -278,11 +277,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         int mid = Integer.parseInt(args[1]);
         int white = Integer.parseInt(args[2]);
         String key = latest;
-        String dest = key + "-levels-adjusted";
-        latest = dest; // Update the latest key
+        String dest = key + "_levels-adjusted";
         String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
         imageController.handleLevelsAdjust(command);
         displayImageByKey(gui, latest);
+        latest = dest;
       } catch (NumberFormatException e) {
         showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
@@ -295,11 +294,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         int white = Integer.parseInt(args[2]);
         int percentage = Integer.parseInt(args[3]);
         String key = latest;
-        String dest = key + "-levels-adjusted";
-        latest = dest; // Update the latest key
+        String dest = key + "_split-"+"levels-adjusted";
         String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest, "split",String.valueOf(percentage)};
         imageController.handleLevelsAdjust(command);
         displayImageByKey(gui, latest);
+        latest = dest;
       } catch (NumberFormatException e) {
         showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
@@ -315,14 +314,13 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     if (args.length >= 2) {
       String operation = args[0];
       String key = latest;
-      String dest = key + "-split-" + operation ;
-      latest = dest;
+      String dest = key + "_split-" + operation ;
       String splitPercentage = args[1];
       try {
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
         displayImageByKey(gui, dest);
-
+        latest = dest;
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
@@ -344,13 +342,13 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     if (args.length == 3) {
       // Use the latest key as the source key
       String srcKey = latest;
-      String destKey = srcKey + "-flipped"; // Generate the destination key
-      latest = destKey; // Update the latest key to the destination key
-      String[] command = {"flip", srcKey, destKey};
+      String dest = srcKey + "_flipped-"+ direction; // Generate the destination key
+      String[] command = {"flip", srcKey, dest};
 
       try {
         imageController.handleFlip(command, direction); // Perform the flip operation
-        displayImageByKey(gui, latest); // Display the flipped image
+        displayImageByKey(gui, latest);// Display the flipped image
+        latest = dest;
       } catch (Exception e) {
         showError("Error processing flip command: " + e.getMessage());
       }
@@ -366,10 +364,13 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   @Override
   public void handleShowOriginalImage() {
-    latest = original;
-    BufferedImage originalImage = convertPixelsToBufferedImage(i1.getStoredPixels(latest)); // Fetch the original image from the controller
+    String key = latest;
+    String dest = key + "_original";
+    i1.storePixels(dest,i1.getStoredPixels(key));
+    BufferedImage originalImage = convertPixelsToBufferedImage(i1.getStoredPixels(dest)); // Fetch the original image from the controller
     if (originalImage != null) {
       gui.displayImage(originalImage); // Display the original image
+      latest = dest;
     } else {
       showError("No original image available.");
     }

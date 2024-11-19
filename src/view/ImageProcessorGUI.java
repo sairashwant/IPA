@@ -165,7 +165,7 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   private void handleHistogram() {
-    controller.applyHistogram(new String[]{"histogram", controller.getLatestKey(), "histogram"});
+    controller.applyHistogram(new String[]{"histogram"});
   }
 
   private void handleCompression() {
