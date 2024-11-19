@@ -19,6 +19,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   ImageProcessorGUI gui;
   EnhancedImageModel i1;
   String latesthistogram;
+  String original;
 
   public ImageGUIController(EnhancedImageModel image, ImageController imageController) {
     super(image);
@@ -30,7 +31,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     @Override
     public void handleLoad(ImageProcessorGUI gui, String key) {
     this.gui = gui;
-
+    original = key;
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
 
@@ -312,5 +313,17 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   @Override
   public void printMenu() {
   }
+
+  @Override
+  public void handleShowOriginalImage() {
+    latest = original;
+    BufferedImage originalImage = convertPixelsToBufferedImage(i1.getStoredPixels(latest)); // Fetch the original image from the controller
+    if (originalImage != null) {
+      gui.displayImage(originalImage); // Display the original image
+    } else {
+      showError("No original image available.");
+    }
+  }
+
 
 }

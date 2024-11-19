@@ -1,6 +1,7 @@
 package view;
 
 import controller.ImageController;
+import controller.ImageControllerInterface;
 import controller.ImageGUIController;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
@@ -45,6 +46,7 @@ public class ImageProcessorGUI extends JFrame {
     JButton sepiaButton = new JButton("Sepia");
     JButton levelsAdjustButton = new JButton("Levels Adjust");
     JButton exitButton = new JButton("Exit");
+    JButton originalImageButton = new JButton("Show Original Image"); // New button
 
     // Add action listeners
     loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
@@ -62,6 +64,7 @@ public class ImageProcessorGUI extends JFrame {
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
     exitButton.addActionListener(e -> System.exit(0));
+    originalImageButton.addActionListener(e -> handleShowOriginalImage()); // Action listener for the new button
 
     // Add buttons to the button panel
     buttonPanel.add(loadButton);
@@ -78,6 +81,7 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(greyscaleButton);
     buttonPanel.add(sepiaButton);
     buttonPanel.add(levelsAdjustButton);
+    buttonPanel.add(originalImageButton); // Add the new button
     buttonPanel.add(exitButton);
 
     // Set up the image display area
@@ -128,6 +132,11 @@ public class ImageProcessorGUI extends JFrame {
   // Method to display the histogram
   public void displayHistogram(BufferedImage histogram) {
     histogramLabel.setIcon(new ImageIcon(histogram));
+  }
+
+  // Method to handle displaying the original image
+  private void handleShowOriginalImage() {
+    controller.handleShowOriginalImage();// Fetch the original image from the controller
   }
 
   // Helper methods for advanced operations
@@ -194,8 +203,7 @@ public class ImageProcessorGUI extends JFrame {
 
         if (black != null && mid != null && white != null) {
           // Pass the split percentage and the level values to the controller
-          controller.handleLevelsAdjust(new String[]{
-              "levels-adjust", black, mid, white, percentage});
+          controller.handleLevelsAdjust(new String[]{black, mid, white, percentage});
         }
       } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -204,22 +212,25 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   private void handleLevelsAdjustWithoutSplit() {
-    // If no split, just ask for the black, mid, and white levels
     String black = JOptionPane.showInputDialog("Enter black level (0-255):");
     String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
 
     if (black != null && mid != null && white != null) {
-      // Pass the level values to the controller without split
-      controller.handleLevelsAdjust(new String[]{
-          "levels-adjust", black, mid, white});
+      controller.handleLevelsAdjust(new String[]{black, mid, white});
     }
   }
-
   public static void main(String[] args) {
-    EnhancedImageModel i1 = new EnhancedImage();
-    ImageController image = new ImageController(i1);
-    ImageGUIController controller = new ImageGUIController(i1, image);
-    new ImageProcessorGUI(controller); // Launch the GUI with the controller
+    // Create an instance of the controller
+    EnhancedImage i1= new EnhancedImage();
+    ImageController imageController = new ImageController(i1);
+    ImageGUIController guiController = new ImageGUIController(i1, imageController);
+
+    // Create the GUI and pass the controller
+    SwingUtilities.invokeLater(() -> {
+      new ImageProcessorGUI(guiController); // Initialize the GUI with the controller
+    });
   }
 }
+
+
