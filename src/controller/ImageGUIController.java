@@ -154,24 +154,60 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       return;
     }
 
-    // Prompt the user for a filename to save the image
-    String filename = JOptionPane.showInputDialog("Enter filename to save the image (with extension):");
+    // Create a JFileChooser to let the user choose a directory and file name
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Save Image");
 
-    if (filename != null && !filename.trim().isEmpty()) {
-      // Create the command array to call the controller's handleSave method
-      String[] command = {"save", filename, latest};
-      try {
-        // Call the controller's handleSave method
-        imageController.handleSave(command);
-        // Display the saved image
-        displayImageByKey(gui, latest);
-      } catch (Exception e) {
-        showError("An error occurred while saving the image: " + e.getMessage());
+    // Open the file chooser dialog to select the file to save
+    int userSelection = fileChooser.showSaveDialog(null);
+
+    if (userSelection == JFileChooser.APPROVE_OPTION) {
+      // User selected a file
+      File fileToSave = fileChooser.getSelectedFile();
+
+      // Prompt user to input a file format (e.g., PNG, JPEG, BMP, etc.)
+      String fileFormat = JOptionPane.showInputDialog("Enter the file format (e.g., png, jpeg, bmp):");
+
+      if (fileFormat != null && !fileFormat.trim().isEmpty()) {
+        // Validate the file format
+        fileFormat = fileFormat.trim().toLowerCase();
+
+        // Check if the file format is valid
+        if (fileFormat.equals("png") || fileFormat.equals("jpeg") || fileFormat.equals("jpg") || fileFormat.equals("bmp")) {
+          // Append the correct file extension if necessary
+          if (!fileToSave.getName().endsWith("." + fileFormat)) {
+            fileToSave = new File(fileToSave.getAbsolutePath() + "." + fileFormat);
+          }
+
+          // Create the command array to call the controller's handleSave method
+          String[] command = {"save", fileToSave.getAbsolutePath(), latest};
+
+          try {
+            // Call the controller's handleSave method to save the image
+            imageController.handleSave(command);
+            // Optionally, display the saved image (if needed)
+            displayImageByKey(gui, latest);
+
+            // Show a success message
+            JOptionPane.showMessageDialog(null, "Image saved successfully to " + fileToSave.getAbsolutePath(),
+                "Save Success", JOptionPane.INFORMATION_MESSAGE);
+          } catch (Exception e) {
+            showError("An error occurred while saving the image: " + e.getMessage());
+          }
+        } else {
+          showError("Invalid file format. Please use one of the following: png, jpeg, jpg, bmp.");
+        }
+      } else {
+        showError("Invalid input. Please enter a valid file format.");
       }
     } else {
-      showError("Invalid filename. Please provide a valid filename to save the image.");
+      // The user canceled the file save operation
+      showError("Save operation was canceled.");
     }
   }
+
+
+
 
   @Override
   public void handleBrighten(String[] args) {

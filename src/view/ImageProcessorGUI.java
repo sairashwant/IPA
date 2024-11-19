@@ -1,12 +1,9 @@
 package view;
 
 import controller.ImageController;
-import controller.ImageControllerInterface;
 import controller.ImageGUIController;
 import model.EnhancedImage;
-import model.EnhancedImageModel;
 import model.imagetransformation.basicoperation.Flip.Direction;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
