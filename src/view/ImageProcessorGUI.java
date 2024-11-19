@@ -14,6 +14,7 @@ public class ImageProcessorGUI extends JFrame {
   private ImageGUIController controller; // Reference to the controller
   private JLabel imageLabel; // To display the loaded image
   private JLabel histogramLabel; // To display the histogram
+  private BufferedImage currentImage; // To store the current loaded image
 
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller; // Initialize the controller
@@ -82,7 +83,6 @@ public class ImageProcessorGUI extends JFrame {
     // Set up the image display area
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
-    imageLabel.setPreferredSize(new Dimension(900, 900));
 
     // Set up the histogram display area
     histogramLabel = new JLabel();
@@ -116,7 +116,12 @@ public class ImageProcessorGUI extends JFrame {
 
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
+    currentImage = image; // Save the current image
+
+    // Set the image without resizing and let JScrollPane handle scrolling
     imageLabel.setIcon(new ImageIcon(image));
+
+    // Ensure the JScrollPane allows scrolling if needed
     handleHistogram();
   }
 
