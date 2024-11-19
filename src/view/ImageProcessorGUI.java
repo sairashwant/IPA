@@ -165,16 +165,16 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   private void handleLevelsAdjust() {
-    String black = JOptionPane.showInputDialog("Enter black level (0-255):");
-    String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
-    String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+    int isSplit = JOptionPane.showConfirmDialog(this, "Do you want to use split for levels adjust?", "Levels Adjust", JOptionPane.YES_NO_OPTION);
 
-    if (black != null && mid != null && white != null) {
-      handleSplitForLevelsAdjust(); // Call the method for split handling
+    if (isSplit == JOptionPane.YES_OPTION) {
+      handleLevelsAdjustWithSplit();
+    } else if (isSplit == JOptionPane.NO_OPTION) {
+      handleLevelsAdjustWithoutSplit();
     }
   }
 
-  private void handleSplitForLevelsAdjust() {
+  private void handleLevelsAdjustWithSplit() {
     String percentage = JOptionPane.showInputDialog("Enter split percentage (0-100):");
     if (percentage != null) {
       try {
@@ -182,11 +182,32 @@ public class ImageProcessorGUI extends JFrame {
         if (value < 0 || value > 100) {
           throw new NumberFormatException("Percentage out of range");
         }
-        // Now, pass the split percentage to the controller method
-        controller.handleLevelsAdjust(new String[]{"levels-adjust", percentage});
+        // Proceed to handle the levels adjust with split
+        String black = JOptionPane.showInputDialog("Enter black level (0-255):");
+        String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
+        String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+
+        if (black != null && mid != null && white != null) {
+          // Pass the split percentage and the level values to the controller
+          controller.handleLevelsAdjust(new String[]{
+              "levels-adjust", black, mid, white, percentage});
+        }
       } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid percentage between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
       }
+    }
+  }
+
+  private void handleLevelsAdjustWithoutSplit() {
+    // If no split, just ask for the black, mid, and white levels
+    String black = JOptionPane.showInputDialog("Enter black level (0-255):");
+    String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
+    String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+
+    if (black != null && mid != null && white != null) {
+      // Pass the level values to the controller without split
+      controller.handleLevelsAdjust(new String[]{
+          "levels-adjust", black, mid, white, "0"});
     }
   }
 
