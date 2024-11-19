@@ -230,8 +230,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String dest = key + "_brightened";
         String[] command = {"brighten", String.valueOf(factor), key, dest};
         imageController.handleBrighten(command);
-        displayImageByKey(gui, latest);
         latest = dest;
+        displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
         showError("Invalid brighten command. Please enter a valid integer for the factor.");
       } catch (Exception e) {
@@ -257,8 +257,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String dest = key + "_compressed";
         String[] command = {"compress", String.valueOf(compressionRatio), key, dest};
         imageController.handleCompression(command);
-        displayImageByKey(gui, latest);
         latest = dest;
+        displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
         showError("Invalid compression ratio. Please enter a valid number.");
       } catch (Exception e) {
@@ -280,8 +280,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String dest = key + "_levels-adjusted";
         String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
         imageController.handleLevelsAdjust(command);
-        displayImageByKey(gui, latest);
         latest = dest;
+        displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
         showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
@@ -297,8 +297,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String dest = key + "_split-"+"levels-adjusted";
         String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest, "split",String.valueOf(percentage)};
         imageController.handleLevelsAdjust(command);
-        displayImageByKey(gui, latest);
         latest = dest;
+        displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
         showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
@@ -319,8 +319,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       try {
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
-        displayImageByKey(gui, dest);
         latest = dest;
+        displayImageByKey(gui, dest);
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
@@ -347,8 +347,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
       try {
         imageController.handleFlip(command, direction); // Perform the flip operation
-        displayImageByKey(gui, latest);// Display the flipped image
         latest = dest;
+        displayImageByKey(gui, dest);// Display the flipped image
       } catch (Exception e) {
         showError("Error processing flip command: " + e.getMessage());
       }
