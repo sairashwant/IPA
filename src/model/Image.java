@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.advancedoperations.AdjustLevel;
@@ -37,7 +38,7 @@ import model.imagetransformation.filtering.Sharpen;
 public class Image implements ImageModel {
 
   protected Pixels[][] updatedPixel;
-  protected HashMap<String, Pixels[][]> h1 = new HashMap<>();
+  protected Map<String, Pixels[][]> h1 = new HashMap<String, Pixels[][]>();
 
   /**
    * Stores the pixel data associated with a specified key.
@@ -68,7 +69,7 @@ public class Image implements ImageModel {
    */
   public void getRedChannel(String key, String saveKey) {
     Split s1 = new Split();
-    HashMap<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
+    Map<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, saveKey, "temp1", "temp2");
     Pixels[][] redChannel = temp.get(saveKey);
     h1.put(saveKey, redChannel);
   }
@@ -81,7 +82,7 @@ public class Image implements ImageModel {
    */
   public void getGreenChannel(String key, String saveKey) {
     Split s1 = new Split();
-    HashMap<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", saveKey, "temp2");
+    Map<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", saveKey, "temp2");
     Pixels[][] greenChannel = temp.get(saveKey);
     h1.put(saveKey, greenChannel);
   }
@@ -94,7 +95,7 @@ public class Image implements ImageModel {
    */
   public void getBlueChannel(String key, String saveKey) {
     Split s1 = new Split();
-    HashMap<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", "temp2", saveKey);
+    Map<String, Pixels[][]> temp = s1.apply(h1, h1.get(key), key, "temp1", "temp2", saveKey);
     Pixels[][] blueChannel = temp.get(saveKey);
     h1.put(saveKey, blueChannel);
   }
@@ -138,7 +139,7 @@ public class Image implements ImageModel {
    */
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
     Split s1 = new Split();
-    HashMap<String, Pixels[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2,
+    Map<String, Pixels[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2,
         saveKey3);
     h1.putAll(temp);
   }

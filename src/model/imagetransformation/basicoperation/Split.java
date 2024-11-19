@@ -1,6 +1,7 @@
 package model.imagetransformation.basicoperation;
 
 import java.util.HashMap;
+import java.util.Map;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
@@ -47,7 +48,7 @@ public class Split extends AbstractBasicOperation {
    * @throws IllegalArgumentException if the input image does not contain {@code RGBPixel} objects
    */
 
-  public HashMap<String, Pixels[][]> apply(HashMap<String, Pixels[][]> h1,
+  public HashMap<String, Pixels[][]> apply(Map<String, Pixels[][]> h1,
       Pixels[][] originalPixels, String key3, String saveKey1, String saveKey2, String saveKey3) {
 
     int height = originalPixels.length;
