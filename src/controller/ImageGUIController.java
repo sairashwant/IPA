@@ -357,6 +357,10 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     }
   }
 
+  public void handleUndo(){
+
+  }
+
 
   @Override
   public void printMenu() {

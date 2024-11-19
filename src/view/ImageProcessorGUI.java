@@ -30,7 +30,8 @@ public class ImageProcessorGUI extends JFrame {
     // Initialize buttons
     JButton loadButton = new JButton("Load Image");
     JButton saveButton = new JButton("Save Image");
-    JButton originalImageButton = new JButton("Show Original Image");
+    JButton undoButton = new JButton("Undo");
+    JButton originalImageButton = new JButton("Revert to Original Image");
     JButton brightenButton = new JButton("Brighten");
     JButton horizontalFlipButton = new JButton("Horizontal Flip");
     JButton verticalFlipButton = new JButton("Vertical Flip");
@@ -43,7 +44,6 @@ public class ImageProcessorGUI extends JFrame {
     JButton greyscaleButton = new JButton("Greyscale");
     JButton sepiaButton = new JButton("Sepia");
     JButton levelsAdjustButton = new JButton("Levels Adjust");
-    JButton undoButton = new JButton("Undo");
     JButton exitButton = new JButton("Exit");
 
     // Add action listeners
@@ -61,13 +61,15 @@ public class ImageProcessorGUI extends JFrame {
     greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green"}));
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
-    undoButton.addActionListener(e -> Handleundo());
+    undoButton.addActionListener(e -> undo());
     exitButton.addActionListener(e -> System.exit(0));
     originalImageButton.addActionListener(e -> handleShowOriginalImage()); // Action listener for the new button
 
     // Add buttons to the button panel
     buttonPanel.add(loadButton);
     buttonPanel.add(saveButton);
+    buttonPanel.add(undoButton);
+    buttonPanel.add(originalImageButton); // Add the new button
     buttonPanel.add(brightenButton);
     buttonPanel.add(horizontalFlipButton);
     buttonPanel.add(verticalFlipButton);
@@ -80,7 +82,6 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(greyscaleButton);
     buttonPanel.add(sepiaButton);
     buttonPanel.add(levelsAdjustButton);
-    buttonPanel.add(originalImageButton); // Add the new button
     buttonPanel.add(exitButton);
 
     // Set up the image display area
@@ -119,7 +120,7 @@ public class ImageProcessorGUI extends JFrame {
 
 
   public void undo(){
-    controller.handleundo();
+    controller.handleUndo();
   }
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
