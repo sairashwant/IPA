@@ -193,49 +193,59 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   private int getSplitPercentage() {
-    // Create the slider
     JSlider slider = new JSlider(0, 100, 50);
     slider.setMajorTickSpacing(10);
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
 
-    // Create the "Close" button
+    // Create a panel to hold the slider
+    JPanel sliderPanel = new JPanel(new BorderLayout());
+    sliderPanel.add(slider, BorderLayout.CENTER);
+
+    // Create the buttons
+    JButton okButton = new JButton("OK");
     JButton closeButton = new JButton("Close");
-    closeButton.addActionListener(e -> {
-      // Close the dialog without performing any further action
-      SwingUtilities.getWindowAncestor(closeButton).dispose();
+
+    // Create a sub-panel for buttons with right alignment
+    JPanel buttonPanel = new JPanel(new GridBagLayout());
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    gbc.insets = new Insets(0, 10, 0, 5); // Adjust margins between buttons
+    buttonPanel.add(okButton, gbc);
+
+    gbc.gridx = 1;
+    buttonPanel.add(closeButton, gbc);
+
+    // Combine slider and button panels
+    JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+    mainPanel.add(sliderPanel, BorderLayout.CENTER);
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    // Create a JDialog instead of JOptionPane
+    JDialog dialog = new JDialog(this, "Select Split Percentage", true);
+    dialog.getContentPane().add(mainPanel);
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+
+    final int[] result = {50}; // Default value
+    final boolean[] confirmed = {false}; // Track if the user clicked OK
+
+    // Add action listeners
+    okButton.addActionListener(e -> {
+      result[0] = slider.getValue();
+      confirmed[0] = true;
+      dialog.dispose();
     });
 
-    // Create a JPanel to hold the slider and the button
-    JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout());
-    panel.add(slider, BorderLayout.CENTER);
-    panel.add(closeButton, BorderLayout.SOUTH);
+    closeButton.addActionListener(e -> dialog.dispose());
 
-    // Create the JOptionPane with the panel
-    JOptionPane optionPane = new JOptionPane(panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION);
-
-    // Create the dialog
-    JDialog dialog = optionPane.createDialog(this, "Select Split Percentage");
-
-    // Add a WindowListener to handle window closing correctly (close without error)
-    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-      public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-        // Simply close the dialog and prevent any further action
-        dialog.dispose();
-      }
-    });
-
-    // Display the dialog
+    // Show the dialog
     dialog.setVisible(true);
 
-    // Return the value of the slider when the user closes the dialog
-    int splitValue = slider.getValue();
-
-    // Return a valid value (0-100) or -1 if not a valid interaction
-    return splitValue != 50 ? splitValue : -1; // Only return a valid split percentage if it's not the default value
+    // Return the result or -1 if canceled
+    return confirmed[0] ? result[0] : -1;
   }
-
 
 
   public void showPreview(BufferedImage image, String operation) {
