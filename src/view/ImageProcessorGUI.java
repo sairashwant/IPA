@@ -66,10 +66,10 @@ public class ImageProcessorGUI extends JFrame {
     loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
     saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     brightenButton.addActionListener(e -> handleBrighten());
-//    blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
-//    sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
-//    greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
-//    sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
+    blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
+    sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
+    greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
+    sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
     horizontalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"horizontal-flip", controller.getLatestKey(), "flipped-horizontal"}, Direction.HORIZONTAL));
     verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"vertical-flip", controller.getLatestKey(), "flipped-vertical"}, Direction.VERTICAL));
@@ -177,16 +177,16 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-//  private void handleOperationWithPreview(String operation) {
-//    JRadioButton previewButton = getPreviewButtonForOperation(operation);
-//    if (previewButton != null && previewButton.isSelected()) {
-//      // Generate the preview and show it in a popup
-//      BufferedImage previewImage = controller.getPreviewImage(operation);
-//      showPreviewInPopup(previewImage);
-//    } else {
-//      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
-//    }
-//  }
+  private void handleOperationWithPreview(String operation) {
+    JCheckBox previewButton = getPreviewButtonForOperation(operation);
+    if (previewButton != null && previewButton.isSelected()) {
+      // Generate the preview and show it in a popup
+      BufferedImage previewImage = controller.getPreviewImage(operation);
+      showPreviewInPopup(previewImage);
+    } else {
+      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
+    }
+  }
 
   private JCheckBox getPreviewButtonForOperation(String operation) {
     switch (operation.toLowerCase()) {
