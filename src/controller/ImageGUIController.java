@@ -1,8 +1,6 @@
 package controller;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.FileFilter;
+
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
@@ -47,17 +45,15 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
         gui.displayImage(image);
       } catch (IllegalArgumentException ex) {
-        showError("Error loading image: " + ex.getMessage());
+        gui.showError("Error loading image: " + ex.getMessage());
       } catch (Exception ex) {
-        showError("An unexpected error occurred: " + ex.getMessage());
+        gui.showError("An unexpected error occurred: " + ex.getMessage());
       }
     }
   }
 
 
-  public void showError(String message) {
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-  }
+
 
   public String getLatestKey() {
     return imageController.getLatestKey();
@@ -93,9 +89,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
       gui.displayImage(image);
     } catch (IllegalArgumentException ex) {
-      showError("Error displaying image: " + ex.getMessage());
+      gui.showError("Error displaying image: " + ex.getMessage());
     } catch (Exception ex) {
-      showError("An unexpected error occurred: " + ex.getMessage());
+      gui.showError("An unexpected error occurred: " + ex.getMessage());
     }
   }
 
@@ -150,11 +146,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         JOptionPane.showMessageDialog(null, "Image saved successfully to " + fileToSave.getAbsolutePath(),
             "Save Success", JOptionPane.INFORMATION_MESSAGE);
       } catch (Exception e) {
-        showError("An error occurred while saving the image: " + e.getMessage());
+        gui.showError("An error occurred while saving the image: " + e.getMessage());
       }
     } else {
       // The user canceled the file save operation
-      showError("Save operation was canceled.");
+      gui.showError("Save operation was canceled.");
     }
   }
 
@@ -170,12 +166,12 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         latest = dest;
         displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
-        showError("Invalid brighten command. Please enter a valid integer for the factor.");
+        gui.showError("Invalid brighten command. Please enter a valid integer for the factor.");
       } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
+        gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else {
-      showError("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
+      gui.showError("Invalid brighten command. Usage: brighten <factor> <srcKey> <destKey>");
     }
   }
 
@@ -183,7 +179,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   @Override
   public void handleUndo() {
     if (latest == null || latest.isEmpty()) {
-      showError("No operation to undo. Please perform an operation first.");
+      gui.showError("No operation to undo. Please perform an operation first.");
       return;
     }
     // Find the last occurrence of the underscore in the latest key
@@ -197,10 +193,10 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         // Display the updated image
         displayImageByKey(gui, latest);
       } catch (Exception e) {
-        showError("Error displaying the previous version of the image: " + e.getMessage());
+        gui.showError("Error displaying the previous version of the image: " + e.getMessage());
       }
     } else {
-      showError("No previous version available to undo.");
+      gui.showError("No previous version available to undo.");
     }
   }
 
@@ -216,12 +212,12 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         latest = dest;
         displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
-        showError("Invalid compression ratio. Please enter a valid number.");
+        gui.showError("Invalid compression ratio. Please enter a valid number.");
       } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
+        gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else {
-      showError("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
+      gui.showError("Invalid compression command. Usage: compress <ratio> <srcKey> <destKey>");
     }
   }
 
@@ -239,9 +235,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         latest = dest;
         displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
-        showError("Invalid level values. Please enter integers for black, mid, and white points.");
+        gui.showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
+        gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else if (args.length == 4) {
       try {
@@ -256,12 +252,12 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         latest = dest;
         displayImageByKey(gui, latest);
       } catch (NumberFormatException e) {
-        showError("Invalid level values. Please enter integers for black, mid, and white points.");
+        gui.showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
-        showError("An unexpected error occurred: " + e.getMessage());
+        gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else {
-      showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+      gui.showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
     }
   }
 
@@ -279,10 +275,10 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         BufferedImage preview = convertPixelsToBufferedImage(imageModel.getStoredPixels(dest));
         gui.showPreview(preview,operation);
       } catch (Exception e) {
-        showError("Error processing split command: " + e.getMessage());
+        gui.showError("Error processing split command: " + e.getMessage());
       }
     } else {
-      showError("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
+      gui.showError("Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
     }
   }
 
@@ -293,7 +289,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   @Override
   public void handleFlip(String[] args, Direction direction) {
     if (latest == null || latest.isEmpty()) {
-      showError("No image loaded to flip. Please load an image first.");
+      gui.showError("No image loaded to flip. Please load an image first.");
       return;
     }
 
@@ -308,17 +304,17 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         latest = dest;
         displayImageByKey(gui, dest);// Display the flipped image
       } catch (Exception e) {
-        showError("Error processing flip command: " + e.getMessage());
+        gui.showError("Error processing flip command: " + e.getMessage());
       }
     } else {
-      showError("Invalid flip command. Usage: <horizontal-flip|vertical-flip>");
+      gui.showError("Invalid flip command. Usage: <horizontal-flip|vertical-flip>");
     }
   }
 
 
   public void handleDownscale(String widthInput, String heightInput) {
     if (latest == null || latest.isEmpty()) {
-      showError("No image loaded to downscale. Please load an image first.");
+      gui.showError("No image loaded to downscale. Please load an image first.");
       return;
     }
     try {
@@ -336,9 +332,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       displayImageByKey(gui, dest);
 
     } catch (NumberFormatException e) {
-      showError("Invalid dimensions. Please enter valid integers for width and height.");
+      gui.showError("Invalid dimensions. Please enter valid integers for width and height.");
     } catch (Exception e) {
-      showError("An unexpected error occurred: " + e.getMessage());
+      gui.showError("An unexpected error occurred: " + e.getMessage());
     }
   }
 
@@ -355,7 +351,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       latest = dest;
       gui.displayImage(originalImage); // Display the original image
     } else {
-      showError("No original image available.");
+      gui.showError("No original image available.");
     }
   }
 

@@ -151,10 +151,9 @@ public class ImageProcessorGUI extends JFrame {
 
   public void handleSave(String[] args){
     if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
-      controller.showError("No image loaded to save. Please load an image first.");
+      showError("No image loaded to save. Please load an image first.");
       return;
     }
-
 
     // Create a JFileChooser to let the user choose a directory and file name
     JFileChooser fileChooser = new JFileChooser();
@@ -177,6 +176,10 @@ public class ImageProcessorGUI extends JFrame {
     int userSelection = fileChooser.showSaveDialog(null);
     controller.handleSave(userSelection,fileChooser, pngFilter, jpgFilter,ppmFilter);
 
+  }
+
+  public void showError(String message) {
+    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
   public void displayImage(BufferedImage image) {
