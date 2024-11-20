@@ -153,6 +153,10 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
+  private void handleDownscale(){
+    //call downscale in controller here.
+  }
+
   private void handleFlip(Direction direction) {
     controller.handleFlip(new String[]{"flip", controller.getLatestKey(), direction.name().toLowerCase()}, direction);
   }
