@@ -1,5 +1,7 @@
 package controller;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
@@ -26,26 +28,12 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     i1 = new EnhancedImage();
   }
 
-  // New method to handle image preview
-  public void previewOperation(String operation) {
-//    try {
-//      // Get the preview image based on the operation
-//      BufferedImage previewImage = imageController.getPreviewImage(operation);
-//      if (previewImage != null) {
-//        gui.displayImage(previewImage); // Display the preview image in the GUI
-//      } else {
-//        showError("Error generating preview.");
-//      }
-//    } catch (IllegalArgumentException ex) {
-//      showError("Error generating preview: " + ex.getMessage());
-//    } catch (Exception ex) {
-//      showError("An unexpected error occurred while generating preview: " + ex.getMessage());
-//    }
-  }
+
 
   @Override
   public void handleLoad(ImageProcessorGUI gui, String key) {
     this.gui = gui;
+    addWindowListenerToGUI();
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
 
@@ -111,10 +99,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     String dest = key + "_" + operation;
     String[] command = {operation, key, dest};
     imageController.applyOperation(command);
-
-    // Preview the image after applying the operation
-    previewOperation(operation);  // This will display the preview after operation
-
     latest = dest;
     displayImageByKey(gui, dest);
   }
@@ -248,13 +232,13 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     }
   }
 
+
   @Override
   public void handleUndo() {
     if (latest == null || latest.isEmpty()) {
       showError("No operation to undo. Please perform an operation first.");
       return;
     }
-
     // Find the last occurrence of the underscore in the latest key
     int lastUnderscoreIndex = latest.lastIndexOf('_');
 
@@ -271,6 +255,33 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } else {
       showError("No previous version available to undo.");
     }
+  }
+
+  public void addWindowListenerToGUI() {
+    // Add a WindowListener to the GUI to detect when the user is about to close the application
+    gui.addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        // Before closing, prompt the user to save if there are unsaved changes
+        if (latest != null && !latest.isEmpty()) {
+          int option = JOptionPane.showConfirmDialog(gui,
+              "Do you want to save the current image before closing?",
+              "Save Image", JOptionPane.YES_NO_CANCEL_OPTION);
+
+          if (option == JOptionPane.YES_OPTION) {
+            // Trigger the save functionality
+            handleSave(new String[]{});  // Save the current image
+          } else if (option == JOptionPane.NO_OPTION) {
+            // Close without saving
+            gui.dispose();  // Close the application
+          }
+          // If the user selects CANCEL, do nothing (keep the application open)
+        } else {
+          // If there are no unsaved changes, simply close the application
+          gui.dispose();
+        }
+      }
+    });
   }
 
   @Override
@@ -345,9 +356,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       try {
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
-
         BufferedImage preview = convertPixelsToBufferedImage(imageModel.getStoredPixels(dest));
-        gui.showPreview(preview);
+        gui.showPreview(preview,operation);
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
@@ -400,7 +410,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } else {
       showError("No original image available.");
     }
+
   }
+
 
 
 }
