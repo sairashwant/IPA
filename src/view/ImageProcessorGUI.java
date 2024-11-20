@@ -1,22 +1,19 @@
 package view;
 
-import controller.ImageController;
 import controller.ImageGUIController;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import model.EnhancedImage;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageProcessorGUI extends JFrame {
+public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterface{
   private final ImageGUIController controller;
-  private JLabel imageLabel;
-  private JLabel histogramLabel;
-  private BufferedImage currentImage;
+  private final JLabel imageLabel;
+  private final JLabel histogramLabel;
   private final JCheckBox previewBlurCheckbox;
   private final JCheckBox previewSharpenCheckbox;
   private final JCheckBox previewSepiaCheckbox;
@@ -157,7 +154,7 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  public void handleSave(String[] args){
+  private void handleSave(String[] args){
     if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
       showError("No image loaded to save. Please load an image first.");
       return;
@@ -186,16 +183,18 @@ public class ImageProcessorGUI extends JFrame {
 
   }
 
+  @Override
   public void showError(String message) {
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
+  @Override
   public void displayImage(BufferedImage image) {
-    currentImage = image;
     imageLabel.setIcon(new ImageIcon(image));
     controller.applyHistogram(new String[]{"histogram"});
   }
 
+  @Override
   public void displayHistogram(BufferedImage histogram) {
     histogramLabel.setIcon(new ImageIcon(histogram));
   }
@@ -302,6 +301,7 @@ public class ImageProcessorGUI extends JFrame {
     return confirmed[0] ? result[0] : -1;
   }
 
+  @Override
   public void addWindowListenerToGUI() {
     // Add a WindowListener to the GUI to detect when the user is about to close the application
     addWindowListener(new WindowAdapter() {
@@ -312,7 +312,7 @@ public class ImageProcessorGUI extends JFrame {
         if (latest != null && !latest.isEmpty()) {
           int option = JOptionPane.showConfirmDialog(null,
               "Do you want to save the current image before closing?",
-              "Save Image", JOptionPane.YES_NO_CANCEL_OPTION);
+              "Save Image", JOptionPane.YES_NO_OPTION);
 
           if (option == JOptionPane.YES_OPTION) {
             // Trigger the save functionality
@@ -331,6 +331,7 @@ public class ImageProcessorGUI extends JFrame {
   }
 
 
+  @Override
   public void showPreview(BufferedImage image, String operation) {
     if (image != null) {
       JLabel previewLabel = new JLabel(new ImageIcon(image));

@@ -355,6 +355,4 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     }
   }
 
-
-
 }
