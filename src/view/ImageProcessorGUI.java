@@ -2,6 +2,7 @@ package view;
 
 import controller.ImageController;
 import controller.ImageGUIController;
+import java.io.File;
 import model.EnhancedImage;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
@@ -59,7 +60,7 @@ public class ImageProcessorGUI extends JFrame {
     previewLevelsAdjustCheckbox = new JCheckBox("Preview");
 
     // Button actions
-    loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
+    loadButton.addActionListener(e -> handleLoad(this, "load1"));
     saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     undoButton.addActionListener(e -> controller.handleUndo());
     originalImageButton.addActionListener(e -> controller.handleShowOriginalImage());
@@ -134,6 +135,15 @@ public class ImageProcessorGUI extends JFrame {
     panel.add(operationButton);
     panel.add(previewCheckbox);
     return panel;
+  }
+  private void handleLoad(ImageProcessorGUI gui,String key){
+    JFileChooser fileChooser = new JFileChooser();
+    int returnValue = fileChooser.showOpenDialog(null);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+      File selectedFile = fileChooser.getSelectedFile();
+      String filename = selectedFile.getAbsolutePath();
+      controller.handleLoad(this,key, filename);
+    }
   }
 
   public void displayImage(BufferedImage image) {

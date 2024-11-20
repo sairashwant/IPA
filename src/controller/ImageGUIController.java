@@ -28,23 +28,15 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     i1 = new EnhancedImage();
   }
 
-
-
   @Override
-  public void handleLoad(ImageProcessorGUI gui, String key) {
+  public void handleLoad(ImageProcessorGUI gui, String key, String filename) {
     this.gui = gui;
     addWindowListenerToGUI();
-    JFileChooser fileChooser = new JFileChooser();
-    int returnValue = fileChooser.showOpenDialog(null);
+    key=filename;
+    int lastDotIndex = key.lastIndexOf('.');
+    if (lastDotIndex > 0) {
+      key = key.substring(0, lastDotIndex); // Remove the file extension
 
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      String filename = selectedFile.getAbsolutePath();
-
-      int lastDotIndex = key.lastIndexOf('.');
-      if (lastDotIndex > 0) {
-        key = key.substring(0, lastDotIndex); // Remove the file extension
-      }
       latest = key;
       original = key;
 
