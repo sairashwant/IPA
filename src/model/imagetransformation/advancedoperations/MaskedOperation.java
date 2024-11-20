@@ -1,6 +1,5 @@
 package model.imagetransformation.advancedoperations;
 
-import model.Image;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.Transformation;

@@ -76,7 +76,7 @@ public class ImageProcessorGUI extends JFrame {
     sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
     colorCorrectionButton.addActionListener(e -> handleComponent("color-correction"));
-    //downscale.addActionListener(e -> handleDownscale());
+    downscale.addActionListener(e -> handleDownscale());
     exitButton.addActionListener(e -> System.exit(0));
 
     // Add buttons to panel
@@ -154,7 +154,9 @@ public class ImageProcessorGUI extends JFrame {
   }
 
   private void handleDownscale(){
-    //call downscale in controller here.
+    String width = JOptionPane.showInputDialog("Enter new width:");
+    String height = JOptionPane.showInputDialog("Enter new height:");
+    controller.handleDownscale(width,height);
   }
 
   private void handleFlip(Direction direction) {
@@ -177,7 +179,7 @@ public class ImageProcessorGUI extends JFrame {
         JOptionPane.showMessageDialog(this, "Operation canceled", "Error", JOptionPane.ERROR_MESSAGE);
       }
     } else {
-      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
+      controller.applyOperation(new String[]{operation.toLowerCase()});
     }
   }
 

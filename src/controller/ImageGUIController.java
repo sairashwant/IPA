@@ -396,6 +396,33 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   }
 
 
+  public void handleDownscale(String widthInput, String heightInput) {
+    if (latest == null || latest.isEmpty()) {
+      showError("No image loaded to downscale. Please load an image first.");
+      return;
+    }
+    try {
+      int newWidth = Integer.parseInt(widthInput);
+      int newHeight = Integer.parseInt(heightInput);
+
+      String dest = latest + "_downscaled";
+
+      String[] command = {"downscale", latest, dest,String.valueOf(newWidth), String.valueOf(newHeight)};
+
+      imageController.handleDownscale(command);
+
+      latest = dest;
+
+      displayImageByKey(gui, dest);
+
+    } catch (NumberFormatException e) {
+      showError("Invalid dimensions. Please enter valid integers for width and height.");
+    } catch (Exception e) {
+      showError("An unexpected error occurred: " + e.getMessage());
+    }
+  }
+
+
   @Override
   public void printMenu() {}
 
@@ -410,7 +437,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } else {
       showError("No original image available.");
     }
-
   }
 
 
