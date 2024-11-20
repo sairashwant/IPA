@@ -18,9 +18,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   EnhancedImageModel i1;
   String original;
 
-  public ImageGUIController(EnhancedImageModel image, ImageController imageController) {
+  public ImageGUIController(EnhancedImageModel image, ImageControllerInterface imageController) {
     super(image);
-    this.imageController = imageController;
+    this.imageController = (ImageController) imageController;
     i1 = new EnhancedImage();
   }
 
@@ -53,6 +53,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
 
 
+  @Override
   public String getLatestKey() {
     return imageController.getLatestKey();
   }
@@ -67,7 +68,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     latest = dest;
     displayImageByKey(gui, dest);
   }
-
+  @Override
   public void applyHistogram(String[] args) {
     String key = latest;
     String dest = latest + "_histogram";
@@ -77,6 +78,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
     gui.displayHistogram(image);
   }
+
 
   public void displayImageByKey(ImageProcessorGUI gui, String key) {
     try {
