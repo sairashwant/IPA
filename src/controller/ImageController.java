@@ -118,7 +118,6 @@ public class ImageController implements ImageControllerInterface {
     commandMap.put("levels-adjust", this::handleLevelsAdjust);
     commandMap.put("split", this::handleSplit);
     commandMap.put("downscale", this::handleDownscale);
-    commandMap.put("masked-operation", this::handleMaskedOperation);
     commandMap.put("run-script", this::handleScript);
     commandMap.put("exit", args -> exitFlag = true);
   }

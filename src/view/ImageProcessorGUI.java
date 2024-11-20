@@ -5,7 +5,6 @@ import controller.ImageGUIController;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileFilter;
 import model.EnhancedImage;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
