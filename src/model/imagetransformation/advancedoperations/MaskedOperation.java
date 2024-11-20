@@ -1,8 +1,12 @@
 package model.imagetransformation.advancedoperations;
 
+import model.Image;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.Transformation;
+import model.imagetransformation.basicoperation.Intensity;
+import model.imagetransformation.basicoperation.Luma;
+import model.imagetransformation.basicoperation.Value;
 import model.imagetransformation.filtering.Blur; // Assuming you have a Blur class
 import model.imagetransformation.filtering.Sharpen; // Assuming you have a Sharpen class
 import model.imagetransformation.colortransformation.GreyScale; // Assuming you have a GreyScale class
@@ -43,6 +47,16 @@ public class MaskedOperation implements Transformation {
       case "sepia":
         operationInstance = new Sepia();
         break;
+      case "luma-component":
+        operationInstance = new Luma();
+        break;
+        // value intensity red green blue
+      case "value-component":
+        operationInstance = new Value();
+        break;
+       case "intensity-component":
+         operationInstance = new Intensity();
+         break;
       default:
         throw new IllegalArgumentException("Unsupported operation: " + operation);
     }

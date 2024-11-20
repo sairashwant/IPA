@@ -115,6 +115,8 @@ public class ImageController implements ImageControllerInterface {
     commandMap.put("color-correction", this::applyOperation);
     commandMap.put("levels-adjust", this::handleLevelsAdjust);
     commandMap.put("split", this::handleSplit);
+    commandMap.put("downscale", this::handleDownscale);
+    commandMap.put("masked-operation", this::handleMaskedOperation);
     commandMap.put("run-script", this::handleScript);
     commandMap.put("exit", args -> exitFlag = true);
   }
@@ -125,8 +127,10 @@ public class ImageController implements ImageControllerInterface {
    * @param args the arguments specifying the operation, source key, and destination key
    */
   public void applyOperation(String[] args) {
-    if (args.length > 3) {
+    if (args.length == 5) {
       handleSplit(args); // Call handleSplit if arguments length is greater than 3
+    } else if (args.length == 4) {
+      handleMaskedOperation(args);
     } else {
       String operationName = args[0];
       String srcKey = args[1];
@@ -411,6 +415,47 @@ public class ImageController implements ImageControllerInterface {
     }
   }
 
+  /**
+   * Handles the downscale operation.
+   *
+   * @param args the command arguments for downscaling an image
+   */
+  public void handleDownscale(String[] args) {
+    if (args.length == 5) {
+      try {
+        String srcKey = args[1];
+        int newWidth = Integer.parseInt(args[3]);
+        int newHeight = Integer.parseInt(args[4]);
+        String destKey = args[2];
+        imageModel.downscale(srcKey, newWidth, newHeight, destKey);
+        System.out.println("Downscaled image " + srcKey + " to " + newWidth + "x" + newHeight + " and saved as " + destKey);
+      } catch (NumberFormatException e) {
+        System.out.println("Invalid dimensions for downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
+      }
+    } else {
+      System.out.println("Invalid downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
+    }
+  }
+
+  /**
+   * Handles the masked operation.
+   *
+   * @param args the command arguments for masked operation
+   */
+  public void handleMaskedOperation(String[] args) {
+    if (args.length == 4) {
+      String srcKey = args[1];
+      String operation = args[0];
+      String maskKey = args[2];
+      String destKey = args[3];
+
+      imageModel.maskedOperation(srcKey, operation, maskKey, destKey);
+      System.out.println("Applied masked operation " + operation + " on " + srcKey + " using mask " + maskKey + " and saved as " + destKey);
+    } else {
+      System.out.println("Invalid masked-operation command. Usage: masked-operation <srcKey> <operation> <maskKey> <destKey>");
+    }
+  }
+
   public String getLatestKey(){
     String key = imageModel.getLatestKey();
     return key;
@@ -471,9 +516,11 @@ public class ImageController implements ImageControllerInterface {
     System.out.println("20. Color-Correction");
     System.out.println("21. Levels-Adjust");
     System.out.println("22. Split-And-Transform");
+    System.out.println("\n---- Enhanced Image Operations ----");
+    System.out.println("23. downscale");
     System.out.println("\n---- Additional Operations ----");
-    System.out.println("23. run-script");
-    System.out.println("24. Exit Program");
+    System.out.println("24. run-script");
+    System.out.println("25. Exit Program");
     System.out.println("============================================");
   }
 }
