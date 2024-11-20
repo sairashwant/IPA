@@ -13,7 +13,7 @@ public class ImageProcessorGUI extends JFrame {
   private JLabel imageLabel; // To display the loaded image
   private JLabel histogramLabel; // To display the histogram
   private BufferedImage currentImage; // To store the current loaded image
-  private JRadioButton previewBlurButton, previewSharpenButton, previewSepiaButton, previewGreyscaleButton, previewLevelsAdjustButton;
+  private JCheckBox previewBlurCheckbox, previewSharpenCheckbox, previewSepiaCheckbox, previewGreyscaleCheckbox, previewLevelsAdjustCheckbox;
 
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller; // Initialize the controller
@@ -48,28 +48,28 @@ public class ImageProcessorGUI extends JFrame {
     JButton exitButton = createButton("Exit");
 
     // Initialize preview toggle radio buttons for each operation
-    previewBlurButton = new JRadioButton("Preview");
-    previewSharpenButton = new JRadioButton("Preview");
-    previewSepiaButton = new JRadioButton("Preview");
-    previewGreyscaleButton = new JRadioButton("Preview");
-    previewLevelsAdjustButton = new JRadioButton("Preview");
+    previewBlurCheckbox = new JCheckBox("Preview");
+    previewSharpenCheckbox = new JCheckBox("Preview");
+    previewSepiaCheckbox = new JCheckBox("Preview");
+    previewGreyscaleCheckbox = new JCheckBox("Preview");
+    previewLevelsAdjustCheckbox = new JCheckBox("Preview");
 
     // Group the preview radio buttons together
     ButtonGroup previewGroup = new ButtonGroup();
-    previewGroup.add(previewBlurButton);
-    previewGroup.add(previewSharpenButton);
-    previewGroup.add(previewSepiaButton);
-    previewGroup.add(previewGreyscaleButton);
-    previewGroup.add(previewLevelsAdjustButton);
+    previewGroup.add(previewBlurCheckbox);
+    previewGroup.add(previewSharpenCheckbox);
+    previewGroup.add(previewSepiaCheckbox);
+    previewGroup.add(previewGreyscaleCheckbox);
+    previewGroup.add(previewLevelsAdjustCheckbox);
 
     // Add action listeners
     loadButton.addActionListener(e -> controller.handleLoad(this, "load1"));
     saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     brightenButton.addActionListener(e -> handleBrighten());
-    blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
-    sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
-    greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
-    sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
+//    blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
+//    sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
+//    greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
+//    sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
     horizontalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"horizontal-flip", controller.getLatestKey(), "flipped-horizontal"}, Direction.HORIZONTAL));
     verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"vertical-flip", controller.getLatestKey(), "flipped-vertical"}, Direction.VERTICAL));
@@ -77,9 +77,9 @@ public class ImageProcessorGUI extends JFrame {
     greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green"}));
     blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue"}));
     compressButton.addActionListener(e -> handleCompression());
-    undoButton.addActionListener(e -> undo());
+    undoButton.addActionListener(e -> controller.handleUndo());
     exitButton.addActionListener(e -> System.exit(0));
-    originalImageButton.addActionListener(e -> handleShowOriginalImage()); // Action listener for the new button
+    originalImageButton.addActionListener(e -> controller.handleShowOriginalImage()); // Action listener for the new button
 
     // Add buttons to the button panel
     buttonPanel.add(loadButton);
@@ -88,11 +88,11 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(originalImageButton); // Add the new button
 
     // Group operation buttons with preview toggle buttons in a sub-panel
-    buttonPanel.add(createOperationWithPreviewPanel(blurButton, previewBlurButton));
-    buttonPanel.add(createOperationWithPreviewPanel(sharpenButton, previewSharpenButton));
-    buttonPanel.add(createOperationWithPreviewPanel(sepiaButton, previewSepiaButton));
-    buttonPanel.add(createOperationWithPreviewPanel(greyscaleButton, previewGreyscaleButton));
-    buttonPanel.add(createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustButton));
+    buttonPanel.add(createOperationWithPreviewPanel(blurButton, previewBlurCheckbox));
+    buttonPanel.add(createOperationWithPreviewPanel(sharpenButton, previewSharpenCheckbox));
+    buttonPanel.add(createOperationWithPreviewPanel(sepiaButton, previewSepiaCheckbox));
+    buttonPanel.add(createOperationWithPreviewPanel(greyscaleButton, previewGreyscaleCheckbox));
+    buttonPanel.add(createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustCheckbox));
 
     buttonPanel.add(horizontalFlipButton);
     buttonPanel.add(verticalFlipButton);
@@ -144,7 +144,7 @@ public class ImageProcessorGUI extends JFrame {
     return button;
   }
 
-  private JPanel createOperationWithPreviewPanel(JButton operationButton, JRadioButton previewButton) {
+  private JPanel createOperationWithPreviewPanel(JButton operationButton, JCheckBox previewButton) {
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout(FlowLayout.LEFT));
     panel.add(operationButton);
@@ -158,13 +158,9 @@ public class ImageProcessorGUI extends JFrame {
 
   // Method to display the loaded image
   public void displayImage(BufferedImage image) {
-    currentImage = image; // Save the current image
-
-    // Set the image without resizing and let JScrollPane handle scrolling
+    currentImage = image;
     imageLabel.setIcon(new ImageIcon(image));
-
-    // Ensure the JScrollPane allows scrolling if needed
-    handleHistogram();
+    controller.applyHistogram(new String[]{"histogram"});
   }
 
   // Method to display the histogram
@@ -172,10 +168,6 @@ public class ImageProcessorGUI extends JFrame {
     histogramLabel.setIcon(new ImageIcon(histogram));
   }
 
-  // Method to handle displaying the original image
-  private void handleShowOriginalImage() {
-    controller.handleShowOriginalImage(); // Fetch the original image from the controller
-  }
 
   // Helper methods for advanced operations
   private void handleBrighten() {
@@ -185,29 +177,29 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handleOperationWithPreview(String operation) {
-    JRadioButton previewButton = getPreviewButtonForOperation(operation);
-    if (previewButton != null && previewButton.isSelected()) {
-      // Generate the preview and show it in a popup
-      BufferedImage previewImage = controller.getPreviewImage(operation);
-      showPreviewInPopup(previewImage);
-    } else {
-      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
-    }
-  }
+//  private void handleOperationWithPreview(String operation) {
+//    JRadioButton previewButton = getPreviewButtonForOperation(operation);
+//    if (previewButton != null && previewButton.isSelected()) {
+//      // Generate the preview and show it in a popup
+//      BufferedImage previewImage = controller.getPreviewImage(operation);
+//      showPreviewInPopup(previewImage);
+//    } else {
+//      controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
+//    }
+//  }
 
-  private JRadioButton getPreviewButtonForOperation(String operation) {
+  private JCheckBox getPreviewButtonForOperation(String operation) {
     switch (operation.toLowerCase()) {
       case "blur":
-        return previewBlurButton;
+        return previewBlurCheckbox;
       case "sharpen":
-        return previewSharpenButton;
+        return previewSharpenCheckbox;
       case "sepia":
-        return previewSepiaButton;
+        return previewSepiaCheckbox;
       case "greyscale":
-        return previewGreyscaleButton;
+        return previewGreyscaleCheckbox;
       case "levels adjust":
-        return previewLevelsAdjustButton;
+        return previewLevelsAdjustCheckbox;
       default:
         return null;
     }
@@ -265,9 +257,6 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handleHistogram() {
-    controller.applyHistogram(new String[]{"histogram"});
-  }
 
   private void handleCompression() {
     String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");

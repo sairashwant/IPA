@@ -49,6 +49,7 @@ public class Image implements ImageModel {
   public void storePixels(String key, Pixels[][] pixels) {
     this.updatedPixel = pixels;
     h1.put(key, pixels);
+    System.out.println(key);
   }
 
   /**
