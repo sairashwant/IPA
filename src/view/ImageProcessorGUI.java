@@ -376,12 +376,4 @@ public class ImageProcessorGUI extends JFrame {
       controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
     }
   }
-
-  public static void main(String[] args) {
-    EnhancedImage model = new EnhancedImage();
-    ImageController imageController = new ImageController(model);
-    ImageGUIController guiController = new ImageGUIController(model, imageController);
-
-    SwingUtilities.invokeLater(() -> new ImageProcessorGUI(guiController));
-  }
 }
