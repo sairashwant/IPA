@@ -2,10 +2,10 @@ package controller;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileFilter;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
-import model.colorscheme.RGBPixel;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import view.ImageProcessorGUI;
 
@@ -31,7 +31,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   @Override
   public void handleLoad(ImageProcessorGUI gui, String key, String filename) {
     this.gui = gui;
-    addWindowListenerToGUI();
+    gui.addWindowListenerToGUI();
     key=filename;
     int lastDotIndex = key.lastIndexOf('.');
     if (lastDotIndex > 0) {
@@ -44,7 +44,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         imageController.handleLoad(new String[]{"load", filename, key});
         i1.storePixels(key, ImageUtil.loadImage(filename));
         Pixels[][] pixels = i1.getStoredPixels(key);
-        BufferedImage image = convertPixelsToBufferedImage(pixels);
+        BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
         gui.displayImage(image);
       } catch (IllegalArgumentException ex) {
         showError("Error loading image: " + ex.getMessage());
@@ -54,29 +54,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     }
   }
 
-  private BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
-    if (pixels == null || pixels.length == 0) {
-      throw new IllegalArgumentException("No pixels to convert.");
-    }
 
-    int height = pixels.length;
-    int width = pixels[0].length;
-    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        if (pixels[y][x] instanceof RGBPixel) {
-          RGBPixel rgbPixel = (RGBPixel) pixels[y][x];
-          int rgb = (rgbPixel.getRed() << 16) | (rgbPixel.getGreen() << 8) | rgbPixel.getBlue();
-          image.setRGB(x, y, rgb);
-        }
-      }
-    }
-
-    return image;
-  }
-
-  private void showError(String message) {
+  public void showError(String message) {
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
@@ -101,7 +80,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     String[] command = {"histogram", key, dest};
     imageController.applyOperation(command);
     Pixels[][] pixels = imageModel.getStoredPixels(dest);
-    BufferedImage image = convertPixelsToBufferedImage(pixels);
+    BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
     gui.displayHistogram(image);
   }
 
@@ -111,7 +90,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       if (pixels == null) {
         throw new IllegalArgumentException("No image found with key: " + key);
       }
-      BufferedImage image = convertPixelsToBufferedImage(pixels);
+      BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
       gui.displayImage(image);
     } catch (IllegalArgumentException ex) {
       showError("Error displaying image: " + ex.getMessage());
@@ -132,32 +111,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   public void handleLoad(String[] args) { }
 
   @Override
-  public void handleSave(String[] args) {
+  public void handleSave(int userSelection, JFileChooser fileChooser, javax.swing.filechooser.FileFilter pngFilter,javax.swing.filechooser.FileFilter jpgFilter,javax.swing.filechooser.FileFilter ppmFilter) {
     // Check if the latest key is not null or empty
-    if (latest == null || latest.isEmpty()) {
-      showError("No image loaded to save. Please load an image first.");
-      return;
-    }
-
-    // Create a JFileChooser to let the user choose a directory and file name
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Save Image");
-
-    // Add file filters for different image formats
-    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter("PNG Images", "png");
-    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter("JPG Images", "jpg");
-    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter("PPM Images", "ppm");
-
-    // Add the file filters to the file chooser
-    fileChooser.addChoosableFileFilter(pngFilter);
-    fileChooser.addChoosableFileFilter(jpgFilter);
-    fileChooser.addChoosableFileFilter(ppmFilter);
-
-    // Set the default filter (optional, you can choose one to start with)
-    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
-
-    // Open the file chooser dialog to select the file to save
-    int userSelection = fileChooser.showSaveDialog(null);
 
     if (userSelection == JFileChooser.APPROVE_OPTION) {
       // User selected a file
@@ -247,33 +202,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } else {
       showError("No previous version available to undo.");
     }
-  }
-
-  public void addWindowListenerToGUI() {
-    // Add a WindowListener to the GUI to detect when the user is about to close the application
-    gui.addWindowListener(new WindowAdapter() {
-      @Override
-      public void windowClosing(WindowEvent e) {
-        // Before closing, prompt the user to save if there are unsaved changes
-        if (latest != null && !latest.isEmpty()) {
-          int option = JOptionPane.showConfirmDialog(gui,
-              "Do you want to save the current image before closing?",
-              "Save Image", JOptionPane.YES_NO_CANCEL_OPTION);
-
-          if (option == JOptionPane.YES_OPTION) {
-            // Trigger the save functionality
-            handleSave(new String[]{});  // Save the current image
-          } else if (option == JOptionPane.NO_OPTION) {
-            // Close without saving
-            gui.dispose();  // Close the application
-          }
-          // If the user selects CANCEL, do nothing (keep the application open)
-        } else {
-          // If there are no unsaved changes, simply close the application
-          gui.dispose();
-        }
-      }
-    });
   }
 
   @Override

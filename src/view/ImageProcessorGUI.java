@@ -2,7 +2,10 @@ package view;
 
 import controller.ImageController;
 import controller.ImageGUIController;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileFilter;
 import model.EnhancedImage;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
@@ -61,7 +64,7 @@ public class ImageProcessorGUI extends JFrame {
 
     // Button actions
     loadButton.addActionListener(e -> handleLoad(this, "load1"));
-    saveButton.addActionListener(e -> controller.handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
+    saveButton.addActionListener(e -> handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     undoButton.addActionListener(e -> controller.handleUndo());
     originalImageButton.addActionListener(e -> controller.handleShowOriginalImage());
     brightenButton.addActionListener(e -> handleBrighten());
@@ -144,6 +147,36 @@ public class ImageProcessorGUI extends JFrame {
       String filename = selectedFile.getAbsolutePath();
       controller.handleLoad(this,key, filename);
     }
+  }
+
+  public void handleSave(String[] args){
+    if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
+      controller.showError("No image loaded to save. Please load an image first.");
+      return;
+    }
+
+
+    // Create a JFileChooser to let the user choose a directory and file name
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Save Image");
+
+    // Add file filters for different image formats
+    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter("PNG Images", "png");
+    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter("JPG Images", "jpg");
+    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter("PPM Images", "ppm");
+
+    // Add the file filters to the file chooser
+    fileChooser.addChoosableFileFilter(pngFilter);
+    fileChooser.addChoosableFileFilter(jpgFilter);
+    fileChooser.addChoosableFileFilter(ppmFilter);
+
+    // Set the default filter (optional, you can choose one to start with)
+    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
+
+    // Open the file chooser dialog to select the file to save
+    int userSelection = fileChooser.showSaveDialog(null);
+    controller.handleSave(userSelection,fileChooser, pngFilter, jpgFilter,ppmFilter);
+
   }
 
   public void displayImage(BufferedImage image) {
@@ -264,6 +297,34 @@ public class ImageProcessorGUI extends JFrame {
 
     // Return the result or -1 if canceled
     return confirmed[0] ? result[0] : -1;
+  }
+
+  public void addWindowListenerToGUI() {
+    // Add a WindowListener to the GUI to detect when the user is about to close the application
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent e) {
+        String latest= controller.getLatestKey();
+        // Before closing, prompt the user to save if there are unsaved changes
+        if (latest != null && !latest.isEmpty()) {
+          int option = JOptionPane.showConfirmDialog(null,
+              "Do you want to save the current image before closing?",
+              "Save Image", JOptionPane.YES_NO_CANCEL_OPTION);
+
+          if (option == JOptionPane.YES_OPTION) {
+            // Trigger the save functionality
+            handleSave(new String[]{"save", "output.png", latest});  // Save the current image
+          } else if (option == JOptionPane.NO_OPTION) {
+            // Close without saving
+            dispose();  // Close the application
+          }
+          // If the user selects CANCEL, do nothing (keep the application open)
+        } else {
+          // If there are no unsaved changes, simply close the application
+          dispose();
+        }
+      }
+    });
   }
 
 
