@@ -33,7 +33,9 @@ public class ImageProcessorGUI extends JFrame {
     setLayout(new BorderLayout());
 
     // Buttons and preview checkboxes
-    JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+    // Modified button panel to use GridLayout (vertical layout)
+    JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 10, 10)); // GridLayout for vertical arrangement
+
 
     JButton loadButton = createButton("Load Image");
     JButton saveButton = createButton("Save Image");
@@ -120,24 +122,31 @@ public class ImageProcessorGUI extends JFrame {
     imagePanel.add(histogramScrollPane, BorderLayout.EAST);
 
     // Add to frame
-    add(new JScrollPane(buttonPanel), BorderLayout.WEST);
+    // Modified code to make button panel scrollable (after modification):
+    JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
+    buttonScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Enable vertical scroll
+    add(buttonScrollPane, BorderLayout.WEST);
+
     add(imagePanel, BorderLayout.CENTER);
 
     setVisible(true);
   }
 
+  // Modified createButton method (after modification):
   private JButton createButton(String text) {
     JButton button = new JButton(text);
-    button.setPreferredSize(new Dimension(200, 50));
+    button.setPreferredSize(new Dimension(200, 40));  // Adjusted button size for better fit
     return button;
   }
 
+  // Modified createOperationWithPreviewPanel method (after modification):
   private JPanel createOperationWithPreviewPanel(JButton operationButton, JCheckBox previewCheckbox) {
-    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Panel for button and checkbox
     panel.add(operationButton);
     panel.add(previewCheckbox);
     return panel;
   }
+
   private void handleLoad(ImageProcessorGUI gui,String key){
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);

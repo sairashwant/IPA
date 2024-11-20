@@ -1,12 +1,10 @@
 package controller;
 
-
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import view.ImageProcessorGUI;
-
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
