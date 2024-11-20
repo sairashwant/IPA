@@ -28,63 +28,20 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
   // New method to handle image preview
   public void previewOperation(String operation) {
-    try {
-      // Get the preview image based on the operation
-      BufferedImage previewImage = getPreviewImage(operation);
-      if (previewImage != null) {
-        gui.displayImage(previewImage); // Display the preview image in the GUI
-      } else {
-        showError("Error generating preview.");
-      }
-    } catch (IllegalArgumentException ex) {
-      showError("Error generating preview: " + ex.getMessage());
-    } catch (Exception ex) {
-      showError("An unexpected error occurred while generating preview: " + ex.getMessage());
-    }
+//    try {
+//      // Get the preview image based on the operation
+//      BufferedImage previewImage = imageController.getPreviewImage(operation);
+//      if (previewImage != null) {
+//        gui.displayImage(previewImage); // Display the preview image in the GUI
+//      } else {
+//        showError("Error generating preview.");
+//      }
+//    } catch (IllegalArgumentException ex) {
+//      showError("Error generating preview: " + ex.getMessage());
+//    } catch (Exception ex) {
+//      showError("An unexpected error occurred while generating preview: " + ex.getMessage());
+//    }
   }
-
-  public BufferedImage getPreviewImage(String operation) {
-    // Ensure an image is loaded
-    if (imageModel == null || latest == null || latest.isEmpty()) {
-      throw new IllegalArgumentException("No image is loaded.");
-    }
-
-    // Fetch the pixels of the currently loaded image
-    Pixels[][] originalPixels = imageModel.getStoredPixels(latest);
-    if (originalPixels == null) {
-      throw new IllegalArgumentException("No pixels found for the current image.");
-    }
-
-    // Create a temporary model for previewing transformations
-    EnhancedImageModel previewModel = new EnhancedImage();
-    previewModel.storePixels("preview", originalPixels);
-
-    // Apply the requested operation
-    switch (operation.toLowerCase()) {
-      case "brighten":
-        applyOperation(new String[]{"brighten", "20", "preview", "preview"}); // Example: brighten by 20
-        break;
-      case "blur":
-        applyOperation(new String[]{"blur", "preview", "preview"});
-        break;
-      case "sharpen":
-        applyOperation(new String[]{"sharpen", "preview", "preview"});
-        break;
-      case "greyscale":
-        applyOperation(new String[]{"greyscale", "preview", "preview"});
-        break;
-      case "sepia":
-        applyOperation(new String[]{"sepia", "preview", "preview"});
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported operation: " + operation);
-    }
-
-    // Convert preview pixels back to a BufferedImage
-    Pixels[][] previewPixels = previewModel.getStoredPixels("preview");
-    return convertPixelsToBufferedImage(previewPixels);
-  }
-
 
   @Override
   public void handleLoad(ImageProcessorGUI gui, String key) {
@@ -388,8 +345,9 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       try {
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
-        latest = dest;
-        displayImageByKey(gui, dest);
+
+        BufferedImage preview = convertPixelsToBufferedImage(imageModel.getStoredPixels(dest));
+        gui.showPreview(preview);
       } catch (Exception e) {
         showError("Error processing split command: " + e.getMessage());
       }
@@ -443,5 +401,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       showError("No original image available.");
     }
   }
+
 
 }

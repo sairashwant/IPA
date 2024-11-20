@@ -177,17 +177,58 @@ public class ImageProcessorGUI extends JFrame {
     }
   }
 
-  private void handleOperationWithPreview(String operation) {
-    JCheckBox previewButton = getPreviewButtonForOperation(operation);
-    if (previewButton != null && previewButton.isSelected()) {
-      // Generate the preview and show it in a popup
-      BufferedImage previewImage = controller.getPreviewImage(operation);
-      showPreviewInPopup(previewImage);
+  public void showPreview(BufferedImage image) {
+    if (image != null) {
+      JLabel previewLabel = new JLabel(new ImageIcon(image));
+      JScrollPane scrollPane = new JScrollPane(previewLabel);
+      scrollPane.setPreferredSize(new Dimension(600, 600));
+      JOptionPane.showMessageDialog(this, scrollPane, "Preview", JOptionPane.INFORMATION_MESSAGE);
     } else {
+      JOptionPane.showMessageDialog(this, "Unable to generate preview.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+
+  // Modify the handleOperationWithPreview method to support split preview
+  private void handleOperationWithPreview(String operation) {
+    JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
+    if (previewCheckbox != null && previewCheckbox.isSelected()) {
+      String percentage = JOptionPane.showInputDialog("Enter split percentage (0-100):");
+      if (percentage != null) {
+        try {
+          int splitValue = Integer.parseInt(percentage);
+          if (splitValue < 0 || splitValue > 100) {
+            throw new NumberFormatException("Percentage out of range");
+          }
+          // Generate preview with split
+          controller.handleSplit(new String[]{operation.toLowerCase(), percentage});
+
+        } catch (NumberFormatException e) {
+          JOptionPane.showMessageDialog(this, "Invalid percentage. Please enter a value between 0 and 100.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+      }
+    } else {
+      // Perform the operation without preview
       controller.applyOperation(new String[]{operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()});
     }
   }
 
+  // Helper method to map operations to their respective preview checkboxes
+  private JCheckBox getPreviewCheckboxForOperation(String operation) {
+    switch (operation) {
+      case "Blur":
+        return previewBlurCheckbox;
+      case "Sharpen":
+        return previewSharpenCheckbox;
+      case "Sepia":
+        return previewSepiaCheckbox;
+      case "Greyscale":
+        return previewGreyscaleCheckbox;
+      case "Levels Adjust":
+        return previewLevelsAdjustCheckbox;
+      default:
+        return null;
+    }
+  }
   private JCheckBox getPreviewButtonForOperation(String operation) {
     switch (operation.toLowerCase()) {
       case "blur":
