@@ -48,6 +48,7 @@ public class ImageProcessorGUI extends JFrame {
     JButton greyscaleButton = createButton("Greyscale");
     JButton sepiaButton = createButton("Sepia");
     JButton levelsAdjustButton = createButton("Levels Adjust");
+    JButton colorCorrectionButton = createButton("Color Correction");
     JButton exitButton = createButton("Exit");
 
     previewBlurCheckbox = new JCheckBox("Preview");
@@ -73,6 +74,7 @@ public class ImageProcessorGUI extends JFrame {
     greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
     sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
+    colorCorrectionButton.addActionListener(e -> handleComponent("color-correction"));
     exitButton.addActionListener(e -> System.exit(0));
 
     // Add buttons to panel
@@ -86,6 +88,7 @@ public class ImageProcessorGUI extends JFrame {
     buttonPanel.add(greenComponentButton);
     buttonPanel.add(blueComponentButton);
     buttonPanel.add(compressButton);
+    buttonPanel.add(colorCorrectionButton);
     buttonPanel.add(createOperationWithPreviewPanel(blurButton, previewBlurCheckbox));
     buttonPanel.add(createOperationWithPreviewPanel(sharpenButton, previewSharpenCheckbox));
     buttonPanel.add(createOperationWithPreviewPanel(sepiaButton, previewSepiaCheckbox));
