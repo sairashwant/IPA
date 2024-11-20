@@ -69,18 +69,18 @@ public class ImageProcessorGUI extends JFrame {
     undoButton.addActionListener(e -> controller.handleUndo());
     originalImageButton.addActionListener(e -> controller.handleShowOriginalImage());
     brightenButton.addActionListener(e -> handleBrighten());
-    horizontalFlipButton.addActionListener(e -> handleFlip(Direction.HORIZONTAL));
-    verticalFlipButton.addActionListener(e -> handleFlip(Direction.VERTICAL));
-    redComponentButton.addActionListener(e -> handleComponent("red-component"));
-    greenComponentButton.addActionListener(e -> handleComponent("green-component"));
-    blueComponentButton.addActionListener(e -> handleComponent("blue-component"));
+    horizontalFlipButton.addActionListener(e ->controller.handleFlip(new String[]{"flip", controller.getLatestKey(), "HORIZONTAL".toLowerCase()}, Direction.HORIZONTAL));
+    verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"flip", controller.getLatestKey(), "VERTICAL".toLowerCase()}, Direction.VERTICAL));
+    redComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"red-component", controller.getLatestKey(), "red-component"}));
+    greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green-component"}));
+    blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue-component"}));
     compressButton.addActionListener(e -> handleCompression());
     blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
     sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
     greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
     sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
     levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
-    colorCorrectionButton.addActionListener(e -> handleComponent("color-correction"));
+    colorCorrectionButton.addActionListener(e -> controller.applyOperation(new String[]{"color-correction", controller.getLatestKey(), "color-correction"}));
     downscale.addActionListener(e -> handleDownscale());
     exitButton.addActionListener(e -> System.exit(0));
 
@@ -211,14 +211,6 @@ public class ImageProcessorGUI extends JFrame {
     String width = JOptionPane.showInputDialog("Enter new width:");
     String height = JOptionPane.showInputDialog("Enter new height:");
     controller.handleDownscale(width,height);
-  }
-
-  private void handleFlip(Direction direction) {
-    controller.handleFlip(new String[]{"flip", controller.getLatestKey(), direction.name().toLowerCase()}, direction);
-  }
-
-  private void handleComponent(String component) {
-    controller.applyOperation(new String[]{component, controller.getLatestKey(), component});
   }
 
   private void handleOperationWithPreview(String operation) {
