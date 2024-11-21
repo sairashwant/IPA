@@ -2,14 +2,56 @@
 
 This document outlines all supported commands and their usage in our image processing application.
 
+## TABLE OF CONTENTS
+- [GUI Screenshots](#gui-screenshots)
+- [Using the GUI](#using-the-gui)
+- [Basic commands for interactive text mode](#basic-commands-for-interactive-text-mode)
+- [Important Notes](#important-notes)
+- [Example Workflow](#example-workflow)
+
 ## GUI Screenshots
 
 1. On clicking load button on the GUI an image will be loaded along with its histogram.
-   ![Landing Page](res/GUI_Landing_Page.png)
+   ![Landing Page](GUI_Landing_Page.png)
+
+2. By checking the checkbox user can preview the operation that will be performed on the image. 
+   ![Split Preview](GUI_Split_Preview.png)
+
+##   USING THE GUI
+
+**1. Loading an Image:**
+   -  Click the Load Image button on the left panel.
+   - A file chooser dialog will open. Navigate to the image file you want to load (supported formats include PNG, JPG, and PPM).
+   - Select the file and click Open. The image will be displayed in the main viewing area along with its histogram.
+
+**2. Editing the Image:**
+   - The GUI provides various editing options. Here are some of the key operations:
+     - `**Brighten:**` Adjust the brightness of the image by clicking the Brighten button and entering a brightness factor when prompted.
+     - `**Flip:**` Flip the image horizontally or vertically by clicking the Horizontal Flip or Vertical Flip buttons.
+     - `**Color Adjustments:**` Apply color adjustments by selecting the respective buttons (e.g., Greyscale, Sepia, Red Component, etc.).
+     - `**Blur/Sharpen:**` Use the Blur or Sharpen buttons to apply those effects. You can preview the effect before applying it by checking the Preview checkbox.
+   - `Levels Adjustment:`
+     - To adjust the tonal range of the image, click the Levels Adjust button. Enter the black, mid, and white level values when prompted.
+     - You can also opt for a split preview by selecting the Preview checkbox to see the adjustments before applying.
+   - `Undoing Changes:`
+     - If you want to revert the last operation, click the Undo button. This will restore the previous state of the image.
+   - `Reverting to Original Image:`
+     - To revert to the original image loaded, click the Revert to Original Image button.
+   - `Exiting the Application:`
+     - To close the application, click the Exit button. You may be prompted to save any unsaved changes before exiting.
+   - `Previewing Changes:`
+     - Many operations allow you to preview changes before applying them. Check the Preview checkbox for operations like Blur, Sharpen, Sepia, and Greyscale to see how they will affect the image.
+   - `Viewing the Histogram:`
+     - The histogram of the currently displayed image can be viewed on the right side of the GUI. It updates automatically as you apply different operations.
+     
+**3. Saving the Image:**
+   - After making changes, click the Save Image button.
+   - A file chooser dialog will open. Select a location and specify a filename for the output image.
+    - Choose the desired file format (PNG, JPG, PPM) from the provided options and click Save.
 
 
 
-## BASIC COMMANDS
+## BASIC COMMANDS FOR INTERACTIVE TEXT MODE
 
 1. `load <image-path> <image-name>`
    - Loads an image from the specified path and assigns it the given name
