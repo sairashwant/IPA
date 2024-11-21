@@ -5,6 +5,7 @@ import controller.ImageGUIControllerInterface;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.Objects;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     previewGreyscaleCheckbox = new JCheckBox("Preview");
     previewLevelsAdjustCheckbox = new JCheckBox("Preview");
 
-    loadButton.addActionListener(e -> handleLoad(this, "load1"));
+    loadButton.addActionListener(e -> handleLoad(this));
     saveButton.addActionListener(
         e -> handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     undoButton.addActionListener(e -> controller.handleUndo());
@@ -99,7 +100,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
     greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
     sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
-    levelsAdjustButton.addActionListener(e -> handleLevelAdjustWithPreview("levels-adjust"));
+    levelsAdjustButton.addActionListener(e -> handleLevelAdjustWithPreview());
     colorCorrectionButton.addActionListener(e -> controller.applyOperation(
         new String[]{"color-correction", controller.getLatestKey(), "color-correction"}));
     downscale.addActionListener(e -> handleDownscale());
@@ -248,6 +249,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    */
   private void handleOperationWithPreview(String operation) {
     JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
+    assert previewCheckbox != null;
     if (previewCheckbox.isSelected()) {
       int splitPercentage = getSplitPercentage();
       // Check if the returned split percentage is valid
@@ -266,11 +268,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   /**
    * Handles levels adjustment with optional preview. Prompts the user for adjustment levels and
    * applies the operation with or without a split preview.
-   *
-   * @param operation The levels adjustment operation to perform.
    */
-  private void handleLevelAdjustWithPreview(String operation) {
-    JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
+  private void handleLevelAdjustWithPreview() {
+    JCheckBox previewCheckbox = getPreviewCheckboxForOperation("levels-adjust");
+    assert previewCheckbox != null;
     if (previewCheckbox.isSelected()) {
       int splitPercentage = getSplitPercentage();
       // Check if the returned split percentage is valid
@@ -439,7 +440,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       dialog.setLocationRelativeTo(this);
 
       // Action listener for Apply button
-      if (operation != "levels-adjust") {
+      if (!Objects.equals(operation, "levels-adjust")) {
         applyButton.addActionListener(e -> {
           controller.applyOperation(new String[]{
               operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()
@@ -586,15 +587,14 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    * controller for further processing.
    *
    * @param gui The GUI instance to display dialogs and manage user interactions.
-   * @param key A unique key to associate the loaded image in the application's storage.
    */
-  private void handleLoad(ImageProcessorGUI gui, String key) {
+  private void handleLoad(ImageProcessorGUI gui) {
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
     if (returnValue == JFileChooser.APPROVE_OPTION) {
       File selectedFile = fileChooser.getSelectedFile();
       String filename = selectedFile.getAbsolutePath();
-      controller.handleLoad(this, key, filename);
+      controller.handleLoad(this, "load1", filename);
     }
   }
 
