@@ -71,4 +71,6 @@ public interface ImageGUIControllerInterface extends ImageControllerInterface {
    * @param key the key that identifies the image to be displayed.
    */
   void displayImageByKey(ImageProcessorGUI gui, String key);
+
+  void handleDownscale(String widthInput, String heightInput);
 }

@@ -1,6 +1,7 @@
 package view;
 
 import controller.ImageGUIController;
+import controller.ImageGUIControllerInterface;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -17,7 +18,7 @@ import java.awt.image.BufferedImage;
  */
 public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterface {
 
-  private final ImageGUIController controller;
+  private final ImageGUIControllerInterface controller;
   private final JLabel imageLabel;
   private final JLabel histogramLabel;
   private final JCheckBox previewBlurCheckbox;
