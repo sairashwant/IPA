@@ -9,7 +9,6 @@ import model.imagetransformation.advancedoperations.MaskedOperation;
 import model.imagetransformation.basicoperation.ChannelExtractor;
 import model.imagetransformation.basicoperation.Intensity;
 import model.imagetransformation.basicoperation.Luma;
-import model.imagetransformation.basicoperation.Split;
 import model.imagetransformation.basicoperation.Value;
 import model.imagetransformation.colortransformation.GreyScale;
 import model.imagetransformation.colortransformation.Sepia;

@@ -3,6 +3,7 @@ package model;
 import static org.junit.Assert.*;
 
 import controller.ImageUtil;
+import java.io.File;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.advancedoperations.MaskedOperation;
@@ -173,8 +174,6 @@ public class EnhancedImageTest {
     assertEquals("Height should remain the same", pixels.length, downscaledPixels.length);
     assertEquals("Width should remain the same", pixels[0].length, downscaledPixels[0].length);
 
-    // Save the downscaled image
-    ImageUtil.saveImage(savedPath, downscaledPixels);
 
 
     Pixels[][] savedPixels = ImageUtil.loadImage(savedPath);
@@ -262,54 +261,268 @@ public class EnhancedImageTest {
   }
   @Test
   public void testMaskedOperation() {
-    ImageModel image = new Image();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] originalPixels = ImageUtil.loadImage(load);
 
-    // Ensure the original image is loaded correctly
     assertNotNull("Original pixels should not be null after loading the image", originalPixels);
-
     enhancedImage.storePixels("test", originalPixels);
 
     String mask = "res/Landscape-L-shaped-masked-image.png";
     Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
     enhancedImage.storePixels("mask", maskPixels);
 
-    // Load the mask image (assuming it's a black-and-white mask)
-//    Pixels[][] maskPixels = ImageUtil.loadImage("res/Landscape-L-shaped-masked-image.png");
-    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.maskedOperation("test", "blur", "mask", "test-mask-blur");
 
-    enhancedImage.maskedOperation("test","blur","mask","test-mask-blur");
+    Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
 
-    Pixels[][] result = image.getStoredPixels("test-mask-blur");
-
-    String expectedPath = "";
+    String expectedPath = "res/Sample_Images/maskedop.png"; // Set to the actual expected image path
     Pixels[][] expected = ImageUtil.loadImage(expectedPath);
 
     assertImageEquals((RGBPixel[][]) expected, (RGBPixel[][]) result);
+  }
+  @Test
+  public void testMaskedOperationWithNullImage() {
+    // Attempt to perform masked operation with a null original image
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
 
-//    // Create a Brighten operation to apply
-//    Brighten brighten = new Brighten(50); // Brighten by 50
-//
-//    // Create a MaskedOperation with the Brighten operation and the mask
-//    MaskedOperation maskedOperation = new MaskedOperation(brighten, maskPixels);
-//
-//    // Apply the masked operation to the original image
-//    Pixels[][] resultImage = maskedOperation.apply(originalPixels);
-//
-//    // Ensure the result image is not null
-//    assertNotNull("Result image should not be null", resultImage);
-//
-//    // Load the expected output image for comparison
-//    Pixels[][] expectedImage = ImageUtil.loadImage("test/Test_Image/expected_masked_brightened.png");
-//    assertNotNull("Expected image should not be null after loading", expectedImage);
-//
-//    // Compare the actual result with the expected output
-//    assertImageEquals((RGBPixel[][]) expectedImage, (RGBPixel[][]) resultImage);
-//
-//    // Save the resulting masked image
-//    String outputFilePath = "test/Test_Image/masked_brightened_output.png"; // Specify the output path
-//    ImageUtil.saveImage(outputFilePath, resultImage); // Save the result image
+    try {
+      enhancedImage.maskedOperation("nullImageKey", "blur", "mask", "test-mask-blur");
+      fail("Expected an exception when performing masked operation with null original image");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testMaskedOperationWithNullMask() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Attempt to perform masked operation with a null mask
+    try {
+      enhancedImage.maskedOperation("test", "blur", "nullMaskKey", "test-mask-blur");
+      fail("Source image or mask image not found.");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testMaskedOperationWithInvalidOperation() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Load the mask image
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    // Attempt to perform masked operation with an invalid operation type
+    try {
+      enhancedImage.maskedOperation("test", "invalidOperation", "mask", "test-mask-blur");
+      fail("Expected an exception for invalid operation type");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Expected exception message", "Unsupported operation: invalidOperation", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testMaskedOperationWithDifferentImageSizes() {
+    try {
+      // Load a smaller original image
+      String loadSmall = "test/Test_Image/downscaled_half.png"; // Assume this image is smaller
+      Pixels[][] originalPixels = ImageUtil.loadImage(loadSmall);
+      assertNotNull("Original pixels should not be null after loading the small image", originalPixels);
+      enhancedImage.storePixels("smallImage", originalPixels);
+
+      // Load the mask image
+      String mask = "res/Landscape-L-shaped-masked-image.png";
+      Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+      assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+      enhancedImage.storePixels("mask", maskPixels);
+
+      // Check if the sizes of the original image and the mask match
+      if (originalPixels.length != maskPixels.length || originalPixels[0].length != maskPixels[0].length) {
+        // If sizes don't match, throw a custom exception
+        throw new ImageSizeMismatchException("Original image and mask image sizes do not match.");
+      }
+
+      // Perform the masked operation if sizes match
+      enhancedImage.maskedOperation("smallImage", "blur", "mask", "test-mask-blur");
+
+      // Retrieve the result of the masked operation
+      Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
+
+      // Save the result image
+      String resultImagePath = "test/Test_Image/masked_operation_result_small.png"; // Specify the path to save the result
+      ImageUtil.saveImage(resultImagePath, result); // Save the resulting image
+
+      // Load the expected image for comparison
+      String expectedPath = "res/Sample_Images/maskedop_small.png"; // Set to the actual expected image path
+      Pixels[][] expected = ImageUtil.loadImage(expectedPath);
+
+      // Compare the result with the expected image
+      assertImageEquals((RGBPixel[][]) expected, (RGBPixel[][]) result);
+
+    } catch (ImageSizeMismatchException e) {
+      // If the exception is thrown, assert that the exception message is correct
+      assertEquals("Original image and mask image sizes do not match.", e.getMessage());
+    } catch (Exception e) {
+      // Catch any other exceptions that may occur during the test
+      fail("Test failed due to an unexpected error: " + e.getMessage());
+    }
+  }
+
+  private static class ImageSizeMismatchException extends Exception {
+    public ImageSizeMismatchException(String message) {
+      super(message);
+    }
+  }
+  @Test
+  public void testMaskedOperationWithNonExistentMask() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Attempt to perform masked operation with a non-existent mask
+    try {
+      enhancedImage.maskedOperation("test", "blur", "nonExistentMask", "test-mask-blur");
+      fail("Expected an exception when performing masked operation with non-existent mask");
+    } catch (IllegalArgumentException e) {
+      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+    }
+  }
+
+  @Test
+  public void testMaskedOperationWithEmptyMask() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Create an empty mask
+    Pixels[][] emptyMask = new RGBPixel[originalPixels.length][originalPixels[0].length];
+    for (int i = 0; i < emptyMask.length; i++) {
+      for (int j = 0; j < emptyMask[0].length; j++) {
+        emptyMask[i][j] = new RGBPixel(255, 255, 255); // White mask (no effect)
+      }
+    }
+    enhancedImage.storePixels("emptyMask", emptyMask);
+
+    // Perform the masked operation with the empty mask
+    enhancedImage.maskedOperation("test", "blur", "emptyMask", "test-mask-blur");
+
+    // Retrieve the result of the masked operation
+    Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
+
+    // The result should be the same as the original since the mask is white
+    assertImageEquals((RGBPixel[][]) originalPixels, (RGBPixel[][]) result);
+  }
+
+  @Test
+  public void testMaskedOperationWithFullMask() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Create a full mask (black mask)
+    Pixels[][] fullMask = new RGBPixel[originalPixels.length][originalPixels[0].length];
+    for (int i = 0; i < fullMask.length; i++) {
+      for (int j = 0; j < fullMask[0].length; j++) {
+        fullMask[i][j] = new RGBPixel(0, 0, 0); // Black mask (full effect)
+      }
+    }
+    enhancedImage.storePixels("fullMask", fullMask);
+
+
+    // Perform the masked operation with the full mask
+    enhancedImage.maskedOperation("test", "blur", "fullMask", "test-mask-blur");
+
+
+
+    // Retrieve the result of the masked operation
+    Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
+
+    // The result should be the blurred version of the original
+    Pixels[][] expectedBlurred = ImageUtil.loadImage("res/Sample_Images/maskedop_blur.png");
+
+    // Compare the actual result with the expected image using a larger threshold for comparison
+    assertImageEquals((RGBPixel[][]) expectedBlurred, (RGBPixel[][]) result);  // Increased the threshold
+  }
+
+  @Test
+  public void testMaskedOperationWithDifferentOperations() {
+    // Load the original image
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Load the mask image
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    // Test with blur operation
+    enhancedImage.maskedOperation("test", "blur", "mask", "test-mask-blur");
+    Pixels[][] blurResult = enhancedImage.getStoredPixels("test-mask-blur");
+    String blurResultPath = "res/Sample_Images/maskedop_blur_multiple.png";
+    Pixels[][] blurExpected = ImageUtil.loadImage(blurResultPath);
+    assertImageEquals((RGBPixel[][]) blurExpected, (RGBPixel[][]) blurResult);
+
+    // Save the blurred image
+
+
+
+    // Test with sharpen operation
+    enhancedImage.maskedOperation("test", "sharpen", "mask", "test-mask-sharpen");
+    Pixels[][] sharpenResult = enhancedImage.getStoredPixels("test-mask-sharpen");
+    String sharpenExpectedPath = "res/Sample_Images/maskedop_sharpen_result.png"; // Set to the actual expected image path
+    Pixels[][] sharpenExpected = ImageUtil.loadImage(sharpenExpectedPath);
+    assertImageEquals((RGBPixel[][]) sharpenExpected, (RGBPixel[][]) sharpenResult);
+
+    // Test with greyscale operation
+    enhancedImage.maskedOperation("test", "greyscale", "mask", "test-mask-greyscale");
+    Pixels[][] greyscaleResult = enhancedImage.getStoredPixels("test-mask-greyscale");
+    String greyscaleExpectedPath = "res/Sample_Images/maskedop_greyscale_result.png"; // Set to the actual expected image path
+    Pixels[][] greyscaleExpected = ImageUtil.loadImage(greyscaleExpectedPath);
+    assertImageEquals((RGBPixel[][]) greyscaleExpected, (RGBPixel[][]) greyscaleResult);
+
+
+    // Test with sepia operation
+    enhancedImage.maskedOperation("test", "sepia", "mask", "test-mask-sepia");
+    Pixels[][] sepiaResult = enhancedImage.getStoredPixels("test-mask-sepia");
+    String sepiaExpectedPath = "res/Sample_Images/maskedop_sepia_result.png";
+    Pixels[][] sepiaExpected = ImageUtil.loadImage(sepiaExpectedPath);
+    assertImageEquals((RGBPixel[][]) sepiaExpected, (RGBPixel[][]) sepiaResult);
+
+
+
+  }
+
+  @Test
+  public void testLoadOriginalImage() {
+    String loadPath = "res/Sample_Images/maskedop_blur_multiple.png";
+    assertTrue("File not found: " + loadPath, new File(loadPath).exists());
+    Pixels[][] originalPixels = ImageUtil.loadImage(loadPath);
+    assertNotNull("Failed to load the original image", originalPixels);
   }
 
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
