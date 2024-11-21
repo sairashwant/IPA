@@ -611,8 +611,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    * save request to the controller for execution.
    *
    * <p>The method supports multiple file formats (PNG, JPG, PPM) and ensures that an image has
-   * been
-   * loaded before attempting to save. If no image is loaded, an error message is displayed.</p>
+   * been loaded before attempting to save. If no image is loaded, an error message is
+   * displayed.</p>
    *
    * @param args Optional arguments (currently unused) for specifying save configurations.
    */

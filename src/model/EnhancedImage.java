@@ -16,8 +16,29 @@ import model.imagetransformation.colortransformation.Sepia;
 import model.imagetransformation.filtering.Blur;
 import model.imagetransformation.filtering.Sharpen;
 
+/**
+ * The {@code EnhancedImage} class extends the {@link Image} class and implements the
+ * {@link EnhancedImageModel} interface. It provides additional image transformation operations such
+ * as applying masked operations, downscaling images, and retrieving the latest image key. These
+ * operations allow manipulation of pixel data using various transformation techniques. This class
+ * interacts with a hash map (`h1`) to store and retrieve pixel data associated with unique image
+ * keys.
+ */
 public class EnhancedImage extends Image implements EnhancedImageModel {
 
+  /**
+   * Applies a masked operation on an image, where the operation is applied to the source image only
+   * at positions specified by a mask. The mask determines which pixels in the source image are
+   * modified by the transformation.
+   *
+   * @param key       the key of the source image in the image map
+   * @param operation the name of the transformation operation to apply (e.g., "blur", "sharpen",
+   *                  "greyscale")
+   * @param maskKey   the key of the mask image in the image map
+   * @param saveKey   the key under which to save the result of the masked operation
+   * @throws IllegalArgumentException if the source or mask image cannot be found, or if an
+   *                                  unsupported operation is provided
+   */
   @Override
   public void maskedOperation(String key, String operation, String maskKey, String saveKey) {
     Pixels[][] sourcePixels = h1.get(key);
@@ -70,6 +91,16 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
     h1.put(saveKey, updatedPixels);
   }
 
+
+  /**
+   * Downscales an image by the specified width and height, storing the resulting downscaled image
+   * under a new key.
+   *
+   * @param key      the key of the image to downscale in the image map
+   * @param newwidth the new width for the downscaled image
+   * @param newht    the new height for the downscaled image
+   * @param saveKey  the key under which to save the downscaled image
+   */
   @Override
   public void downscale(String key, int newwidth, int newht, String saveKey) {
     Downscale d1 = new Downscale(newht, newwidth);
@@ -78,6 +109,11 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
     h1.put(saveKey, updatedPixel);
   }
 
+  /**
+   * Retrieves the key of the most recently added image in the image map.
+   *
+   * @return the key of the latest image, or {@code null} if no images are present
+   */
   @Override
   public String getLatestKey() {
     if (h1.isEmpty()) {
@@ -89,6 +125,15 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
     }
     return latestKey;
   }
+
+  /**
+   * Converts a 2D array of {@link Pixels} into a {@link BufferedImage}. The resulting image can be
+   * used for display or saving to a file. Each pixel is converted to its corresponding RGB value.
+   *
+   * @param pixels a 2D array of {@link Pixels} to convert
+   * @return a {@link BufferedImage} representing the image based on the provided pixel data
+   * @throws IllegalArgumentException if the pixel array is empty or null
+   */
 
   private BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
     if (pixels == null || pixels.length == 0) {
