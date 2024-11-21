@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+/**
+ * A GUI-based image processor application that allows users to load, edit, and save images. This
+ * class provides a graphical interface with various image manipulation operations such as flipping,
+ * color adjustment, compression, and previews of edits before applying them.
+ */
 public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterface {
 
   private final ImageGUIController controller;
@@ -25,6 +30,11 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   String mid;
 
 
+  /**
+   * Constructs an ImageProcessorGUI object and initializes the GUI components.
+   *
+   * @param controller The controller to handle user operations and interactions with the model.
+   */
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller;
 
@@ -144,6 +154,12 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     setVisible(true);
   }
 
+  /**
+   * Creates and returns a JButton with the specified label text.
+   *
+   * @param text The label text for the button.
+   * @return A configured JButton object.
+   */
   // Modified createButton method (after modification):
   private JButton createButton(String text) {
     JButton button = new JButton(text);
@@ -151,6 +167,13 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     return button;
   }
 
+  /**
+   * Creates a panel with an operation button and a preview checkbox.
+   *
+   * @param operationButton The button to perform the operation.
+   * @param previewCheckbox The checkbox for enabling/disabling the preview.
+   * @return A JPanel containing the button and checkbox.
+   */
   // Modified createOperationWithPreviewPanel method (after modification):
   private JPanel createOperationWithPreviewPanel(JButton operationButton,
       JCheckBox previewCheckbox) {
@@ -161,23 +184,43 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
 
+  /**
+   * Displays an error message in a dialog box.
+   *
+   * @param message The error message to display.
+   */
 
   @Override
   public void showError(String message) {
     JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
+  /**
+   * Displays the given image in the main image display area of the GUI.
+   *
+   * @param image The BufferedImage to be displayed.
+   */
   @Override
   public void displayImage(BufferedImage image) {
     imageLabel.setIcon(new ImageIcon(image));
     controller.applyHistogram(new String[]{"histogram"});
   }
 
+  /**
+   * Displays the given histogram image in the histogram display area of the GUI.
+   *
+   * @param histogram The BufferedImage of the histogram to be displayed.
+   */
   @Override
   public void displayHistogram(BufferedImage histogram) {
     histogramLabel.setIcon(new ImageIcon(histogram));
   }
 
+
+  /**
+   * Handles the brighten operation by prompting the user for a brightness factor and applying the
+   * brighten operation through the controller.
+   */
   private void handleBrighten() {
     String factor = JOptionPane.showInputDialog("Enter brightness factor:");
     if (factor != null) {
@@ -186,12 +229,21 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Handles the downscale operation by prompting the user for the new width and height, and
+   * applying the downscale operation through the controller.
+   */
   private void handleDownscale() {
     String width = JOptionPane.showInputDialog("Enter new width:");
     String height = JOptionPane.showInputDialog("Enter new height:");
     controller.handleDownscale(width, height);
   }
 
+  /**
+   * Handles image operations with optional preview, including blur, sharpen, sepia, and greyscale.
+   *
+   * @param operation The operation to perform (e.g., "Blur", "Sharpen").
+   */
   private void handleOperationWithPreview(String operation) {
     JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
     if (previewCheckbox.isSelected()) {
@@ -217,6 +269,12 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Handles levels adjustment with optional preview. Prompts the user for adjustment levels and
+   * applies the operation with or without a split preview.
+   *
+   * @param operation The levels adjustment operation to perform.
+   */
   private void handleLevelAdjustWithPreview(String operation) {
     JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
     if (previewCheckbox.isSelected()) {
@@ -234,6 +292,12 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
 
+  /**
+   * Returns the appropriate preview checkbox for the given operation.
+   *
+   * @param operation The name of the operation.
+   * @return The JCheckBox corresponding to the operation.
+   */
   private JCheckBox getPreviewCheckboxForOperation(String operation) {
     switch (operation) {
       case "Blur":
@@ -251,6 +315,11 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Displays a slider dialog for selecting a split percentage and returns the user's selection.
+   *
+   * @return The split percentage selected by the user, or -1 if the dialog is canceled.
+   */
   private int getSplitPercentage() {
     JSlider slider = new JSlider(0, 100, 50);
     slider.setMajorTickSpacing(10);
@@ -306,6 +375,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     return confirmed[0] ? result[0] : -1;
   }
 
+  /**
+   * Adds a window listener to the GUI that prompts the user to save unsaved changes before exiting
+   * the application.
+   */
   @Override
   public void addWindowListenerToGUI() {
     // Add a WindowListener to the GUI to detect when the user is about to close the application
@@ -336,6 +409,13 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
 
+  /**
+   * Shows a preview of the specified image and operation in a dialog, with options to apply,
+   * cancel, or go back to adjust settings.
+   *
+   * @param image     The preview image to display.
+   * @param operation The operation associated with the preview.
+   */
   public void showPreview(BufferedImage image, String operation) {
     if (image != null) {
       JLabel previewLabel = new JLabel(new ImageIcon(image));
@@ -400,6 +480,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Handles levels adjustment by prompting the user for black, mid, and white levels, and applying
+   * the adjustment through the controller.
+   */
   private void handleLevelsAdjust() {
     black = JOptionPane.showInputDialog("Enter black level (0-255):");
     mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
@@ -410,6 +494,11 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Handles levels adjustment with a split preview, using a percentage of the image.
+   *
+   * @param percentage The percentage of the image to apply the levels adjustment to.
+   */
   private void handleLevelsAdjustSplit(int percentage) {
     // Collect black, mid, and white levels
     String black = JOptionPane.showInputDialog("Enter black level (0-255):");
@@ -421,6 +510,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Handles image compression by prompting the user for a compression ratio and applying the
+   * compression operation through the controller.
+   */
   private void handleCompression() {
     String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
     if (ratio != null) {
@@ -429,6 +522,12 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+  /**
+   * Displays a preview of levels adjustment, allowing the user to apply, go back, or cancel.
+   *
+   * @param image The preview image to display.
+   * @param args  The levels adjustment parameters (black, mid, white).
+   */
   public void showPreviewLevelAdj(BufferedImage image, String[] args) {
     if (image == null) {
       JOptionPane.showMessageDialog(this, "Unable to generate preview. Image is null.",
@@ -462,7 +561,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     dialog.getContentPane().add(mainPanel);
     dialog.pack();
     dialog.setLocationRelativeTo(this);
-    String[] updatedString = new String[]{args[0],args[1],args[2]};
+    String[] updatedString = new String[]{args[0], args[1], args[2]};
     // Add action listener for Apply button
     applyButton.addActionListener(e -> {
       controller.handleLevelsAdjust(updatedString); // Pass args to controller
@@ -473,7 +572,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     backButton.addActionListener(e -> {
       dialog.dispose(); // Close the preview dialog
       int splitPercentage = getSplitPercentage();
-      String[] backButtonString = new String[]{args[0],args[1],args[2],String.valueOf(splitPercentage)};
+      String[] backButtonString = new String[]{args[0], args[1], args[2],
+          String.valueOf(splitPercentage)};
       if (splitPercentage != -1) {
         controller.handleLevelsAdjust(backButtonString);
       }
@@ -486,6 +586,14 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     dialog.setVisible(true);
   }
 
+  /**
+   * Handles the process of loading an image file into the application. Opens a file chooser dialog
+   * for the user to select an image file, retrieves the selected file's path, and passes it to the
+   * controller for further processing.
+   *
+   * @param gui The GUI instance to display dialogs and manage user interactions.
+   * @param key A unique key to associate the loaded image in the application's storage.
+   */
   private void handleLoad(ImageProcessorGUI gui, String key) {
     JFileChooser fileChooser = new JFileChooser();
     int returnValue = fileChooser.showOpenDialog(null);
@@ -496,6 +604,18 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     }
   }
 
+
+  /**
+   * Handles the process of saving an image to a file. Prompts the user with a file chooser dialog
+   * to select the save location, allows the user to specify a file name and format, and passes the
+   * save request to the controller for execution.
+   *
+   * <p>The method supports multiple file formats (PNG, JPG, PPM) and ensures that an image has
+   * been
+   * loaded before attempting to save. If no image is loaded, an error message is displayed.</p>
+   *
+   * @param args Optional arguments (currently unused) for specifying save configurations.
+   */
   private void handleSave(String[] args) {
     if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
       showError("No image loaded to save. Please load an image first.");
