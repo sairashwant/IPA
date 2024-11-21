@@ -25,13 +25,13 @@ public class ImageGUIControllerTest {
     mockImageController = new ImageControllerMock();
   }
 
-  // Mock image controller class implementing ImageControllerInterface
+
   private class ImageControllerMock implements ImageControllerInterface {
 
     @Override
     public Map<String, Consumer<String[]>> getCommandMap() {
       output.append("Map has been called\n");
-      return Map.of();  // Return an empty map for this mock implementation
+      return Map.of();
     }
 
     @Override
@@ -105,7 +105,6 @@ public class ImageGUIControllerTest {
     String[] args = {"load", "imagePath", "testImage"};
     mockImageController.handleLoad(args);
 
-    // Verify output
     assertEquals("Load has been called.testImage\n", output.toString());
   }
 
@@ -114,7 +113,6 @@ public class ImageGUIControllerTest {
     String[] args = {"save", "imagePath", "testImage"};
     mockImageController.handleSave(args);
 
-    // Verify output
     assertEquals("Save has been called.testImage\n", output.toString());
   }
 
@@ -123,7 +121,6 @@ public class ImageGUIControllerTest {
     String[] args = {"brighten", "1.5", "testImage"};
     mockImageController.handleBrighten(args);
 
-    // Verify output
     assertEquals("Brighten has been called.1.5\n", output.toString());
   }
 
@@ -133,7 +130,6 @@ public class ImageGUIControllerTest {
     Direction direction = Direction.HORIZONTAL;
     mockImageController.handleFlip(args, direction);
 
-    // Verify output
     assertEquals("Flip has been called.testImage\n", output.toString());
   }
 
@@ -141,7 +137,6 @@ public class ImageGUIControllerTest {
   public void testGetCommandMap() {
     mockImageController.getCommandMap();
 
-    // Verify output
     assertEquals("Map has been called\n", output.toString());
   }
 
@@ -149,70 +144,69 @@ public class ImageGUIControllerTest {
   public void testPrintMenu() {
     mockImageController.printMenu();
 
-    // Verify output
     assertEquals("Menu has been called\n", output.toString());
   }
+
   @Test
   public void testHandleRGBSplit() {
     String[] args = {"rgbsplit", "testImage"};
     mockImageController.handleRGBSplit(args);
 
-    // Verify output
     assertEquals("RGB split has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testHandleCombine() {
     String[] args = {"combine", "testImage"};
     mockImageController.handleCombine(args);
 
-    // Verify output
     assertEquals("Combine has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testHandleCompression() {
     String[] args = {"compress", "testImage"};
     mockImageController.handleCompression(args);
 
-    // Verify output
     assertEquals("Compression has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testHandleLevelsAdjust() {
     String[] args = {"levels", "testImage"};
     mockImageController.handleLevelsAdjust(args);
 
-    // Verify output
     assertEquals("Levels adjust has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testHandleSplit() {
     String[] args = {"split", "testImage"};
     mockImageController.handleSplit(args);
 
-    // Verify output
     assertEquals("Split has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testHandleScript() {
     String[] args = {"script", "testScript"};
     mockImageController.handleScript(args);
 
-    // Verify output
     assertEquals("Script has been called.testScript\n", output.toString());
   }
+
   @Test
   public void testApplyOperation() {
     String[] args = {"operation", "testImage"};
     mockImageController.applyOperation(args);
 
-    // Verify output
     assertEquals("Operation has been called.testImage\n", output.toString());
   }
+
   @Test
   public void testRun() {
     mockImageController.run();
 
-    // Verify output
     assertEquals("Running run\n", output.toString());
   }
 
