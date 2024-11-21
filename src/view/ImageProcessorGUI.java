@@ -101,7 +101,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     colorCorrectionButton.addActionListener(e -> controller.applyOperation(
         new String[]{"color-correction", controller.getLatestKey(), "color-correction"}));
     downscale.addActionListener(e -> handleDownscale());
-    exitButton.addActionListener(e -> System.exit(0));
+    exitButton.addActionListener(e -> handleExit());
 
 
     buttonPanel.add(loadButton);
@@ -223,6 +223,42 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
           new String[]{"brighten", factor, controller.getLatestKey(), "brightened"});
     }
   }
+
+  /**
+   * Handles the exit process by checking if there are unsaved changes.
+   * Prompts the user to save before exiting or directly closes the application.
+   */
+  private void handleExit() {
+    String latest = controller.getLatestKey(); // Retrieve the latest image key
+    if (latest != null && !latest.isEmpty()) {
+      int option = JOptionPane.showConfirmDialog(
+          this,
+          "You have unsaved changes. Do you want to save before exiting?",
+          "Confirm Exit",
+          JOptionPane.YES_NO_CANCEL_OPTION,
+          JOptionPane.WARNING_MESSAGE
+      );
+
+      if (option == JOptionPane.YES_OPTION) {
+        handleSave(new String[]{"save", "output.png", latest}); // Save the current image
+        System.exit(0); // Exit the application
+      } else if (option == JOptionPane.NO_OPTION) {
+        System.exit(0); // Exit without saving
+      }
+      // Cancel option does nothing and keeps the application open
+    } else {
+      int confirm = JOptionPane.showConfirmDialog(
+          this,
+          "Are you sure you want to exit?",
+          "Confirm Exit",
+          JOptionPane.YES_NO_OPTION
+      );
+      if (confirm == JOptionPane.YES_OPTION) {
+        System.exit(0); // Exit the application
+      }
+    }
+  }
+
 
   /**
    * Handles the downscale operation by prompting the user for the new width and height, and

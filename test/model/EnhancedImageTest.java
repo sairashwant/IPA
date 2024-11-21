@@ -3,7 +3,6 @@ package model;
 import static org.junit.Assert.*;
 
 import controller.ImageUtil;
-import java.io.File;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 
