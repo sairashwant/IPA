@@ -4,20 +4,46 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.Transformation;
 
+/**
+ * The {@code Downscale} class implements the {@link Transformation} interface and performs the
+ * downscaling operation on an image. It resizes the given image (represented as a 2D array of
+ * pixels) to a new width and height using bilinear interpolation. The class performs interpolation
+ * based on the four nearest pixels to maintain smooth color transitions when downscaling.
+ */
 public class Downscale implements Transformation {
 
-  int newHeight;
-  int newWidth;
+  private int newHeight;
+  private int newWidth;
 
+  /**
+   * Constructor to initialize the downscale operation with the desired new width and height.
+   *
+   * @param newWidth  the desired width of the downscaled image
+   * @param newHeight the desired height of the downscaled image
+   */
   public Downscale(int newWidth, int newHeight) {
     this.newHeight = newHeight;
     this.newWidth = newWidth;
   }
+
+  /**
+   * Applies the downscale transformation to the given image pixels. The method resizes the original
+   * image to the specified width and height using bilinear interpolation.
+   * <p>
+   * Bilinear interpolation computes the pixel values by considering the four closest pixels in the
+   * original image and weighting them based on their relative distance to the target pixel in the
+   * downscaled image.
+   *
+   * @param originalPixels a 2D array representing the pixels of the original image
+   * @return a 2D array of pixels representing the downscaled image
+   */
   @Override
   public Pixels[][] apply(Pixels[][] originalPixels) {
     int originalHeight = originalPixels.length;
     int originalWidth = originalPixels[0].length;
     Pixels[][] downsizedPixels = new RGBPixel[newHeight][newWidth];
+
+    // Iterate over each pixel in the downscaled image
     for (int y = 0; y < newHeight; y++) {
       for (int x = 0; x < newWidth; x++) {
         // Map the pixel location from downsized image to original image
