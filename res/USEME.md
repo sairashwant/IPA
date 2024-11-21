@@ -2,6 +2,13 @@
 
 This document outlines all supported commands and their usage in our image processing application.
 
+## GUI Screenshots
+
+1. On clicking load button on the GUI an image will be loaded along with its histogram.
+   ![Landing Page](res/GUI_Landing_Page.png)
+
+
+
 ## BASIC COMMANDS
 
 1. `load <image-path> <image-name>`
