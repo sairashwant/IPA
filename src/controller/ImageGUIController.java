@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Arrays;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
@@ -28,17 +29,24 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   public void handleLoad(ImageProcessorGUI gui, String key, String filename) {
     this.gui = gui;
     gui.addWindowListenerToGUI();
-    key=filename;
-    int lastDotIndex = key.lastIndexOf('.');
-    if (lastDotIndex > 0) {
-      key = key.substring(0, lastDotIndex); // Remove the file extension
 
-      latest = key;
+    // Extract only the image name (without path and extension)
+    File file = new File(filename);
+    String fileNameWithExtension = file.getName(); // Get the name with extension
+    int lastDotIndex = fileNameWithExtension.lastIndexOf('.'); // Find the last dot
+
+    if (lastDotIndex > 0) {
+      key = fileNameWithExtension.substring(0, lastDotIndex); // Remove the extension
+
+      latest = key;  // Store the key
       original = key;
 
       try {
+        // Pass the updated key to the controller and store pixels
         imageController.handleLoad(new String[]{"load", filename, key});
         i1.storePixels(key, ImageUtil.loadImage(filename));
+
+        // Retrieve and display the stored image
         Pixels[][] pixels = i1.getStoredPixels(key);
         BufferedImage image = imageController.convertPixelsToBufferedImage(pixels);
         gui.displayImage(image);
@@ -47,8 +55,11 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       } catch (Exception ex) {
         gui.showError("An unexpected error occurred: " + ex.getMessage());
       }
+    } else {
+      gui.showError("Invalid file selected: Missing extension.");
     }
   }
+
 
 
 
@@ -224,42 +235,87 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   @Override
   public void handleLevelsAdjust(String[] args) {
     if (args.length == 3) {
+      // Handle normal levels adjustment without preview
       try {
         int black = Integer.parseInt(args[0]);
         int mid = Integer.parseInt(args[1]);
         int white = Integer.parseInt(args[2]);
+
         String key = latest;
         String dest = key + "_levels-adjusted";
-        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest};
+
+        String[] command = {
+            "levels-adjust",
+            String.valueOf(black),
+            String.valueOf(mid),
+            String.valueOf(white),
+            key,
+            dest
+        };
+
         imageController.handleLevelsAdjust(command);
         latest = dest;
         displayImageByKey(gui, latest);
+
       } catch (NumberFormatException e) {
         gui.showError("Invalid level values. Please enter integers for black, mid, and white points.");
       } catch (Exception e) {
         gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else if (args.length == 4) {
+      // Handle levels adjustment with split and preview
       try {
         int black = Integer.parseInt(args[0]);
         int mid = Integer.parseInt(args[1]);
         int white = Integer.parseInt(args[2]);
         int percentage = Integer.parseInt(args[3]);
+
+        if (percentage < 0 || percentage > 100) {
+          throw new IllegalArgumentException("Split percentage must be between 0 and 100.");
+        }
+
         String key = latest;
-        String dest = key + "_split-"+"levels-adjusted";
-        String[] command = {"levels-adjust", String.valueOf(black), String.valueOf(mid), String.valueOf(white), key, dest, "split",String.valueOf(percentage)};
+        String dest = key + "_split-levels-adjusted";
+
+        String[] command = {
+            "levels-adjust",
+            String.valueOf(black),
+            String.valueOf(mid),
+            String.valueOf(white),
+            key,
+            dest,
+            "split",
+            String.valueOf(percentage)
+        };
+
+        // Execute the levels adjustment command
+        System.out.println("ImageGUIController " + Arrays.toString(command));
         imageController.handleLevelsAdjust(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
+
+        // Retrieve the preview image
+        Pixels[][] previewPixels = imageModel.getStoredPixels(dest);
+        if (previewPixels == null) {
+          throw new IllegalArgumentException("Failed to generate preview for split levels adjustment.");
+        }
+
+        BufferedImage previewImage = imageController.convertPixelsToBufferedImage(previewPixels);
+
+        // Show preview in the GUI
+        gui.showPreviewLevelAdj(previewImage, args);
+
       } catch (NumberFormatException e) {
-        gui.showError("Invalid level values. Please enter integers for black, mid, and white points.");
+        gui.showError("Invalid level values or split percentage. Please enter integers.");
+      } catch (IllegalArgumentException e) {
+        gui.showError(e.getMessage());
       } catch (Exception e) {
         gui.showError("An unexpected error occurred: " + e.getMessage());
       }
     } else {
-      gui.showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> <srcKey> <destKey>");
+      // Invalid input format
+      gui.showError("Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> [<splitPercentage>]");
     }
   }
+
 
 
   @Override
@@ -273,6 +329,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         String[] command = {operation, key, dest, "split", splitPercentage};
         imageController.handleSplit(command);
         BufferedImage preview = convertPixelsToBufferedImage(imageModel.getStoredPixels(dest));
+
         gui.showPreview(preview,operation);
       } catch (Exception e) {
         gui.showError("Error processing split command: " + e.getMessage());

@@ -30,7 +30,7 @@ public class MaskedOperation implements Transformation {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         // Check if the mask pixel is black (assuming RGBPixel and black is (0, 0, 0))
-        if (mask[y][x] instanceof RGBPixel && ((RGBPixel) mask[y][x]).getRed() == 0) {
+        if (((RGBPixel) mask[y][x]).getRed() == 0 && ((RGBPixel) mask[y][x]).getGreen() == 0 && ((RGBPixel) mask[y][x]).getBlue() == 0) {
           resultPixels[y][x] = operation.apply(new Pixels[][]{{sourcePixels[y][x]}})[0][0];
         } else {
           // Keep the original pixel color

@@ -10,7 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterface{
+public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterface {
+
   private final ImageGUIController controller;
   private final JLabel imageLabel;
   private final JLabel histogramLabel;
@@ -19,6 +20,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   private final JCheckBox previewSepiaCheckbox;
   private final JCheckBox previewGreyscaleCheckbox;
   private final JCheckBox previewLevelsAdjustCheckbox;
+  String black;
+  String white;
+  String mid;
+
 
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller;
@@ -31,8 +36,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
 
     // Buttons and preview checkboxes
     // Modified button panel to use GridLayout (vertical layout)
-    JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 10, 10)); // GridLayout for vertical arrangement
-
+    JPanel buttonPanel = new JPanel(
+        new GridLayout(0, 1, 10, 10)); // GridLayout for vertical arrangement
 
     JButton loadButton = createButton("Load Image");
     JButton saveButton = createButton("Save Image");
@@ -51,7 +56,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     JButton sepiaButton = createButton("Sepia");
     JButton levelsAdjustButton = createButton("Levels Adjust");
     JButton colorCorrectionButton = createButton("Color Correction");
-    JButton downscale= createButton("Downscale");
+    JButton downscale = createButton("Downscale");
     JButton exitButton = createButton("Exit");
 
     previewBlurCheckbox = new JCheckBox("Preview");
@@ -60,24 +65,32 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     previewGreyscaleCheckbox = new JCheckBox("Preview");
     previewLevelsAdjustCheckbox = new JCheckBox("Preview");
 
-    // Button actions
     loadButton.addActionListener(e -> handleLoad(this, "load1"));
-    saveButton.addActionListener(e -> handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
+    saveButton.addActionListener(
+        e -> handleSave(new String[]{"save", "output.png", controller.getLatestKey()}));
     undoButton.addActionListener(e -> controller.handleUndo());
     originalImageButton.addActionListener(e -> controller.handleShowOriginalImage());
     brightenButton.addActionListener(e -> handleBrighten());
-    horizontalFlipButton.addActionListener(e ->controller.handleFlip(new String[]{"flip", controller.getLatestKey(), "HORIZONTAL".toLowerCase()}, Direction.HORIZONTAL));
-    verticalFlipButton.addActionListener(e -> controller.handleFlip(new String[]{"flip", controller.getLatestKey(), "VERTICAL".toLowerCase()}, Direction.VERTICAL));
-    redComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"red-component", controller.getLatestKey(), "red-component"}));
-    greenComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"green-component", controller.getLatestKey(), "green-component"}));
-    blueComponentButton.addActionListener(e -> controller.applyOperation(new String[]{"blue-component", controller.getLatestKey(), "blue-component"}));
+    horizontalFlipButton.addActionListener(e -> controller.handleFlip(
+        new String[]{"flip", controller.getLatestKey(), "HORIZONTAL".toLowerCase()},
+        Direction.HORIZONTAL));
+    verticalFlipButton.addActionListener(e -> controller.handleFlip(
+        new String[]{"flip", controller.getLatestKey(), "VERTICAL".toLowerCase()},
+        Direction.VERTICAL));
+    redComponentButton.addActionListener(e -> controller.applyOperation(
+        new String[]{"red-component", controller.getLatestKey(), "red-component"}));
+    greenComponentButton.addActionListener(e -> controller.applyOperation(
+        new String[]{"green-component", controller.getLatestKey(), "green-component"}));
+    blueComponentButton.addActionListener(e -> controller.applyOperation(
+        new String[]{"blue-component", controller.getLatestKey(), "blue-component"}));
     compressButton.addActionListener(e -> handleCompression());
     blurButton.addActionListener(e -> handleOperationWithPreview("Blur"));
     sharpenButton.addActionListener(e -> handleOperationWithPreview("Sharpen"));
     greyscaleButton.addActionListener(e -> handleOperationWithPreview("Greyscale"));
     sepiaButton.addActionListener(e -> handleOperationWithPreview("Sepia"));
-    levelsAdjustButton.addActionListener(e -> handleLevelsAdjust());
-    colorCorrectionButton.addActionListener(e -> controller.applyOperation(new String[]{"color-correction", controller.getLatestKey(), "color-correction"}));
+    levelsAdjustButton.addActionListener(e -> handleLevelAdjustWithPreview("levels-adjust"));
+    colorCorrectionButton.addActionListener(e -> controller.applyOperation(
+        new String[]{"color-correction", controller.getLatestKey(), "color-correction"}));
     downscale.addActionListener(e -> handleDownscale());
     exitButton.addActionListener(e -> System.exit(0));
 
@@ -98,7 +111,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     buttonPanel.add(createOperationWithPreviewPanel(sharpenButton, previewSharpenCheckbox));
     buttonPanel.add(createOperationWithPreviewPanel(sepiaButton, previewSepiaCheckbox));
     buttonPanel.add(createOperationWithPreviewPanel(greyscaleButton, previewGreyscaleCheckbox));
-    buttonPanel.add(createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustCheckbox));
+    buttonPanel.add(
+        createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustCheckbox));
     buttonPanel.add(exitButton);
 
     // Image display area
@@ -121,7 +135,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     // Add to frame
     // Modified code to make button panel scrollable (after modification):
     JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
-    buttonScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Enable vertical scroll
+    buttonScrollPane.setVerticalScrollBarPolicy(
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Enable vertical scroll
     add(buttonScrollPane, BorderLayout.WEST);
 
     add(imagePanel, BorderLayout.CENTER);
@@ -137,51 +152,15 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
   // Modified createOperationWithPreviewPanel method (after modification):
-  private JPanel createOperationWithPreviewPanel(JButton operationButton, JCheckBox previewCheckbox) {
+  private JPanel createOperationWithPreviewPanel(JButton operationButton,
+      JCheckBox previewCheckbox) {
     JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Panel for button and checkbox
     panel.add(operationButton);
     panel.add(previewCheckbox);
     return panel;
   }
 
-  private void handleLoad(ImageProcessorGUI gui,String key){
-    JFileChooser fileChooser = new JFileChooser();
-    int returnValue = fileChooser.showOpenDialog(null);
-    if (returnValue == JFileChooser.APPROVE_OPTION) {
-      File selectedFile = fileChooser.getSelectedFile();
-      String filename = selectedFile.getAbsolutePath();
-      controller.handleLoad(this,key, filename);
-    }
-  }
 
-  private void handleSave(String[] args){
-    if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
-      showError("No image loaded to save. Please load an image first.");
-      return;
-    }
-
-    // Create a JFileChooser to let the user choose a directory and file name
-    JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Save Image");
-
-    // Add file filters for different image formats
-    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter("PNG Images", "png");
-    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter("JPG Images", "jpg");
-    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter("PPM Images", "ppm");
-
-    // Add the file filters to the file chooser
-    fileChooser.addChoosableFileFilter(pngFilter);
-    fileChooser.addChoosableFileFilter(jpgFilter);
-    fileChooser.addChoosableFileFilter(ppmFilter);
-
-    // Set the default filter (optional, you can choose one to start with)
-    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
-
-    // Open the file chooser dialog to select the file to save
-    int userSelection = fileChooser.showSaveDialog(null);
-    controller.handleSave(userSelection,fileChooser, pngFilter, jpgFilter,ppmFilter);
-
-  }
 
   @Override
   public void showError(String message) {
@@ -202,14 +181,15 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   private void handleBrighten() {
     String factor = JOptionPane.showInputDialog("Enter brightness factor:");
     if (factor != null) {
-      controller.handleBrighten(new String[]{"brighten", factor, controller.getLatestKey(), "brightened"});
+      controller.handleBrighten(
+          new String[]{"brighten", factor, controller.getLatestKey(), "brightened"});
     }
   }
 
-  private void handleDownscale(){
+  private void handleDownscale() {
     String width = JOptionPane.showInputDialog("Enter new width:");
     String height = JOptionPane.showInputDialog("Enter new height:");
-    controller.handleDownscale(width,height);
+    controller.handleDownscale(width, height);
   }
 
   private void handleOperationWithPreview(String operation) {
@@ -218,13 +198,38 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       int splitPercentage = getSplitPercentage();
       // Check if the returned split percentage is valid
       if (splitPercentage != -1) {
-        controller.handleSplit(new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
+        if (!operation.equals("levels-adjust")) {
+          controller.handleSplit(
+              new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
+        } else {
+          handleLevelsAdjustSplit(splitPercentage);
+        }
       } else {
-        // Handle invalid or canceled input (no operation)
-        JOptionPane.showMessageDialog(this, "Operation canceled", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Operation canceled", "Error",
+            JOptionPane.ERROR_MESSAGE);
       }
     } else {
-      controller.applyOperation(new String[]{operation.toLowerCase()});
+      if (!operation.equals("levels-adjust")) {
+        controller.handleSplit(new String[]{operation.toLowerCase()});
+      } else {
+        handleLevelsAdjust();
+      }
+    }
+  }
+
+  private void handleLevelAdjustWithPreview(String operation) {
+    JCheckBox previewCheckbox = getPreviewCheckboxForOperation(operation);
+    if (previewCheckbox.isSelected()) {
+      int splitPercentage = getSplitPercentage();
+      // Check if the returned split percentage is valid
+      if (splitPercentage != -1) {
+        handleLevelsAdjustSplit(splitPercentage);
+      } else {
+        JOptionPane.showMessageDialog(this, "Operation canceled", "Error",
+            JOptionPane.ERROR_MESSAGE);
+      }
+    } else {
+      handleLevelsAdjust();
     }
   }
 
@@ -239,7 +244,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
         return previewSepiaCheckbox;
       case "Greyscale":
         return previewGreyscaleCheckbox;
-      case "Levels Adjust":
+      case "levels-adjust":
         return previewLevelsAdjustCheckbox;
       default:
         return null;
@@ -307,7 +312,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
-        String latest= controller.getLatestKey();
+        String latest = controller.getLatestKey();
         // Before closing, prompt the user to save if there are unsaved changes
         if (latest != null && !latest.isEmpty()) {
           int option = JOptionPane.showConfirmDialog(null,
@@ -360,19 +365,27 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       dialog.setLocationRelativeTo(this);
 
       // Action listener for Apply button
-      applyButton.addActionListener(e -> {
-        controller.applyOperation(new String[]{
-            operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()
+      if (operation != "levels-adjust") {
+        applyButton.addActionListener(e -> {
+          controller.applyOperation(new String[]{
+              operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()
+          });
+          dialog.dispose(); // Close the dialog after applying
         });
-        dialog.dispose(); // Close the dialog after applying
-      });
+      } else {
+        applyButton.addActionListener(e -> {
+          controller.handleLevelsAdjust(new String[]{black, mid, white});
+          dialog.dispose(); // Close the dialog after applying
+        });
+      }
 
       // Action listener for Back button
       backButton.addActionListener(e -> {
         dialog.dispose(); // Close the preview dialog
         int splitPercentage = getSplitPercentage(); // Reopen the slider to choose split percentage
         if (splitPercentage != -1) {
-          controller.handleSplit(new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
+          controller.handleSplit(
+              new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
         }
       });
 
@@ -382,24 +395,136 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       // Show the dialog
       dialog.setVisible(true);
     } else {
-      JOptionPane.showMessageDialog(this, "Unable to generate preview.", "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, "Unable to generate preview.", "Error",
+          JOptionPane.ERROR_MESSAGE);
     }
   }
 
   private void handleLevelsAdjust() {
-    String black = JOptionPane.showInputDialog("Enter black level (0-255):");
-    String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
-    String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+    black = JOptionPane.showInputDialog("Enter black level (0-255):");
+    mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
+    white = JOptionPane.showInputDialog("Enter white level (0-255):");
 
     if (black != null && mid != null && white != null) {
       controller.handleLevelsAdjust(new String[]{black, mid, white});
     }
   }
 
+  private void handleLevelsAdjustSplit(int percentage) {
+    // Collect black, mid, and white levels
+    String black = JOptionPane.showInputDialog("Enter black level (0-255):");
+    String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
+    String white = JOptionPane.showInputDialog("Enter white level (0-255):");
+    String percentageStr = String.valueOf(percentage);
+    if (black != null && mid != null && white != null) {
+      controller.handleLevelsAdjust(new String[]{black, mid, white, percentageStr});
+    }
+  }
+
   private void handleCompression() {
     String ratio = JOptionPane.showInputDialog("Enter compression ratio (0-100):");
     if (ratio != null) {
-      controller.handleCompression(new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
+      controller.handleCompression(
+          new String[]{"compress", ratio, controller.getLatestKey(), "compressed"});
     }
+  }
+
+  public void showPreviewLevelAdj(BufferedImage image, String[] args) {
+    if (image == null) {
+      JOptionPane.showMessageDialog(this, "Unable to generate preview. Image is null.",
+          "Error", JOptionPane.ERROR_MESSAGE);
+      return; // Exit if image is null
+    }
+
+    // Create the preview label with the image
+    JLabel previewLabel = new JLabel(new ImageIcon(image));
+    JScrollPane scrollPane = new JScrollPane(previewLabel);
+    scrollPane.setPreferredSize(new Dimension(600, 600));
+
+    // Create buttons for Apply, Back, and Cancel
+    JButton applyButton = new JButton("Apply");
+    JButton backButton = new JButton("Back");
+    JButton cancelButton = new JButton("Cancel");
+
+    // Create a panel for buttons
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.add(applyButton);
+    buttonPanel.add(backButton);
+    buttonPanel.add(cancelButton);
+
+    // Combine scrollPane and buttonPanel in a main panel
+    JPanel mainPanel = new JPanel(new BorderLayout());
+    mainPanel.add(scrollPane, BorderLayout.CENTER);
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+    // Create a dialog
+    JDialog dialog = new JDialog(this, "Preview Levels Adjustment", true);
+    dialog.getContentPane().add(mainPanel);
+    dialog.pack();
+    dialog.setLocationRelativeTo(this);
+    String[] updatedString = new String[]{args[0],args[1],args[2]};
+    // Add action listener for Apply button
+    applyButton.addActionListener(e -> {
+      controller.handleLevelsAdjust(updatedString); // Pass args to controller
+      dialog.dispose(); // Close the dialog after applying
+    });
+
+    // Add action listener for Back button
+    backButton.addActionListener(e -> {
+      dialog.dispose(); // Close the preview dialog
+      int splitPercentage = getSplitPercentage();
+      String[] backButtonString = new String[]{args[0],args[1],args[2],String.valueOf(splitPercentage)};
+      if (splitPercentage != -1) {
+        controller.handleLevelsAdjust(backButtonString);
+      }
+    });
+
+    // Add action listener for Cancel button
+    cancelButton.addActionListener(e -> dialog.dispose()); // Close the dialog on cancel
+
+    // Display the dialog
+    dialog.setVisible(true);
+  }
+
+  private void handleLoad(ImageProcessorGUI gui, String key) {
+    JFileChooser fileChooser = new JFileChooser();
+    int returnValue = fileChooser.showOpenDialog(null);
+    if (returnValue == JFileChooser.APPROVE_OPTION) {
+      File selectedFile = fileChooser.getSelectedFile();
+      String filename = selectedFile.getAbsolutePath();
+      controller.handleLoad(this, key, filename);
+    }
+  }
+
+  private void handleSave(String[] args) {
+    if (controller.getLatestKey() == null || controller.getLatestKey().isEmpty()) {
+      showError("No image loaded to save. Please load an image first.");
+      return;
+    }
+
+    // Create a JFileChooser to let the user choose a directory and file name
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Save Image");
+
+    // Add file filters for different image formats
+    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter(
+        "PNG Images", "png");
+    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter(
+        "JPG Images", "jpg");
+    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter(
+        "PPM Images", "ppm");
+
+    // Add the file filters to the file chooser
+    fileChooser.addChoosableFileFilter(pngFilter);
+    fileChooser.addChoosableFileFilter(jpgFilter);
+    fileChooser.addChoosableFileFilter(ppmFilter);
+
+    // Set the default filter (optional, you can choose one to start with)
+    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
+
+    // Open the file chooser dialog to select the file to save
+    int userSelection = fileChooser.showSaveDialog(null);
+    controller.handleSave(userSelection, fileChooser, pngFilter, jpgFilter, ppmFilter);
+
   }
 }
