@@ -20,8 +20,15 @@ public class Downscale implements Transformation {
    *
    * @param newWidth  the desired width of the downscaled image
    * @param newHeight the desired height of the downscaled image
+   * @throws NegativeArraySizeException if newWidth or newHeight is negative
    */
   public Downscale(int newWidth, int newHeight) {
+    if (newWidth < 0 || newHeight < 0) {
+      throw new NegativeArraySizeException("Width and height cannot be negative.");
+    }
+    if (newWidth == 0 || newHeight == 0) {
+      throw new IllegalArgumentException("Width and height must be greater than zero.");
+    }
     this.newHeight = newHeight;
     this.newWidth = newWidth;
   }
@@ -36,11 +43,17 @@ public class Downscale implements Transformation {
    *
    * @param originalPixels a 2D array representing the pixels of the original image
    * @return a 2D array of pixels representing the downscaled image
+   * @throws IllegalArgumentException if the input image is empty (i.e., no pixels)
    */
   @Override
   public Pixels[][] apply(Pixels[][] originalPixels) {
+    if (originalPixels == null || originalPixels.length == 0 || originalPixels[0].length == 0) {
+      throw new IllegalArgumentException("Input image cannot be empty.");
+    }
+
     int originalHeight = originalPixels.length;
     int originalWidth = originalPixels[0].length;
+
     Pixels[][] downsizedPixels = new RGBPixel[newHeight][newWidth];
 
     // Iterate over each pixel in the downscaled image

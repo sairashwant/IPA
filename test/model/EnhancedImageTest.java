@@ -534,4 +534,50 @@ public class EnhancedImageTest {
       }
     }
   }
+    @Test
+    public void testDownscaleToZeroDimensions() {
+      String load = "test/Test_Image/Landscape.png";
+      Pixels[][] pixels = ImageUtil.loadImage(load);
+
+      assertNotNull("Pixels should not be null after loading the image", pixels);
+
+      enhancedImage.storePixels("test", pixels);
+
+      // Downscale to zero dimensions, which should ideally throw an exception or handle gracefully
+      assertThrows(IllegalArgumentException.class, () -> {
+        enhancedImage.downscale("test", 0, 0, "zero");
+      });
+    }
+  @Test
+  public void testDownscaleToLargerDimensions() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] pixels = ImageUtil.loadImage(load);
+
+    assertNotNull("Pixels should not be null after loading the image", pixels);
+
+    enhancedImage.storePixels("test", pixels);
+
+    // Downscale to larger dimensions (upscaling)
+    enhancedImage.downscale("test", pixels[0].length * 2, pixels.length * 2, "upscaled");
+    Pixels[][] upscaledPixels = enhancedImage.getStoredPixels("upscaled");
+
+    // Verify that the dimensions are larger than the original
+    assertEquals("Height should be double the original size", pixels.length * 2, upscaledPixels.length);
+    assertEquals("Width should be double the original size", pixels[0].length * 2, upscaledPixels[0].length);
+  }
+  @Test
+  public void testDownscaleOnEmptyImage() {
+    // Simulate an empty image (zero width or height)
+    Pixels[][] emptyPixels = new Pixels[0][0];
+
+    enhancedImage.storePixels("test", emptyPixels);
+
+    // Should either throw an exception or do nothing (depending on your expected behavior)
+    assertThrows(IllegalArgumentException.class, () -> {
+      enhancedImage.downscale("test", 1, 1, "emptyDownscale");
+    });
+  }
+
+
+
 }
