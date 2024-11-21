@@ -2,7 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
-import controller.ImageController;
+
 import controller.ImageUtil;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
@@ -639,5 +639,6 @@ public class EnhancedImageTest {
     Pixels[][] lumaExpected = ImageUtil.loadImage(lumaExpectedPath);
     assertImageEquals((RGBPixel[][]) lumaExpected, (RGBPixel[][]) lumaResult);
   }
+
 
 }
