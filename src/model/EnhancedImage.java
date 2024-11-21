@@ -1,8 +1,6 @@
 package model;
 
-import java.awt.image.BufferedImage;
 import model.colorscheme.Pixels;
-import model.colorscheme.RGBPixel;
 import model.imagetransformation.Transformation;
 import model.imagetransformation.advancedoperations.Downscale;
 import model.imagetransformation.advancedoperations.MaskedOperation;
