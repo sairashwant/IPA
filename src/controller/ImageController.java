@@ -448,9 +448,9 @@ public class ImageController implements ImageControllerInterface {
     if (args.length == 5) {
       try {
         String srcKey = args[1];
-        int newWidth = Integer.parseInt(args[3]);
-        int newHeight = Integer.parseInt(args[4]);
-        String destKey = args[2];
+        int newWidth = Integer.parseInt(args[2]);
+        int newHeight = Integer.parseInt(args[3]);
+        String destKey = args[4];
         imageModel.downscale(srcKey, newWidth, newHeight, destKey);
         System.out.println("Downscaled image " + srcKey + " to " + newWidth + "x" + newHeight + " and saved as " + destKey);
       } catch (NumberFormatException e) {

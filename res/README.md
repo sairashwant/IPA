@@ -299,6 +299,9 @@ This application is built using the MVC (model-view-controller) architecture and
 
 ## Testing Package
 
+## **Due to exceeding amount of files in the folder some test images were removed.**
+## **Only test resources for EnhancedImageTest and ImageControllerGUITest is available.**
+
 ## Controller Test Package
 
 ### ImageControllerMockTest.java

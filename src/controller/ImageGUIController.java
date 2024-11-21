@@ -235,6 +235,7 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
    *             It updates the <code>latest</code> image key and displays the brightened image in the GUI.
    * @throws NumberFormatException if the brightness factor is not a valid integer.
    * @throws Exception             if an unexpected error occurs during the brightening process.
+   * @throws Exception             if an unexpected error occurs during the brightening process.
    */
   @Override
   public void handleBrighten(String[] args) {
@@ -539,8 +540,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
       String dest = latest + "_downscaled";
 
-      String[] command = {"downscale", latest, dest, String.valueOf(newWidth),
-          String.valueOf(newHeight)};
+      String[] command = {"downscale", latest,  String.valueOf(newWidth),
+          String.valueOf(newHeight),dest};
 
       imageController.handleDownscale(command);
 
