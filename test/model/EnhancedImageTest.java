@@ -6,10 +6,15 @@ import controller.ImageUtil;
 import java.io.File;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
+
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Class to test features in EnhancedImage class.
+ */
 public class EnhancedImageTest {
+
   EnhancedImage enhancedImage = new EnhancedImage();
 
 
@@ -35,7 +40,6 @@ public class EnhancedImageTest {
     assertNotNull("Downscaled pixels should not be null", downscaledPixels);
 
     String outputFileName = "test/Test_Image/downscaled_image.png"; // Ensure the file path is correct
-
 
     Pixels[][] savedPixels = ImageUtil.loadImage(outputFileName);
     assertNotNull("Saved pixels should not be null after loading the image", savedPixels);
@@ -83,17 +87,16 @@ public class EnhancedImageTest {
     assertEquals("Height should be halved", originalHeight / 2, downscaledPixels.length);
     assertEquals("Width should be halved", originalWidth / 2, downscaledPixels[0].length);
 
-
     String outputFileName = "test/Test_Image/downscaled_half.png";  // Use PNG for lossless format
-
-
 
     Pixels[][] savedPixels = ImageUtil.loadImage(outputFileName);
     assertNotNull("Saved pixels should not be null after loading the image", savedPixels);
 
     // Compare dimensions
-    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length, savedPixels.length);
-    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length, savedPixels[0].length);
+    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length,
+        savedPixels.length);
+    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length,
+        savedPixels[0].length);
 
     // Compare pixel values with a tolerance
     final int tolerance = 0; // Tolerance for pixel value differences
@@ -132,17 +135,16 @@ public class EnhancedImageTest {
     assertEquals("Height should be 1", 1, downscaledPixels.length);
     assertEquals("Width should be 1", 1, downscaledPixels[0].length);
 
-
     String outputFileName = "test/Test_Image/single_pixel.png";
-
-
 
     Pixels[][] savedPixels = ImageUtil.loadImage(outputFileName);
     assertNotNull("Saved pixels should not be null after loading the image", savedPixels);
 
     // Compare dimensions
-    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length, savedPixels.length);
-    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length, savedPixels[0].length);
+    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length,
+        savedPixels.length);
+    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length,
+        savedPixels[0].length);
 
     // Compare pixel values
     RGBPixel downscaledPixel = (RGBPixel) downscaledPixels[0][0];
@@ -172,14 +174,14 @@ public class EnhancedImageTest {
     assertEquals("Height should remain the same", pixels.length, downscaledPixels.length);
     assertEquals("Width should remain the same", pixels[0].length, downscaledPixels[0].length);
 
-
-
     Pixels[][] savedPixels = ImageUtil.loadImage(savedPath);
     assertNotNull("Saved pixels should not be null after loading the image", savedPixels);
 
     // Verify that the saved image's dimensions match the downscaled image's dimensions
-    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length, savedPixels.length);
-    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length, savedPixels[0].length);
+    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length,
+        savedPixels.length);
+    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length,
+        savedPixels[0].length);
 
     // Tolerance for pixel value differences
     final int tolerance = 0;
@@ -191,9 +193,12 @@ public class EnhancedImageTest {
         RGBPixel savedPixel = (RGBPixel) savedPixels[y][x];
 
         // Use tolerance for comparison
-        assertTrue("Red values should match within tolerance", Math.abs(downscaledPixel.getRed() - savedPixel.getRed()) <= tolerance);
-        assertTrue("Green values should match within tolerance", Math.abs(downscaledPixel.getGreen() - savedPixel.getGreen()) <= tolerance);
-        assertTrue("Blue values should match within tolerance", Math.abs(downscaledPixel.getBlue() - savedPixel.getBlue()) <= tolerance);
+        assertTrue("Red values should match within tolerance",
+            Math.abs(downscaledPixel.getRed() - savedPixel.getRed()) <= tolerance);
+        assertTrue("Green values should match within tolerance",
+            Math.abs(downscaledPixel.getGreen() - savedPixel.getGreen()) <= tolerance);
+        assertTrue("Blue values should match within tolerance",
+            Math.abs(downscaledPixel.getBlue() - savedPixel.getBlue()) <= tolerance);
       }
     }
   }
@@ -230,16 +235,16 @@ public class EnhancedImageTest {
     assertEquals("Height should match original size", pixels.length, downscaledPixels.length);
     assertEquals("Width should match original size", pixels[0].length, downscaledPixels[0].length);
 
-
     String outputFileName = "test/Test_Image/large_output.png";
-
 
     Pixels[][] savedPixels = ImageUtil.loadImage(outputFileName);
     assertNotNull("Saved pixels should not be null after loading the image", savedPixels);
 
     // Verify that the saved image's dimensions match the downscaled image's dimensions
-    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length, savedPixels.length);
-    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length, savedPixels[0].length);
+    assertEquals("Height of saved image should match downscaled image", downscaledPixels.length,
+        savedPixels.length);
+    assertEquals("Width of saved image should match downscaled image", downscaledPixels[0].length,
+        savedPixels[0].length);
 
     // Tolerance for pixel value differences
     final int tolerance = 0;  // Allow a tolerance of ±3 for pixel value comparison
@@ -251,12 +256,16 @@ public class EnhancedImageTest {
         RGBPixel savedPixel = (RGBPixel) savedPixels[y][x];
 
         // Use tolerance for comparison
-        assertTrue("Red values should match within tolerance", Math.abs(downscaledPixel.getRed() - savedPixel.getRed()) <= tolerance);
-        assertTrue("Green values should match within tolerance", Math.abs(downscaledPixel.getGreen() - savedPixel.getGreen()) <= tolerance);
-        assertTrue("Blue values should match within tolerance", Math.abs(downscaledPixel.getBlue() - savedPixel.getBlue()) <= tolerance);
+        assertTrue("Red values should match within tolerance",
+            Math.abs(downscaledPixel.getRed() - savedPixel.getRed()) <= tolerance);
+        assertTrue("Green values should match within tolerance",
+            Math.abs(downscaledPixel.getGreen() - savedPixel.getGreen()) <= tolerance);
+        assertTrue("Blue values should match within tolerance",
+            Math.abs(downscaledPixel.getBlue() - savedPixel.getBlue()) <= tolerance);
       }
     }
   }
+
   @Test
   public void testMaskedOperation() {
     String load = "test/Test_Image/Landscape.png";
@@ -279,6 +288,7 @@ public class EnhancedImageTest {
 
     assertImageEquals((RGBPixel[][]) expected, (RGBPixel[][]) result);
   }
+
   @Test
   public void testMaskedOperationWithNullImage() {
     // Attempt to perform masked operation with a null original image
@@ -291,7 +301,8 @@ public class EnhancedImageTest {
       enhancedImage.maskedOperation("nullImageKey", "blur", "mask", "test-mask-blur");
       fail("Expected an exception when performing masked operation with null original image");
     } catch (IllegalArgumentException e) {
-      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+      assertEquals("Expected exception message", "Source image or mask image not found.",
+          e.getMessage());
     }
   }
 
@@ -308,7 +319,8 @@ public class EnhancedImageTest {
       enhancedImage.maskedOperation("test", "blur", "nullMaskKey", "test-mask-blur");
       fail("Source image or mask image not found.");
     } catch (IllegalArgumentException e) {
-      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+      assertEquals("Expected exception message", "Source image or mask image not found.",
+          e.getMessage());
     }
   }
 
@@ -331,7 +343,8 @@ public class EnhancedImageTest {
       enhancedImage.maskedOperation("test", "invalidOperation", "mask", "test-mask-blur");
       fail("Expected an exception for invalid operation type");
     } catch (IllegalArgumentException e) {
-      assertEquals("Expected exception message", "Unsupported operation: invalidOperation", e.getMessage());
+      assertEquals("Expected exception message", "Unsupported operation: invalidOperation",
+          e.getMessage());
     }
   }
 
@@ -341,7 +354,8 @@ public class EnhancedImageTest {
       // Load a smaller original image
       String loadSmall = "test/Test_Image/downscaled_half.png"; // Assume this image is smaller
       Pixels[][] originalPixels = ImageUtil.loadImage(loadSmall);
-      assertNotNull("Original pixels should not be null after loading the small image", originalPixels);
+      assertNotNull("Original pixels should not be null after loading the small image",
+          originalPixels);
       enhancedImage.storePixels("smallImage", originalPixels);
 
       // Load the mask image
@@ -351,7 +365,8 @@ public class EnhancedImageTest {
       enhancedImage.storePixels("mask", maskPixels);
 
       // Check if the sizes of the original image and the mask match
-      if (originalPixels.length != maskPixels.length || originalPixels[0].length != maskPixels[0].length) {
+      if (originalPixels.length != maskPixels.length
+          || originalPixels[0].length != maskPixels[0].length) {
         // If sizes don't match, throw a custom exception
         throw new ImageSizeMismatchException("Original image and mask image sizes do not match.");
       }
@@ -383,10 +398,12 @@ public class EnhancedImageTest {
   }
 
   private static class ImageSizeMismatchException extends Exception {
+
     public ImageSizeMismatchException(String message) {
       super(message);
     }
   }
+
   @Test
   public void testMaskedOperationWithNonExistentMask() {
     // Load the original image
@@ -400,7 +417,8 @@ public class EnhancedImageTest {
       enhancedImage.maskedOperation("test", "blur", "nonExistentMask", "test-mask-blur");
       fail("Expected an exception when performing masked operation with non-existent mask");
     } catch (IllegalArgumentException e) {
-      assertEquals("Expected exception message", "Source image or mask image not found.", e.getMessage());
+      assertEquals("Expected exception message", "Source image or mask image not found.",
+          e.getMessage());
     }
   }
 
@@ -448,11 +466,8 @@ public class EnhancedImageTest {
     }
     enhancedImage.storePixels("fullMask", fullMask);
 
-
     // Perform the masked operation with the full mask
     enhancedImage.maskedOperation("test", "blur", "fullMask", "test-mask-blur");
-
-
 
     // Retrieve the result of the masked operation
     Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
@@ -461,7 +476,8 @@ public class EnhancedImageTest {
     Pixels[][] expectedBlurred = ImageUtil.loadImage("res/Sample_Images/maskedop_blur.png");
 
     // Compare the actual result with the expected image using a larger threshold for comparison
-    assertImageEquals((RGBPixel[][]) expectedBlurred, (RGBPixel[][]) result);  // Increased the threshold
+    assertImageEquals((RGBPixel[][]) expectedBlurred,
+        (RGBPixel[][]) result);  // Increased the threshold
   }
 
   @Test
@@ -487,8 +503,6 @@ public class EnhancedImageTest {
 
     // Save the blurred image
 
-
-
     // Test with sharpen operation
     enhancedImage.maskedOperation("test", "sharpen", "mask", "test-mask-sharpen");
     Pixels[][] sharpenResult = enhancedImage.getStoredPixels("test-mask-sharpen");
@@ -503,14 +517,12 @@ public class EnhancedImageTest {
     Pixels[][] greyscaleExpected = ImageUtil.loadImage(greyscaleExpectedPath);
     assertImageEquals((RGBPixel[][]) greyscaleExpected, (RGBPixel[][]) greyscaleResult);
 
-
     // Test with sepia operation
     enhancedImage.maskedOperation("test", "sepia", "mask", "test-mask-sepia");
     Pixels[][] sepiaResult = enhancedImage.getStoredPixels("test-mask-sepia");
     String sepiaExpectedPath = "res/Sample_Images/maskedop_sepia_result.png";
     Pixels[][] sepiaExpected = ImageUtil.loadImage(sepiaExpectedPath);
     assertImageEquals((RGBPixel[][]) sepiaExpected, (RGBPixel[][]) sepiaResult);
-
 
 
   }
@@ -532,20 +544,22 @@ public class EnhancedImageTest {
       }
     }
   }
-    @Test
-    public void testDownscaleToZeroDimensions() {
-      String load = "test/Test_Image/Landscape.png";
-      Pixels[][] pixels = ImageUtil.loadImage(load);
 
-      assertNotNull("Pixels should not be null after loading the image", pixels);
+  @Test
+  public void testDownscaleToZeroDimensions() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] pixels = ImageUtil.loadImage(load);
 
-      enhancedImage.storePixels("test", pixels);
+    assertNotNull("Pixels should not be null after loading the image", pixels);
 
-      // Downscale to zero dimensions, which should ideally throw an exception or handle gracefully
-      assertThrows(IllegalArgumentException.class, () -> {
-        enhancedImage.downscale("test", 0, 0, "zero");
-      });
-    }
+    enhancedImage.storePixels("test", pixels);
+
+    // Downscale to zero dimensions, which should ideally throw an exception or handle gracefully
+    assertThrows(IllegalArgumentException.class, () -> {
+      enhancedImage.downscale("test", 0, 0, "zero");
+    });
+  }
+
   @Test
   public void testDownscaleToLargerDimensions() {
     String load = "test/Test_Image/Landscape.png";
@@ -560,9 +574,12 @@ public class EnhancedImageTest {
     Pixels[][] upscaledPixels = enhancedImage.getStoredPixels("upscaled");
 
     // Verify that the dimensions are larger than the original
-    assertEquals("Height should be double the original size", pixels.length * 2, upscaledPixels.length);
-    assertEquals("Width should be double the original size", pixels[0].length * 2, upscaledPixels[0].length);
+    assertEquals("Height should be double the original size", pixels.length * 2,
+        upscaledPixels.length);
+    assertEquals("Width should be double the original size", pixels[0].length * 2,
+        upscaledPixels[0].length);
   }
+
   @Test
   public void testDownscaleOnEmptyImage() {
     // Simulate an empty image (zero width or height)
@@ -575,7 +592,6 @@ public class EnhancedImageTest {
       enhancedImage.downscale("test", 1, 1, "emptyDownscale");
     });
   }
-
 
 
 }
