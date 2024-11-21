@@ -40,16 +40,13 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   public ImageProcessorGUI(ImageGUIController controller) {
     this.controller = controller;
 
-    // Frame setup
     setTitle("Image Processor");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setSize(1200, 800);
     setLayout(new BorderLayout());
 
-    // Buttons and preview checkboxes
-    // Modified button panel to use GridLayout (vertical layout)
     JPanel buttonPanel = new JPanel(
-        new GridLayout(0, 1, 10, 10)); // GridLayout for vertical arrangement
+        new GridLayout(0, 1, 10, 10));
 
     JButton loadButton = createButton("Load Image");
     JButton saveButton = createButton("Save Image");
@@ -106,7 +103,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     downscale.addActionListener(e -> handleDownscale());
     exitButton.addActionListener(e -> System.exit(0));
 
-    // Add buttons to panel
+
     buttonPanel.add(loadButton);
     buttonPanel.add(saveButton);
     buttonPanel.add(undoButton);
@@ -128,11 +125,10 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
         createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustCheckbox));
     buttonPanel.add(exitButton);
 
-    // Image display area
+
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
 
-    // Histogram display area
     histogramLabel = new JLabel();
     histogramLabel.setHorizontalAlignment(JLabel.CENTER);
     histogramLabel.setPreferredSize(new Dimension(400, 400));
@@ -140,16 +136,14 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     JScrollPane imageScrollPane = new JScrollPane(imageLabel);
     JScrollPane histogramScrollPane = new JScrollPane(histogramLabel);
 
-    // Image and histogram panel
     JPanel imagePanel = new JPanel(new BorderLayout());
     imagePanel.add(imageScrollPane, BorderLayout.CENTER);
     imagePanel.add(histogramScrollPane, BorderLayout.EAST);
 
-    // Add to frame
-    // Modified code to make button panel scrollable (after modification):
+
     JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
     buttonScrollPane.setVerticalScrollBarPolicy(
-        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Enable vertical scroll
+        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     add(buttonScrollPane, BorderLayout.WEST);
 
     add(imagePanel, BorderLayout.CENTER);
@@ -163,10 +157,9 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    * @param text The label text for the button.
    * @return A configured JButton object.
    */
-  // Modified createButton method (after modification):
   private JButton createButton(String text) {
     JButton button = new JButton(text);
-    button.setPreferredSize(new Dimension(200, 40));  // Adjusted button size for better fit
+    button.setPreferredSize(new Dimension(200, 40));
     return button;
   }
 
@@ -177,10 +170,9 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    * @param previewCheckbox The checkbox for enabling/disabling the preview.
    * @return A JPanel containing the button and checkbox.
    */
-  // Modified createOperationWithPreviewPanel method (after modification):
   private JPanel createOperationWithPreviewPanel(JButton operationButton,
       JCheckBox previewCheckbox) {
-    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Panel for button and checkbox
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
     panel.add(operationButton);
     panel.add(previewCheckbox);
     return panel;
@@ -252,7 +244,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     assert previewCheckbox != null;
     if (previewCheckbox.isSelected()) {
       int splitPercentage = getSplitPercentage();
-      // Check if the returned split percentage is valid
       if (splitPercentage != -1) {
         controller.handleSplit(
             new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
@@ -274,7 +265,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     assert previewCheckbox != null;
     if (previewCheckbox.isSelected()) {
       int splitPercentage = getSplitPercentage();
-      // Check if the returned split percentage is valid
       if (splitPercentage != -1) {
         handleLevelsAdjustSplit(splitPercentage);
       } else {
@@ -321,40 +311,34 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     slider.setPaintTicks(true);
     slider.setPaintLabels(true);
 
-    // Create a panel to hold the slider
     JPanel sliderPanel = new JPanel(new BorderLayout());
     sliderPanel.add(slider, BorderLayout.CENTER);
 
-    // Create the buttons
     JButton okButton = new JButton("OK");
     JButton closeButton = new JButton("Close");
 
-    // Create a sub-panel for buttons with right alignment
     JPanel buttonPanel = new JPanel(new GridBagLayout());
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 0;
-    gbc.insets = new Insets(0, 10, 0, 5); // Adjust margins between buttons
+    gbc.insets = new Insets(0, 10, 0, 5);
     buttonPanel.add(okButton, gbc);
 
     gbc.gridx = 1;
     buttonPanel.add(closeButton, gbc);
 
-    // Combine slider and button panels
     JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
     mainPanel.add(sliderPanel, BorderLayout.CENTER);
     mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-    // Create a JDialog instead of JOptionPane
     JDialog dialog = new JDialog(this, "Select Split Percentage", true);
     dialog.getContentPane().add(mainPanel);
     dialog.pack();
     dialog.setLocationRelativeTo(this);
 
-    final int[] result = {50}; // Default value
-    final boolean[] confirmed = {false}; // Track if the user clicked OK
+    final int[] result = {50};
+    final boolean[] confirmed = {false};
 
-    // Add action listeners
     okButton.addActionListener(e -> {
       result[0] = slider.getValue();
       confirmed[0] = true;
@@ -363,10 +347,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
 
     closeButton.addActionListener(e -> dialog.dispose());
 
-    // Show the dialog
     dialog.setVisible(true);
 
-    // Return the result or -1 if canceled
     return confirmed[0] ? result[0] : -1;
   }
 
@@ -376,27 +358,21 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    */
   @Override
   public void addWindowListenerToGUI() {
-    // Add a WindowListener to the GUI to detect when the user is about to close the application
     addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
         String latest = controller.getLatestKey();
-        // Before closing, prompt the user to save if there are unsaved changes
         if (latest != null && !latest.isEmpty()) {
           int option = JOptionPane.showConfirmDialog(null,
               "Do you want to save the current image before closing?",
               "Save Image", JOptionPane.YES_NO_OPTION);
 
           if (option == JOptionPane.YES_OPTION) {
-            // Trigger the save functionality
-            handleSave(new String[]{"save", "output.png", latest});  // Save the current image
+            handleSave(new String[]{"save", "output.png", latest});
           } else if (option == JOptionPane.NO_OPTION) {
-            // Close without saving
-            dispose();  // Close the application
+            dispose();
           }
-          // If the user selects CANCEL, do nothing (keep the application open)
         } else {
-          // If there are no unsaved changes, simply close the application
           dispose();
         }
       }
@@ -417,57 +393,49 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       JScrollPane scrollPane = new JScrollPane(previewLabel);
       scrollPane.setPreferredSize(new Dimension(600, 600));
 
-      // Create buttons for Apply, Back, and Cancel
       JButton applyButton = new JButton("Apply");
       JButton backButton = new JButton("Back");
       JButton cancelButton = new JButton("Cancel");
 
-      // Create a panel for buttons
       JPanel buttonPanel = new JPanel();
       buttonPanel.add(applyButton);
       buttonPanel.add(backButton);
       buttonPanel.add(cancelButton);
 
-      // Combine scrollPane and buttonPanel in a main panel
       JPanel mainPanel = new JPanel(new BorderLayout());
       mainPanel.add(scrollPane, BorderLayout.CENTER);
       mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-      // Create a dialog
       JDialog dialog = new JDialog(this, "Preview", true);
       dialog.getContentPane().add(mainPanel);
       dialog.pack();
       dialog.setLocationRelativeTo(this);
 
-      // Action listener for Apply button
       if (!Objects.equals(operation, "levels-adjust")) {
         applyButton.addActionListener(e -> {
           controller.applyOperation(new String[]{
               operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()
           });
-          dialog.dispose(); // Close the dialog after applying
+          dialog.dispose();
         });
       } else {
         applyButton.addActionListener(e -> {
           controller.handleLevelsAdjust(new String[]{black, mid, white});
-          dialog.dispose(); // Close the dialog after applying
+          dialog.dispose();
         });
       }
 
-      // Action listener for Back button
       backButton.addActionListener(e -> {
-        dialog.dispose(); // Close the preview dialog
-        int splitPercentage = getSplitPercentage(); // Reopen the slider to choose split percentage
+        dialog.dispose();
+        int splitPercentage = getSplitPercentage();
         if (splitPercentage != -1) {
           controller.handleSplit(
               new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
         }
       });
 
-      // Action listener for Cancel button
-      cancelButton.addActionListener(e -> dialog.dispose()); // Close the dialog on cancel
+      cancelButton.addActionListener(e -> dialog.dispose());
 
-      // Show the dialog
       dialog.setVisible(true);
     } else {
       JOptionPane.showMessageDialog(this, "Unable to generate preview.", "Error",
@@ -495,7 +463,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
    * @param percentage The percentage of the image to apply the levels adjustment to.
    */
   private void handleLevelsAdjustSplit(int percentage) {
-    // Collect black, mid, and white levels
     String black = JOptionPane.showInputDialog("Enter black level (0-255):");
     String mid = JOptionPane.showInputDialog("Enter mid level (0-255):");
     String white = JOptionPane.showInputDialog("Enter white level (0-255):");
@@ -527,45 +494,38 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     if (image == null) {
       JOptionPane.showMessageDialog(this, "Unable to generate preview. Image is null.",
           "Error", JOptionPane.ERROR_MESSAGE);
-      return; // Exit if image is null
+      return;
     }
 
-    // Create the preview label with the image
     JLabel previewLabel = new JLabel(new ImageIcon(image));
     JScrollPane scrollPane = new JScrollPane(previewLabel);
     scrollPane.setPreferredSize(new Dimension(600, 600));
 
-    // Create buttons for Apply, Back, and Cancel
     JButton applyButton = new JButton("Apply");
     JButton backButton = new JButton("Back");
     JButton cancelButton = new JButton("Cancel");
 
-    // Create a panel for buttons
     JPanel buttonPanel = new JPanel();
     buttonPanel.add(applyButton);
     buttonPanel.add(backButton);
     buttonPanel.add(cancelButton);
 
-    // Combine scrollPane and buttonPanel in a main panel
     JPanel mainPanel = new JPanel(new BorderLayout());
     mainPanel.add(scrollPane, BorderLayout.CENTER);
     mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-    // Create a dialog
     JDialog dialog = new JDialog(this, "Preview Levels Adjustment", true);
     dialog.getContentPane().add(mainPanel);
     dialog.pack();
     dialog.setLocationRelativeTo(this);
     String[] updatedString = new String[]{args[0], args[1], args[2]};
-    // Add action listener for Apply button
     applyButton.addActionListener(e -> {
-      controller.handleLevelsAdjust(updatedString); // Pass args to controller
-      dialog.dispose(); // Close the dialog after applying
+      controller.handleLevelsAdjust(updatedString);
+      dialog.dispose();
     });
 
-    // Add action listener for Back button
     backButton.addActionListener(e -> {
-      dialog.dispose(); // Close the preview dialog
+      dialog.dispose();
       int splitPercentage = getSplitPercentage();
       String[] backButtonString = new String[]{args[0], args[1], args[2],
           String.valueOf(splitPercentage)};
@@ -574,10 +534,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       }
     });
 
-    // Add action listener for Cancel button
     cancelButton.addActionListener(e -> dialog.dispose()); // Close the dialog on cancel
 
-    // Display the dialog
     dialog.setVisible(true);
   }
 
@@ -616,11 +574,9 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       return;
     }
 
-    // Create a JFileChooser to let the user choose a directory and file name
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Save Image");
 
-    // Add file filters for different image formats
     javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter(
         "PNG Images", "png");
     javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter(
@@ -628,15 +584,12 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter(
         "PPM Images", "ppm");
 
-    // Add the file filters to the file chooser
     fileChooser.addChoosableFileFilter(pngFilter);
     fileChooser.addChoosableFileFilter(jpgFilter);
     fileChooser.addChoosableFileFilter(ppmFilter);
 
-    // Set the default filter (optional, you can choose one to start with)
-    fileChooser.setFileFilter(pngFilter); // Default filter, for example, PNG
+    fileChooser.setFileFilter(pngFilter);
 
-    // Open the file chooser dialog to select the file to save
     int userSelection = fileChooser.showSaveDialog(null);
     controller.handleSave(userSelection, fileChooser, pngFilter, jpgFilter, ppmFilter);
 
