@@ -109,6 +109,7 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     buttonPanel.add(saveButton);
     buttonPanel.add(undoButton);
     buttonPanel.add(originalImageButton);
+    buttonPanel.add(brightenButton);
     buttonPanel.add(horizontalFlipButton);
     buttonPanel.add(verticalFlipButton);
     buttonPanel.add(redComponentButton);
@@ -250,22 +251,14 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
       int splitPercentage = getSplitPercentage();
       // Check if the returned split percentage is valid
       if (splitPercentage != -1) {
-        if (!operation.equals("levels-adjust")) {
-          controller.handleSplit(
-              new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
-        } else {
-          handleLevelsAdjustSplit(splitPercentage);
-        }
+        controller.handleSplit(
+            new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
       } else {
         JOptionPane.showMessageDialog(this, "Operation canceled", "Error",
             JOptionPane.ERROR_MESSAGE);
       }
     } else {
-      if (!operation.equals("levels-adjust")) {
-        controller.handleSplit(new String[]{operation.toLowerCase()});
-      } else {
-        handleLevelsAdjust();
-      }
+      controller.applyOperation(new String[]{operation.toLowerCase()});
     }
   }
 
