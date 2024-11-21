@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import controller.ImageUtil;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
+import model.imagetransformation.advancedoperations.MaskedOperation;
+import model.imagetransformation.basicoperation.Brighten;
 import org.junit.Test;
 
 public class EnhancedImageTest {
@@ -231,7 +233,7 @@ public class EnhancedImageTest {
     assertEquals("Width should match original size", pixels[0].length, downscaledPixels[0].length);
 
 
-    String outputFileName = "test/Test_Image/large_output.png";  // Save as PNG instead of JPEG
+    String outputFileName = "test/Test_Image/large_output.png";
 
 
     Pixels[][] savedPixels = ImageUtil.loadImage(outputFileName);
@@ -254,6 +256,54 @@ public class EnhancedImageTest {
         assertTrue("Red values should match within tolerance", Math.abs(downscaledPixel.getRed() - savedPixel.getRed()) <= tolerance);
         assertTrue("Green values should match within tolerance", Math.abs(downscaledPixel.getGreen() - savedPixel.getGreen()) <= tolerance);
         assertTrue("Blue values should match within tolerance", Math.abs(downscaledPixel.getBlue() - savedPixel.getBlue()) <= tolerance);
+      }
+    }
+  }
+  @Test
+  public void testMaskedOperation() {
+    EnhancedImage enhancedImage = new EnhancedImage();
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+
+    // Ensure the original image is loaded correctly
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+
+    enhancedImage.storePixels("test", originalPixels);
+
+    // Load the mask image (assuming it's a black-and-white mask)
+    Pixels[][] maskPixels = ImageUtil.loadImage("res/Landscape-L-shaped-masked-image.png");
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+
+    // Create a Brighten operation to apply
+    Brighten brighten = new Brighten(50); // Brighten by 50
+
+    // Create a MaskedOperation with the Brighten operation and the mask
+    MaskedOperation maskedOperation = new MaskedOperation(brighten, maskPixels);
+
+    // Apply the masked operation to the original image
+    Pixels[][] resultImage = maskedOperation.apply(originalPixels);
+
+    // Ensure the result image is not null
+    assertNotNull("Result image should not be null", resultImage);
+
+    // Load the expected output image for comparison
+    Pixels[][] expectedImage = ImageUtil.loadImage("test/Test_Image/expected_masked_brightened.png");
+    assertNotNull("Expected image should not be null after loading", expectedImage);
+
+    // Compare the actual result with the expected output
+    assertImageEquals((RGBPixel[][]) expectedImage, (RGBPixel[][]) resultImage);
+
+    // Save the resulting masked image
+    String outputFilePath = "test/Test_Image/masked_brightened_output.png"; // Specify the output path
+    ImageUtil.saveImage(outputFilePath, resultImage); // Save the result image
+  }
+
+  private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
+    for (int i = 0; i < expected.length; i++) {
+      for (int j = 0; j < expected[0].length; j++) {
+        assertEquals(expected[i][j].getRed(), actual[i][j].getRed(), 2);
+        assertEquals(expected[i][j].getGreen(), actual[i][j].getGreen(), 2);
+        assertEquals(expected[i][j].getBlue(), actual[i][j].getBlue(), 2);
       }
     }
   }
