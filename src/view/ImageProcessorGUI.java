@@ -331,31 +331,56 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
 
-  @Override
   public void showPreview(BufferedImage image, String operation) {
     if (image != null) {
       JLabel previewLabel = new JLabel(new ImageIcon(image));
       JScrollPane scrollPane = new JScrollPane(previewLabel);
       scrollPane.setPreferredSize(new Dimension(600, 600));
 
-      // Custom dialog with Apply and Cancel buttons
-      int result = JOptionPane.showOptionDialog(
-          this,
-          scrollPane,
-          "Preview",
-          JOptionPane.YES_NO_CANCEL_OPTION,
-          JOptionPane.PLAIN_MESSAGE,
-          null,
-          new String[]{"Apply", "Cancel"},
-          "Apply"
-      );
+      // Create buttons for Apply, Back, and Cancel
+      JButton applyButton = new JButton("Apply");
+      JButton backButton = new JButton("Back");
+      JButton cancelButton = new JButton("Cancel");
 
-      if (result == JOptionPane.YES_OPTION) { // Apply button
+      // Create a panel for buttons
+      JPanel buttonPanel = new JPanel();
+      buttonPanel.add(applyButton);
+      buttonPanel.add(backButton);
+      buttonPanel.add(cancelButton);
+
+      // Combine scrollPane and buttonPanel in a main panel
+      JPanel mainPanel = new JPanel(new BorderLayout());
+      mainPanel.add(scrollPane, BorderLayout.CENTER);
+      mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+      // Create a dialog
+      JDialog dialog = new JDialog(this, "Preview", true);
+      dialog.getContentPane().add(mainPanel);
+      dialog.pack();
+      dialog.setLocationRelativeTo(this);
+
+      // Action listener for Apply button
+      applyButton.addActionListener(e -> {
         controller.applyOperation(new String[]{
             operation.toLowerCase(), controller.getLatestKey(), operation.toLowerCase()
         });
-      }
-      // Do nothing on Cancel
+        dialog.dispose(); // Close the dialog after applying
+      });
+
+      // Action listener for Back button
+      backButton.addActionListener(e -> {
+        dialog.dispose(); // Close the preview dialog
+        int splitPercentage = getSplitPercentage(); // Reopen the slider to choose split percentage
+        if (splitPercentage != -1) {
+          controller.handleSplit(new String[]{operation.toLowerCase(), String.valueOf(splitPercentage)});
+        }
+      });
+
+      // Action listener for Cancel button
+      cancelButton.addActionListener(e -> dialog.dispose()); // Close the dialog on cancel
+
+      // Show the dialog
+      dialog.setVisible(true);
     } else {
       JOptionPane.showMessageDialog(this, "Unable to generate preview.", "Error", JOptionPane.ERROR_MESSAGE);
     }
