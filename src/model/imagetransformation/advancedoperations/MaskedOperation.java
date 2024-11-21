@@ -9,7 +9,6 @@ import model.imagetransformation.basicoperation.Split;
 public class MaskedOperation implements Transformation {
   private Transformation operation;
   private Pixels[][] mask;
-  private Split split;
 
   public MaskedOperation(Transformation operation, Pixels[][] mask) {
     this.operation = operation;

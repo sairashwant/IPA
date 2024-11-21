@@ -171,7 +171,73 @@ levels-adjust 20 100 255 l1 l1-split-levels-adjust split 50
 #Save the split
 save res/Script_Output/landscape-split-levels-adjust.png l1-split-levels-adjust
 
+#Downscale the image
+downscale l1 100 100 l1-downscale
 
+#Save the downscale
+save res/Script_Output/landscape-downscale-100X100.png l1-downscale
 
+#Load masking Image
+load res/Landscape-L-shaped-masked-image.png l1-mask
+
+#Mask Operation for blur
+blur l1 l1-mask l1-blur-mask
+
+#Save the blur mask image
+save res/Script_Output/Landscape-mask-blur.png l1-blur-mask
+
+#Mask Operation for sharpen
+sharpen l1 l1-mask l1-sharpen-mask
+
+#Save the sharpen mask image
+save res/Script_Output/Landscape-mask-sharpen.png l1-sharpen-mask
+
+#Mask Operation for greyscale
+greyscale l1 l1-mask l1-greyscale-mask
+
+#Save the greyscale mask image
+save res/Script_Output/Landscape-mask-greyscale.png l1-greyscale-mask
+
+#Mask Operation for sepia
+sepia l1 l1-mask l1-sepia-mask
+
+#Save the sepia mask image
+save res/Script_Output/Landscape-mask-sepia.png l1-sepia-mask
+
+#Mask Operation for luma-component
+luma-component l1 l1-mask l1-luma-component-mask
+
+#Save the luma-component mask image
+save res/Script_Output/Landscape-mask-luma-component.png l1-luma-component-mask
+
+#Mask Operation for value-component
+value-component l1 l1-mask l1-value-component-mask
+
+#Save the value-component mask image
+save res/Script_Output/Landscape-mask-value-component.png l1-value-component-mask
+
+#Mask Operation for intensity-component
+intensity-component l1 l1-mask l1-intensity-component-mask
+
+#Save the intensity-component mask image
+save res/Script_Output/Landscape-mask-intensity-component.png l1-intensity-component-mask
+
+#Mask Operation for red-component
+red-component l1 l1-mask l1-red-component-mask
+
+#Save the red-component mask image
+save res/Script_Output/Landscape-mask-red-component.png l1-red-component-mask
+
+#Mask Operation for green-component
+green-component l1 l1-mask l1-green-component-mask
+
+#Save the green-component mask image
+save res/Script_Output/Landscape-mask-green-component.png l1-green-component-mask
+
+#Mask Operation for blue-component
+blue-component l1 l1-mask l1-blue-component-mask
+
+#Save the green-component mask image
+save res/Script_Output/Landscape-mask-blue-component.png l1-blue-component-mask
 
 

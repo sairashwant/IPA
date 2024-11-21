@@ -200,6 +200,26 @@ This application is built using the MVC (model-view-controller) architecture and
 - Applies the Haar transform, compresses coefficients, and reconstructs the image.
 - Restores the image to its original dimensions after compression.
 
+### Downscale
+**Purpose:** Enhances image processing with advanced operations like selective transformations and resizing while maintaining core functionalities.
+
+**Responsibilities:**
+- Applies masked transformations to specific image regions.
+- Downscales images to specified dimensions.
+- Manages processed images using unique keys and retrieves the latest state.
+- Converts pixel data to BufferedImage for GUI compatibility.
+- Ensures robust input validation for reliable processing.
+
+### Masked Operation
+**Purpose:** Implements selective image transformations by applying an operation only to the regions defined by a mask.
+
+**Responsibilities:**
+- Applies the given transformation to pixels where the mask indicates, leaving others unchanged.
+- Ensures the mask and source image dimensions are consistent for accurate processing.
+- Handles pixel-level operations by integrating the transformation with the mask logic.
+- Validates mask values, treating black pixels (RGB: 0,0,0) as the areas to transform.
+
+
 ## Main model Class
 
 ### ImageModel.java (Interface)
@@ -212,6 +232,14 @@ This application is built using the MVC (model-view-controller) architecture and
 - Advanced Operations
 - Error Handling
 
+### EnhancedImageModel.java (Interface)
+**Purpose:** Extends the functionality of the base ImageModel interface to support advanced image processing operations and state management.
+
+**Responsibilities:**
+- Downscaling: Implements functionality to reduce the dimensions of an image to specified width and height while maintaining its quality.
+- Masked Operations: Enables applying specific image transformations (e.g., filtering or enhancements) to selective regions of an image defined by a mask.
+- State Management: Provides a mechanism to retrieve the most recent key associated with an image, facilitating efficient tracking of image transformations.
+
 ### Image.java
 **Purpose:** Core class for image processing.  
 **Responsibilities:**
@@ -221,14 +249,53 @@ This application is built using the MVC (model-view-controller) architecture and
 - Maintains the image's state
 - Processes various image operations
 
+### EnhancedImage.java
+**Purpose:** Core class for advanced image processing with support for selective transformations and efficient image management.
+
+**Responsibilities:**
+- Applies masked image transformations to process specific regions based on a provided mask.
+- Downscales images to desired dimensions while maintaining quality.
+- Converts pixel data into a format suitable for graphical rendering (e.g., BufferedImage).
+- Manages and tracks processed images using unique keys.
+- Retrieves the most recently processed image for streamlined access.
+
+
 ## view Package
 
-### Main.java
-**Purpose:** Application entry point.  
+### ImageProcessorGUIInterface.java (Interface)
+
+**Purpose:** Interface for managing graphical user interface (GUI) interactions in an image processing application.
+
 **Responsibilities:**
-- Initializes MVC components
-- Sets up the application environment
-- Launches the user interface
+- Displays error messages to notify users of issues during image processing.
+- Renders processed images on the GUI for user interaction and visualization.
+- Generates and displays histograms for analyzing image properties.
+- Enables interactive features by adding window listeners to the GUI.
+- Provides a preview of image transformations before finalizing operations.
+
+
+### ImageProcessorGUI.java
+**Purpose:** GUI for an image processing application.
+
+**Responsibilities:**
+- Provides a user interface for loading, editing, and saving images
+- Displays images and their histograms in the application.
+- Facilitates various image manipulation operations such as flipping, color adjustments, blurring, sharpening, and applying filters.
+- Allows users to preview changes before applying them.
+- Manages user interactions through buttons and checkboxes for different operations.
+- Handles error messaging and user prompts for input.
+- Integrates with a controller to execute image processing operations.
+- Supports undo functionality and reverting to the original image.
+
+## Main.java
+**Purpose:** Entry point for the image processing application, managing initialization and mode selection.
+
+**Responsibilities:**
+- Determines the mode of operation (GUI, script execution, or interactive CLI) based on command-line arguments.
+- Initializes the Model-View-Controller (MVC) components for the application.
+- Sets up and launches the graphical user interface (GUI) for image processing.
+- Executes scripts for batch processing of image transformations.
+- Launches the interactive text-based interface for manual user commands.
 
 ## Testing Package
 
@@ -246,6 +313,18 @@ This application is built using the MVC (model-view-controller) architecture and
 - Confirms that images are loaded, processed, and saved correctly.
 - Ensures the expected output files are created during each transformation.
 - Checks if exceptions are thrown if the given input in not valid.
+
+### ImageGUIControllerTest.java
+**Purpose:**  This test class validates the functionality of the ImageGUIController by using a mock implementation of the ImageControllerInterface. It ensures that the controller correctly handles various image manipulation commands, delegates operations appropriately, and produces the expected outputs for GUI-driven interactions.
+
+**Tests:**
+- Verifies correct handling of image-related commands such as load, save, brighten, flip, compression, RGB split/combine, levels adjustment, and scripted operations.
+- Confirms that the getCommandMap() method is called and returns the expected output.
+- Ensures proper interaction between the GUI and the underlying controller logic.
+- Validates the behavior of the run and printMenu methods.
+- Checks that each operation appends the correct message to the output log.
+- Confirms that methods handle arguments appropriately and produce the expected output for valid inputs.
+
 
 ### ImageScriptTest.java
 **Purpose:**  This test ensures that the ImageController processes image operation scripts correctly and outputs the expected messages.
@@ -300,28 +379,17 @@ provide you the test images and all these tests will pass.**
 
 ## Change log
 
-### Added New Operations: Compression, Histogram, Color Correction, Levels Adjustment, and Split
-- New classes implementing the Transformation interface were created for color correction, levels adjustment, and compression, each with its unique implementation.
-- For histogram and split, methods were directly added within Image.java since histogram is not a true transformation, and split was achieved by invoking existing methods.
-- These operations were incorporated into the Image.java class and ImageModel.java interface.
-- In the controller, new operations were added to the menu as selectable options.
-- Operations requiring a specific handler were mapped accordingly, while those needing no separate handler were added to the applyOperation map.
+### Added GUI
+- The GUI was developed using Swing in the view and integrated with a newly created controller, ImageGUIController. This controller facilitated communication with the model by leveraging the existing controller.
 
-### Changed AbstractPixel (Abstract Class) to Pixels (Interface)
-- The RGBPixel class, previously extending an abstract class, was refactored to implement an interface, as inheritance was unnecessary.
-- All instances of the 2D array representations were updated to use the interface instead of directly referencing RGBPixel.
+### Downscale and masking
+- A new class implementing the Transformation interface was introduced, featuring logic specifically designed for downscaling operations.
+- Additionally, another class was developed to implement the Transformation interface, enabling advanced functionality for performing masked operations.
 
-### I/O Operations was moved from model to controller
-- The I/O operations for loading and saving images were initially handled within the model.
-- These operations were refactored and moved to the controller, ensuring that the controller can manage image loading and saving independently, without needing to directly access the model.
-
-### Top level interface created for the model and controller
-- The Image.java class, which was originally the top-level class of the model, did not implement any interface. To address this, a new interface called ImageModel was created, and the Image.java class was updated to implement it.
-- Similarly, a new interface named ImageControllerInterface was introduced for the controller, and the ImageController class was modified to implement this interface.
-
-### All operations except the main was moved from View to the Controller
-- The ScriptReader.java class was relocated from the view to the controller, as input parsing should be handled by the controller, not the view.
-- The ImageView.java class was removed, and its functionality was integrated into the ImageController.java class within the controller, centralizing all related operations.
+### Adding a new controller
+- A new interface was introduced in the controller, extending the existing ImageControllerInterface.
+- A new class, ImageGUIController, was created to implement this interface and extend the functionality of the ImageController class.
+- This new class managed the mapping of operations from the GUI by connecting and delegating tasks to the existing ImageController class.
 
 ### Installation
 - Run Main class.
@@ -385,7 +453,14 @@ provide you the test images and all these tests will pass.**
 -     split and transform
   - Syntax: <operation> <image-name> <dest-image-name> split <splitPercentage>
   - Eg: blur l1 l1-split-blur split 50
--     run-script 
+-       Downscale
+  - Syntax: <downscale> <srcKey> <newWidth> <newHeight> <destKey>
+  - Eg: downscale l1 200 200 l1-downscale
+-       Mask-Image
+  - Load the mask image before performing this operation
+  - Syntax: <Operation> <srcKey> <maskImageKey> <destKey>
+  - Eg: blur l1 l1-mask l1-blur-mask
+-     run-scipt 
   - Syntax : <script-file-path>
   - Eg: run-script Images/PNGScript.txt
 

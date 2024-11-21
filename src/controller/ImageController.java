@@ -457,7 +457,7 @@ public class ImageController implements ImageControllerInterface {
         System.out.println("Invalid dimensions for downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
       }
     } else {
-      System.out.println("Invalid downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
+        System.out.println("Invalid downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
     }
   }
 
