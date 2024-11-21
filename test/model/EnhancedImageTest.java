@@ -254,7 +254,7 @@ public class EnhancedImageTest {
 
     Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
 
-    String expectedPath = "res/Sample_Images/maskedop.png"; // Set to the actual expected image path
+    String expectedPath = "test/Test_Image/maskedop.png"; // Set to the actual expected image path
     Pixels[][] expected = ImageUtil.loadImage(expectedPath);
 
     assertImageEquals((RGBPixel[][]) expected, (RGBPixel[][]) result);
@@ -424,8 +424,7 @@ public class EnhancedImageTest {
     enhancedImage.maskedOperation("test", "blur", "fullMask", "test-mask-blur");
 
     Pixels[][] result = enhancedImage.getStoredPixels("test-mask-blur");
-
-    Pixels[][] expectedBlurred = ImageUtil.loadImage("res/Sample_Images/maskedop_blur.png");
+    Pixels[][] expectedBlurred = ImageUtil.loadImage("test/Test_Image/maskedop_blur_result.png");
 
     assertImageEquals((RGBPixel[][]) expectedBlurred,
         (RGBPixel[][]) result);
@@ -446,37 +445,29 @@ public class EnhancedImageTest {
 
     enhancedImage.maskedOperation("test", "blur", "mask", "test-mask-blur");
     Pixels[][] blurResult = enhancedImage.getStoredPixels("test-mask-blur");
-    String blurResultPath = "res/Sample_Images/maskedop_blur_multiple.png";
+    String blurResultPath = "test/Test_Image/maskedop_blur_multiple.png";
     Pixels[][] blurExpected = ImageUtil.loadImage(blurResultPath);
     assertImageEquals((RGBPixel[][]) blurExpected, (RGBPixel[][]) blurResult);
 
     enhancedImage.maskedOperation("test", "sharpen", "mask", "test-mask-sharpen");
     Pixels[][] sharpenResult = enhancedImage.getStoredPixels("test-mask-sharpen");
-    String sharpenExpectedPath = "res/Sample_Images/maskedop_sharpen_result.png"; // Set to the actual expected image path
+    String sharpenExpectedPath = "test/Test_Image/maskedop_sharpen_result.png"; // Set to the actual expected image path
     Pixels[][] sharpenExpected = ImageUtil.loadImage(sharpenExpectedPath);
     assertImageEquals((RGBPixel[][]) sharpenExpected, (RGBPixel[][]) sharpenResult);
 
     enhancedImage.maskedOperation("test", "greyscale", "mask", "test-mask-greyscale");
     Pixels[][] greyscaleResult = enhancedImage.getStoredPixels("test-mask-greyscale");
-    String greyscaleExpectedPath = "res/Sample_Images/maskedop_greyscale_result.png"; // Set to the actual expected image path
+    String greyscaleExpectedPath = "test/Test_Image/maskedop_greyscale_result.png"; // Set to the actual expected image path
     Pixels[][] greyscaleExpected = ImageUtil.loadImage(greyscaleExpectedPath);
     assertImageEquals((RGBPixel[][]) greyscaleExpected, (RGBPixel[][]) greyscaleResult);
 
     enhancedImage.maskedOperation("test", "sepia", "mask", "test-mask-sepia");
     Pixels[][] sepiaResult = enhancedImage.getStoredPixels("test-mask-sepia");
-    String sepiaExpectedPath = "res/Sample_Images/maskedop_sepia_result.png";
+    String sepiaExpectedPath = "test/Test_Image/maskedop_sepia_result.png";
     Pixels[][] sepiaExpected = ImageUtil.loadImage(sepiaExpectedPath);
     assertImageEquals((RGBPixel[][]) sepiaExpected, (RGBPixel[][]) sepiaResult);
 
 
-  }
-
-  @Test
-  public void testLoadOriginalImage() {
-    String loadPath = "res/Sample_Images/maskedop_blur_multiple.png";
-    assertTrue("File not found: " + loadPath, new File(loadPath).exists());
-    Pixels[][] originalPixels = ImageUtil.loadImage(loadPath);
-    assertNotNull("Failed to load the original image", originalPixels);
   }
 
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
