@@ -333,14 +333,14 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
    *                           <li>If <code>args.length == 3</code>:
    *                               <ul>
    *                                 <li><code>args[0]</code>: black level as an integer.</li>
-   *                                 <li><code>args[1]</code>: mid level as an integer.</li>
+   *                                 <li><code>args[1]</code>: mid-level as an integer.</li>
    *                                 <li><code>args[2]</code>: white level as an integer.</li>
    *                               </ul>
    *                           </li>
    *                           <li>If <code>args.length == 4</code>:
    *                               <ul>
    *                                 <li><code>args[0]</code>: black level as an integer.</li>
-   *                                 <li><code>args[1]</code>: mid level as an integer.</li>
+   *                                 <li><code>args[1]</code>: mid-level as an integer.</li>
    *                                 <li><code>args[2]</code>: white level as an integer.</li>
    *                                 <li><code>args[3]</code>: split percentage (integer between 0 and 100).</li>
    *                               </ul>
