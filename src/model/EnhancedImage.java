@@ -47,7 +47,6 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
       throw new IllegalArgumentException("Source image or mask image not found.");
     }
 
-    // Create the appropriate operation instance
     Transformation operationInstance;
     switch (operation.toLowerCase()) {
       case "blur":
@@ -84,7 +83,6 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
         throw new IllegalArgumentException("Unsupported operation: " + operation);
     }
 
-    // Pass the operation instance and mask to MaskedOperation
     MaskedOperation maskedOp = new MaskedOperation(operationInstance, maskPixels);
     Pixels[][] updatedPixels = maskedOp.apply(sourcePixels);
     h1.put(saveKey, updatedPixels);
@@ -120,39 +118,8 @@ public class EnhancedImage extends Image implements EnhancedImageModel {
     }
     String latestKey = null;
     for (String key : h1.keySet()) {
-      latestKey = key; // This will end up with the last key in the iteration
+      latestKey = key;
     }
     return latestKey;
-  }
-
-  /**
-   * Converts a 2D array of {@link Pixels} into a {@link BufferedImage}. The resulting image can be
-   * used for display or saving to a file. Each pixel is converted to its corresponding RGB value.
-   *
-   * @param pixels a 2D array of {@link Pixels} to convert
-   * @return a {@link BufferedImage} representing the image based on the provided pixel data
-   * @throws IllegalArgumentException if the pixel array is empty or null
-   */
-
-  private BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
-    if (pixels == null || pixels.length == 0) {
-      throw new IllegalArgumentException("No pixels to convert.");
-    }
-
-    int height = pixels.length;
-    int width = pixels[0].length;
-    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        if (pixels[y][x] instanceof RGBPixel) {
-          RGBPixel rgbPixel = (RGBPixel) pixels[y][x];
-          int rgb = (rgbPixel.getRed() << 16) | (rgbPixel.getGreen() << 8) | rgbPixel.getBlue();
-          image.setRGB(x, y, rgb);
-        }
-      }
-    }
-
-    return image;
   }
 }
