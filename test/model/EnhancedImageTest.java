@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import controller.ImageController;
 import controller.ImageUtil;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
@@ -523,5 +524,120 @@ public class EnhancedImageTest {
     });
   }
 
+  @Test
+  public void testMaskedOperationWithRedComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "red-component", "mask", "test-mask-red");
+    Pixels[][] redResult = enhancedImage.getStoredPixels("test-mask-red");
+    String redExpectedPath = "test/Test_Image/maskedop_red_result.png";// Set to the actual expected image path
+    Pixels[][] redExpected = ImageUtil.loadImage(redExpectedPath);
+    assertImageEquals((RGBPixel[][]) redExpected, (RGBPixel[][]) redResult);
+  }
+
+  @Test
+  public void testMaskedOperationWithGreenComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "green-component", "mask", "test-mask-green");
+    Pixels[][] greenResult = enhancedImage.getStoredPixels("test-mask-green");
+
+    String greenExpectedPath = "test/Test_Image/maskedop_green_result.png"; // Set to the actual expected image path
+
+    Pixels[][] greenExpected = ImageUtil.loadImage(greenExpectedPath);
+    assertImageEquals((RGBPixel[][]) greenExpected, (RGBPixel[][]) greenResult);
+  }
+
+  @Test
+  public void testMaskedOperationWithBlueComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "blue-component", "mask", "test-mask-blue");
+    Pixels[][] blueResult = enhancedImage.getStoredPixels("test-mask-blue");
+    String blueExpectedPath = "test/Test_Image/maskedop_blue_result.png";// Set to the actual expected image path
+    Pixels[][] blueExpected = ImageUtil.loadImage(blueExpectedPath);
+    assertImageEquals((RGBPixel[][]) blueExpected, (RGBPixel[][]) blueResult);
+  }
+
+  @Test
+  public void testMaskedOperationWithValueComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "value-component", "mask", "test-mask-value");
+    Pixels[][] valueResult = enhancedImage.getStoredPixels("test-mask-value");
+    String valueExpectedPath = "test/Test_Image/maskedop_value_result.png";// Set to the actual expected image path
+    Pixels[][] valueExpected = ImageUtil.loadImage(valueExpectedPath);
+    assertImageEquals((RGBPixel[][]) valueExpected, (RGBPixel[][]) valueResult);
+  }
+
+  @Test
+  public void testMaskedOperationWithIntensityComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "intensity-component", "mask", "test-mask-intensity");
+    Pixels[][] intensityResult = enhancedImage.getStoredPixels("test-mask-intensity");
+    String intensityExpectedPath = "test/Test_Image/maskedop_intensity_result.png"; // Set to the actual expected image path
+    Pixels[][] intensityExpected = ImageUtil.loadImage(intensityExpectedPath);
+    assertImageEquals((RGBPixel[][]) intensityExpected, (RGBPixel[][]) intensityResult);
+  }
+
+  @Test
+  public void testMaskedOperationWithLumaComponent() {
+    String load = "test/Test_Image/Landscape.png";
+    Pixels[][] originalPixels = ImageUtil.loadImage(load);
+    assertNotNull("Original pixels should not be null after loading the image", originalPixels);
+    enhancedImage.storePixels("test", originalPixels);
+
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
+    enhancedImage.storePixels("mask", maskPixels);
+
+    enhancedImage.maskedOperation("test", "luma-component", "mask", "test-mask-luma");
+    Pixels[][] lumaResult = enhancedImage.getStoredPixels("test-mask-luma");
+    String lumaExpectedPath = "test/Test_Image/maskedop_luma_result.png";// Set to the actual expected image path
+    Pixels[][] lumaExpected = ImageUtil.loadImage(lumaExpectedPath);
+    assertImageEquals((RGBPixel[][]) lumaExpected, (RGBPixel[][]) lumaResult);
+  }
 
 }
