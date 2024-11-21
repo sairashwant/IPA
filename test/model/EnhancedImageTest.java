@@ -7,13 +7,19 @@ import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import model.imagetransformation.advancedoperations.MaskedOperation;
 import model.imagetransformation.basicoperation.Brighten;
+import org.junit.Before;
 import org.junit.Test;
 
 public class EnhancedImageTest {
+  EnhancedImage enhancedImage = new EnhancedImage();
+
+
+  @Before
+  public void setUp() throws Exception {
+  }
 
   @Test
   public void testDownscale() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] pixels = ImageUtil.loadImage(load);
 
@@ -60,7 +66,6 @@ public class EnhancedImageTest {
 
   @Test
   public void testDownscaleToHalfSize() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] pixels = ImageUtil.loadImage(load);
 
@@ -113,7 +118,6 @@ public class EnhancedImageTest {
 
   @Test
   public void testDownscaleToSinglePixel() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] pixels = ImageUtil.loadImage(load);
 
@@ -152,7 +156,6 @@ public class EnhancedImageTest {
 
   @Test
   public void testDownscaleToSameSize() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     String savedPath = "test/Test_Image/same_size.png";  // Save as PNG for lossless comparison
 
@@ -200,7 +203,6 @@ public class EnhancedImageTest {
 
   @Test
   public void testDownscaleWithInvalidDimensions() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] pixels = ImageUtil.loadImage(load);
 
@@ -216,7 +218,6 @@ public class EnhancedImageTest {
 
   @Test
   public void testDownscaleWithLargeOutputSize() {
-    EnhancedImage enhancedImage = new EnhancedImage();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] pixels = ImageUtil.loadImage(load);
 
@@ -261,7 +262,7 @@ public class EnhancedImageTest {
   }
   @Test
   public void testMaskedOperation() {
-    EnhancedImage enhancedImage = new EnhancedImage();
+    ImageModel image = new Image();
     String load = "test/Test_Image/Landscape.png";
     Pixels[][] originalPixels = ImageUtil.loadImage(load);
 
@@ -270,32 +271,45 @@ public class EnhancedImageTest {
 
     enhancedImage.storePixels("test", originalPixels);
 
+    String mask = "res/Landscape-L-shaped-masked-image.png";
+    Pixels[][] maskPixels = ImageUtil.loadImage(mask);
+    enhancedImage.storePixels("mask", maskPixels);
+
     // Load the mask image (assuming it's a black-and-white mask)
-    Pixels[][] maskPixels = ImageUtil.loadImage("res/Landscape-L-shaped-masked-image.png");
+//    Pixels[][] maskPixels = ImageUtil.loadImage("res/Landscape-L-shaped-masked-image.png");
     assertNotNull("Mask pixels should not be null after loading the mask", maskPixels);
 
-    // Create a Brighten operation to apply
-    Brighten brighten = new Brighten(50); // Brighten by 50
+    enhancedImage.maskedOperation("test","blur","mask","test-mask-blur");
 
-    // Create a MaskedOperation with the Brighten operation and the mask
-    MaskedOperation maskedOperation = new MaskedOperation(brighten, maskPixels);
+    Pixels[][] result = image.getStoredPixels("test-mask-blur");
 
-    // Apply the masked operation to the original image
-    Pixels[][] resultImage = maskedOperation.apply(originalPixels);
+    String expectedPath = "";
+    Pixels[][] expected = ImageUtil.loadImage(expectedPath);
 
-    // Ensure the result image is not null
-    assertNotNull("Result image should not be null", resultImage);
+    assertImageEquals((RGBPixel[][]) expected, (RGBPixel[][]) result);
 
-    // Load the expected output image for comparison
-    Pixels[][] expectedImage = ImageUtil.loadImage("test/Test_Image/expected_masked_brightened.png");
-    assertNotNull("Expected image should not be null after loading", expectedImage);
-
-    // Compare the actual result with the expected output
-    assertImageEquals((RGBPixel[][]) expectedImage, (RGBPixel[][]) resultImage);
-
-    // Save the resulting masked image
-    String outputFilePath = "test/Test_Image/masked_brightened_output.png"; // Specify the output path
-    ImageUtil.saveImage(outputFilePath, resultImage); // Save the result image
+//    // Create a Brighten operation to apply
+//    Brighten brighten = new Brighten(50); // Brighten by 50
+//
+//    // Create a MaskedOperation with the Brighten operation and the mask
+//    MaskedOperation maskedOperation = new MaskedOperation(brighten, maskPixels);
+//
+//    // Apply the masked operation to the original image
+//    Pixels[][] resultImage = maskedOperation.apply(originalPixels);
+//
+//    // Ensure the result image is not null
+//    assertNotNull("Result image should not be null", resultImage);
+//
+//    // Load the expected output image for comparison
+//    Pixels[][] expectedImage = ImageUtil.loadImage("test/Test_Image/expected_masked_brightened.png");
+//    assertNotNull("Expected image should not be null after loading", expectedImage);
+//
+//    // Compare the actual result with the expected output
+//    assertImageEquals((RGBPixel[][]) expectedImage, (RGBPixel[][]) resultImage);
+//
+//    // Save the resulting masked image
+//    String outputFilePath = "test/Test_Image/masked_brightened_output.png"; // Specify the output path
+//    ImageUtil.saveImage(outputFilePath, resultImage); // Save the result image
   }
 
   private void assertImageEquals(RGBPixel[][] expected, RGBPixel[][] actual) {
