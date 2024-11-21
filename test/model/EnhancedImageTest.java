@@ -6,8 +6,6 @@ import controller.ImageUtil;
 import java.io.File;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
-import model.imagetransformation.advancedoperations.MaskedOperation;
-import model.imagetransformation.basicoperation.Brighten;
 import org.junit.Before;
 import org.junit.Test;
 
