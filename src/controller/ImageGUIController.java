@@ -326,22 +326,25 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
         int black = Integer.parseInt(args[0]);
         int mid = Integer.parseInt(args[1]);
         int white = Integer.parseInt(args[2]);
+        if (!(black < mid && mid < white)) {
+          gui.showError("Enter values in ascending order!");
+        } else {
+          String key = latest;
+          String dest = key + "_levels-adjusted";
 
-        String key = latest;
-        String dest = key + "_levels-adjusted";
+          String[] command = {
+              "levels-adjust",
+              String.valueOf(black),
+              String.valueOf(mid),
+              String.valueOf(white),
+              key,
+              dest
+          };
 
-        String[] command = {
-            "levels-adjust",
-            String.valueOf(black),
-            String.valueOf(mid),
-            String.valueOf(white),
-            key,
-            dest
-        };
-
-        imageController.handleLevelsAdjust(command);
-        latest = dest;
-        displayImageByKey(gui, latest);
+          imageController.handleLevelsAdjust(command);
+          latest = dest;
+          displayImageByKey(gui, latest);
+        }
 
       } catch (NumberFormatException e) {
         gui.showError(
