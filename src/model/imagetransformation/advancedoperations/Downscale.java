@@ -36,10 +36,6 @@ public class Downscale implements Transformation {
   /**
    * Applies the downscale transformation to the given image pixels. The method resizes the original
    * image to the specified width and height using bilinear interpolation.
-   * <p>
-   * Bilinear interpolation computes the pixel values by considering the four closest pixels in the
-   * original image and weighting them based on their relative distance to the target pixel in the
-   * downscaled image.
    *
    * @param originalPixels a 2D array representing the pixels of the original image
    * @return a 2D array of pixels representing the downscaled image

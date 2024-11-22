@@ -46,21 +46,21 @@ public class ChannelExtractor implements Transformation {
 
         RGBPixel rgbPixel = (RGBPixel) pixels[i][j];
 
-        // Extract the specified channel
         int value = 0;
         switch (channel) {
-          case 1: // Red channel
+          case 1:
             value = rgbPixel.getRed();
             break;
-          case 2: // Green channel
+          case 2:
             value = rgbPixel.getGreen();
             break;
-          case 3: // Blue channel
+          case 3:
             value = rgbPixel.getBlue();
             break;
+          default:
+            throw new IllegalArgumentException("Invalid channel: " + channel);
         }
 
-        // Create a new RGBPixel with the extracted channel value and set others to the same value
         channelPixels[i][j] = new RGBPixel(value, value, value);
       }
     }

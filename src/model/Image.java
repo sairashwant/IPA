@@ -139,8 +139,7 @@ public class Image implements ImageModel {
    */
   public void split(String key, String saveKey1, String saveKey2, String saveKey3) {
     Split s1 = new Split();
-    Map<String, Pixels[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2,
-        saveKey3);
+    Map<String, Pixels[][]> temp = s1.apply(h1, updatedPixel, key, saveKey1, saveKey2, saveKey3);
     h1.putAll(temp);
   }
 
@@ -444,13 +443,13 @@ public class Image implements ImageModel {
 
     h1.put(savekey, histogramPixels);
   }
+
   /**
    * Draws the grid pattern for the histogram background.
    *
    * @param g2d Graphics2D object to draw on
    */
   private void drawGrid(Graphics2D g2d) {
-
     g2d.setColor(new Color(220, 220, 220));
     g2d.setStroke(new BasicStroke(1.0f));
 
