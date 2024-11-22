@@ -14,16 +14,17 @@ import view.ImageProcessorGUI;
 public class Main {
 
   /**
-   * The main method which starts the application based on the provided command-line arguments.
+   * The entry point for the application.
    *
-   * <p>If no arguments are provided, it launches the GUI mode.</p>
-   * <p>If the argument -file <file path> is provided, it runs a script located at the specified
-   * path.</p>
-   * <p>If the argument -text is provided, it launches the interactive command-line
-   * interface.</p>
-   * <p>If the arguments are invalid, it displays an error message.</p>
+   * <p>This method determines the mode of operation based on the command-line arguments provided:
+   * <ul>
+   *   <li>No arguments: Launches the GUI.</li>
+   *   <li><code>-file &lt;file path&gt;</code>: Runs the script specified by the file path.</li>
+   *   <li><code>-text</code>: Launches the command-line interactive mode.</li>
+   *   <li>Invalid arguments: Displays usage instructions.</li>
+   * </ul>
    *
-   * @param args the command-line arguments to determine the mode of the application
+   * @param args the command-line arguments specifying the mode of operation.
    */
   public static void main(String[] args) {
     if (args.length == 0) {
