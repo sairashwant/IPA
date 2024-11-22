@@ -151,14 +151,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     return Map.of();
   }
 
-  @Override
-  public void run() {
-  }
-
-  @Override
-  public void handleLoad(String[] args) {
-  }
-
 
   /**
    * Handles saving the currently loaded image to a file selected by the user.
@@ -221,22 +213,15 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   }
 
   /**
-   * Handles the brightening operation for the currently loaded image. The method increases the
-   * brightness of the image by a specified factor and updates the GUI with the result.
+   * Handles the brighten operation by increasing or decreasing the brightness of an image.
    *
-   * @param args the command arguments:
+   * @param args an array of strings containing the brighten command arguments:
    *                         <ul>
-   *                           <li><code>args[0]</code>: the operation name ("brighten").</li>
-   *                           <li><code>args[1]</code>: the factor by which to brighten the image (an integer).</li>
-   *                           <li><code>args[2]</code>: the source key (latest image key is used).</li>
-   *                           <li><code>args[3]</code>: the destination key for the brightened image.</li>
+   *                           <li>args[1] - the brightness adjustment factor (integer)</li>
+   *                           <li>args[2] - the source image key</li>
+   *                           <li>args[3] - the destination image key</li>
    *                         </ul>
-   *             <p>
-   *             The method validates the brightness factor and executes the brightening operation.
-   *             It updates the <code>latest</code> image key and displays the brightened image in the GUI.
-   * @throws NumberFormatException if the brightness factor is not a valid integer.
-   * @throws Exception             if an unexpected error occurs during the brightening process.
-   * @throws Exception             if an unexpected error occurs during the brightening process.
+   *             Throws an error message if arguments are invalid or an exception occurs.
    */
   @Override
   public void handleBrighten(String[] args) {
@@ -288,21 +273,15 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   }
 
   /**
-   * Handles the compression operation for the currently loaded image. The method applies a
-   * specified compression ratio to the image and updates the GUI with the result.
+   * Handles the compression operation by compressing an image using the specified ratio.
    *
-   * @param args the command arguments:
+   * @param args an array of strings containing the compression command arguments:
    *                         <ul>
-   *                           <li><code>args[0]</code>: the operation name ("compress").</li>
-   *                           <li><code>args[1]</code>: the compression ratio as a <code>double</code>.</li>
-   *                           <li><code>args[2]</code>: the source key (latest image key is used).</li>
-   *                           <li><code>args[3]</code>: the destination key for the compressed image.</li>
+   *                           <li>args[1] - the compression ratio (double)</li>
+   *                           <li>args[2] - the source image key</li>
+   *                           <li>args[3] - the destination image key</li>
    *                         </ul>
-   *             <p>
-   *             The method validates the compression ratio and executes the compression operation.
-   *             It updates the <code>latest</code> image key and displays the compressed image in the GUI.
-   * @throws NumberFormatException if the compression ratio is not a valid <code>double</code>.
-   * @throws Exception             if an unexpected error occurs during the compression process.
+   *             Displays error messages if arguments are invalid or if an exception occurs.
    */
   @Override
   public void handleCompression(String[] args) {
@@ -326,34 +305,18 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
   }
 
   /**
-   * Handles the levels adjustment operation on the currently loaded image. The method allows
-   * adjusting the black, mid, and white levels of the image with an optional split percentage for
-   * previewing the adjustment.
+   * Handles the levels adjustment operation for an image, with optional split and preview
+   * functionality.
    *
-   * @param args the command arguments:
+   * @param args an array of strings containing the levels adjustment command arguments:
    *                         <ul>
-   *                           <li>If <code>args.length == 3</code>:
-   *                               <ul>
-   *                                 <li><code>args[0]</code>: black level as an integer.</li>
-   *                                 <li><code>args[1]</code>: mid-level as an integer.</li>
-   *                                 <li><code>args[2]</code>: white level as an integer.</li>
-   *                               </ul>
-   *                           </li>
-   *                           <li>If <code>args.length == 4</code>:
-   *                               <ul>
-   *                                 <li><code>args[0]</code>: black level as an integer.</li>
-   *                                 <li><code>args[1]</code>: mid-level as an integer.</li>
-   *                                 <li><code>args[2]</code>: white level as an integer.</li>
-   *                                 <li><code>args[3]</code>: split percentage (integer between 0 and 100).</li>
-   *                               </ul>
-   *                           </li>
+   *                           <li>args[0] - black point value (integer)</li>
+   *                           <li>args[1] - mid point value (integer)</li>
+   *                           <li>args[2] - white point value (integer)</li>
+   *                           <li>args[3] - optional split percentage (integer, 0-100)</li>
    *                         </ul>
-   *             <p>
-   *             The method applies the levels adjustment and either displays the result or shows a preview.
-   * @throws NumberFormatException    if the input values are not valid integers.
-   * @throws IllegalArgumentException if the split percentage is outside the range [0, 100] or if
-   *                                  the preview cannot be generated.
-   * @throws Exception                if an unexpected error occurs during the adjustment process.
+   *             Displays the adjusted image or a preview in the GUI, and handles errors for
+   *             invalid inputs or exceptions.
    */
   @Override
   public void handleLevelsAdjust(String[] args) {
@@ -438,7 +401,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } else {
       // Invalid input format
       gui.showError(
-          "Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> [<splitPercentage>]");
+          "Invalid levels-adjust command. Usage: levels-adjust <black> <mid> <white> "
+              + "[<splitPercentage>]");
     }
   }
 
@@ -476,11 +440,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
       gui.showError(
           "Invalid split command. Usage: <operation> <srcKey> <destKey> split <splitPercentage>");
     }
-  }
-
-
-  @Override
-  public void handleScript(String[] args) {
   }
 
   /**
@@ -555,11 +514,6 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
     } catch (Exception e) {
       gui.showError("An unexpected error occurred: " + e.getMessage());
     }
-  }
-
-
-  @Override
-  public void printMenu() {
   }
 
   /**

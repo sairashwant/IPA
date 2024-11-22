@@ -14,15 +14,13 @@ import model.colorscheme.RGBPixel;
 public abstract class AbstractRawImageFormat implements ImageFormat {
 
   /**
-   * Loads a PPM (P3 format) file and converts it into a 2D array of RGB pixels. This method reads
-   * the file, verifies the format, and extracts width, height, and color data for each pixel. Only
-   * files with a maximum color value of 255 are supported.
+   * Loads a P3 PPM image file and converts it into a 2D array of Pixels.
    *
-   * @param fileName the name or path of the PPM file to load
-   * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   * image, or {@code null} if an error occurs or if the file is in an unsupported format
+   * @param fileName the path to the PPM file to be loaded.
+   * @return a 2D array of Pixels representing the image, or {@code null} if the file format is
+   *        invalid or an error occurs during loading.
+   * @throws NumberFormatException if the file contains invalid numerical values.
    */
-
   public Pixels[][] load(String fileName) {
     Scanner scanner = null;
     try {

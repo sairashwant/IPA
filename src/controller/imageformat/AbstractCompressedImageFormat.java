@@ -17,13 +17,11 @@ import model.colorscheme.RGBPixel;
 public abstract class AbstractCompressedImageFormat implements ImageFormat {
 
   /**
-   * Loads an image file and converts it into a 2D array of RGB pixels. The method uses
-   * BufferedImage to read pixel data from the file and performs bit manipulation to extract
-   * individual red, green, and blue values for each pixel.
+   * Loads an image from the specified file and converts it into a 2D array of Pixels.
    *
-   * @param filename the name or path of the image file to load
-   * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   * image, or {@code null} if an error occurs during loading
+   * @param filename the path to the image file to be loaded.
+   * @return a 2D array of Pixels representing the image, or {@code null} if an error occurs.
+   *         Each pixel is stored as an {@code RGBPixel} with red, green, and blue components.
    */
 
   public Pixels[][] load(String filename) {

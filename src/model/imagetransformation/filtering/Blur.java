@@ -27,7 +27,7 @@ public class Blur extends AbstractFiltering {
    * where the center pixel has a greater influence on the result than its neighbors.</p>
    *
    * @return a 3x3 filter matrix representing the Gaussian blur kernel, which is used to calculate
-   * the blurred values of the image
+   *        the blurred values of the image
    */
   protected double[][] getFilter() {
     return new double[][]{

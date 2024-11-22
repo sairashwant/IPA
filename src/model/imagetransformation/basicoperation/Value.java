@@ -26,7 +26,7 @@ public class Value extends AbstractBasicOperation {
    * @param g the green component of the pixel (0-255)
    * @param b the blue component of the pixel (0-255)
    * @return the maximum value among the red, green, and blue components, representing the "value"
-   * or brightness of the pixel
+   *        or brightness of the pixel
    */
 
   @Override

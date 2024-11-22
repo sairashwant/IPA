@@ -28,7 +28,7 @@ public abstract class AbstractColorTransformation implements Transformation {
    *
    * @param input a 2D array of {@code Pixels}, representing the input image to be transformed
    * @return a 2D array of {@code RGBPixel} objects representing the transformed image with the
-   * applied color transformation
+   *        applied color transformation
    * @throws IllegalArgumentException if any of the pixels in the input array are not instances of
    *                                  {@code RGBPixel}
    */

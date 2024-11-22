@@ -24,7 +24,7 @@ public class Sepia extends AbstractColorTransformation {
    * into the sepia tones.</p>
    *
    * @return a 3x3 transformation matrix that is used to apply the sepia tone effect to the image.
-   * The matrix coefficients are designed to create a warm, brownish tint for each pixel.
+   *        The matrix coefficients are designed to create a warm, brownish tint for each pixel.
    */
   @Override
   protected double[][] getMatrix() {

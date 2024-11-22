@@ -51,7 +51,7 @@ public class ColorCorrection implements Transformation {
    * @param pixels  the 2D array of {@link Pixels} representing the image
    * @param channel the color channel to analyze (0 for red, 1 for green, 2 for blue)
    * @return histogram array of size 256 representing the frequency of pixel values for the
-   * specified channel
+   *        specified channel
    * @throws IllegalArgumentException if the pixel data is null or if any pixel is not an instance
    *                                  of {@link RGBPixel}
    */

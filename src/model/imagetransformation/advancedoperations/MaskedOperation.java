@@ -35,7 +35,7 @@ public class MaskedOperation implements Transformation {
    *
    * @param sourcePixels a 2D array representing the source image pixels
    * @return a 2D array of pixels representing the resulting image after the masked operation is
-   * applied
+   *        applied
    * @throws IllegalArgumentException if the dimensions of the mask do not match the dimensions of
    *                                  the source pixels
    */

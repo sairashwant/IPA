@@ -94,7 +94,7 @@ public abstract class AbstractFiltering implements Transformation {
    * pixels in the filtering operation.</p>
    *
    * @return a 3x3 filter matrix (kernel) that will be applied to the image during the filtering
-   * operation
+   *        operation
    */
   protected abstract double[][] getFilter();
 }

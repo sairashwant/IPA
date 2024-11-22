@@ -43,7 +43,8 @@ public class Split extends AbstractBasicOperation {
    * @param saveKey3       the key under which to save the blue channel in the output
    *                       {@code HashMap}
    * @return a {@code HashMap<String, Pixels[][]>} containing the red, green, and blue channel
-   * images, stored under {@code saveKey1}, {@code saveKey2}, and {@code saveKey3} respectively
+   *        images, stored under {@code saveKey1}, {@code saveKey2},
+   *        and {@code saveKey3} respectively
    * @throws IllegalArgumentException if the input image does not contain {@code RGBPixel} objects
    */
 
