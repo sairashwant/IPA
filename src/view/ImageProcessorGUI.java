@@ -2,14 +2,31 @@ package view;
 
 import controller.ImageGUIController;
 import controller.ImageGUIControllerInterface;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Objects;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
-import javax.swing.*;
-import java.awt.*;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -103,7 +120,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     downscale.addActionListener(e -> handleDownscale());
     exitButton.addActionListener(e -> handleExit());
 
-
     buttonPanel.add(loadButton);
     buttonPanel.add(saveButton);
     buttonPanel.add(undoButton);
@@ -125,7 +141,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
         createOperationWithPreviewPanel(levelsAdjustButton, previewLevelsAdjustCheckbox));
     buttonPanel.add(exitButton);
 
-
     imageLabel = new JLabel();
     imageLabel.setHorizontalAlignment(JLabel.CENTER);
 
@@ -139,7 +154,6 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     JPanel imagePanel = new JPanel(new BorderLayout());
     imagePanel.add(imageScrollPane, BorderLayout.CENTER);
     imagePanel.add(histogramScrollPane, BorderLayout.EAST);
-
 
     JScrollPane buttonScrollPane = new JScrollPane(buttonPanel);
     buttonScrollPane.setVerticalScrollBarPolicy(
@@ -225,8 +239,8 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
   }
 
   /**
-   * Handles the exit process by checking if there are unsaved changes.
-   * Prompts the user to save before exiting or directly closes the application.
+   * Handles the exit process by checking if there are unsaved changes. Prompts the user to save
+   * before exiting or directly closes the application.
    */
   private void handleExit() {
     String latest = controller.getLatestKey(); // Retrieve the latest image key
