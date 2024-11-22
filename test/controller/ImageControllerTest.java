@@ -10,7 +10,6 @@ import java.io.PrintStream;
 import java.io.StringReader;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
-import model.Image;
 import model.colorscheme.Pixels;
 import model.colorscheme.RGBPixel;
 import org.junit.Before;

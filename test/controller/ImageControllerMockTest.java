@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.StringReader;
 import model.EnhancedImageModel;
-import model.ImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import org.junit.Before;
@@ -174,13 +173,19 @@ public class ImageControllerMockTest {
 
 
     @Override
-    public void downscale(String key, int newwidth, int newht, String savekey) {
-
+    public void downscale(String key, int newWidth, int newHeight, String saveKey) {
+      output.append("Downscaled ").append(key).append(" to width: ").append(newWidth)
+          .append(" and height: ").append(newHeight).append(" saved as ").append(saveKey)
+          .append("\n");
     }
 
     @Override
     public void maskedOperation(String key, String operation, String maskKey, String saveKey) {
-
+      output.append("Retrieved pixels with key: ").append(key).append("\n")
+          .append("Retrieved pixels with key: ").append(maskKey).append("\n")
+          .append("Applied masked operation ").append(operation)
+          .append(" on ").append(key).append(" with mask ").append(maskKey)
+          .append(" saved as ").append(saveKey).append("\n");
     }
 
     @Override
@@ -366,6 +371,23 @@ public class ImageControllerMockTest {
     String input = "save test/Test_Image/png_op/Lanscape-new.png test1\nexit";
     runControllerWithInput(input);
     assertEquals("Retrieved pixels with key: test1\n", output.toString());
+  }
+
+  @Test
+  public void testMaskedOperation() {
+    String input = "blur test1 mask1 dest \nexit";
+    runControllerWithInput(input);
+    assertEquals("Retrieved pixels with key: test1\nRetrieved pixels with key: mask1\n" +
+            "Applied masked operation blur on test1 with mask mask1 saved as dest\n",
+        output.toString());
+  }
+
+  @Test
+  public void testDownscale() {
+    String input = "downscale test1 200 150 test2\nexit";
+    runControllerWithInput(input);
+    assertEquals("Downscaled test1 to width: 200 and height: 150 saved as test2\n",
+        output.toString());
   }
 
 

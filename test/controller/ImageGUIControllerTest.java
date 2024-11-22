@@ -2,16 +2,17 @@ package controller;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.StringReader;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import model.EnhancedImage;
 import model.imagetransformation.basicoperation.Flip.Direction;
 
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests ImageGUIController class.
+ */
 public class ImageGUIControllerTest {
 
   private StringBuilder output;

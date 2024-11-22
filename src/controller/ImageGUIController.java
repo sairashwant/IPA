@@ -1,12 +1,14 @@
 package controller;
 
 import java.util.Arrays;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import model.EnhancedImage;
 import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import view.ImageProcessorGUI;
-  import javax.swing.*;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
@@ -540,8 +542,8 @@ public class ImageGUIController extends ImageController implements ImageGUIContr
 
       String dest = latest + "_downscaled";
 
-      String[] command = {"downscale", latest,  String.valueOf(newWidth),
-          String.valueOf(newHeight),dest};
+      String[] command = {"downscale", latest, String.valueOf(newWidth),
+          String.valueOf(newHeight), dest};
 
       imageController.handleDownscale(command);
 
