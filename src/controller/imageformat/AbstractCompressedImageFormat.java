@@ -23,7 +23,7 @@ public abstract class AbstractCompressedImageFormat implements ImageFormat {
    *
    * @param filename the name or path of the image file to load
    * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   *         image, or {@code null} if an error occurs during loading
+   * image, or {@code null} if an error occurs during loading
    */
 
   public Pixels[][] load(String filename) {

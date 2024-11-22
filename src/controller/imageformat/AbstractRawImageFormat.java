@@ -20,7 +20,7 @@ public abstract class AbstractRawImageFormat implements ImageFormat {
    *
    * @param fileName the name or path of the PPM file to load
    * @return a 2D array of {@link RGBPixel} objects representing the RGB values of each pixel in the
-   *         image, or {@code null} if an error occurs or if the file is in an unsupported format
+   * image, or {@code null} if an error occurs or if the file is in an unsupported format
    */
 
   public Pixels[][] load(String fileName) {

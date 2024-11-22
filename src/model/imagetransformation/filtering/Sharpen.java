@@ -27,7 +27,7 @@ public class Sharpen extends AbstractFiltering {
    * defined.</p>
    *
    * @return a 5x5 filter matrix representing the sharpening filter, which is used to calculate the
-   *        sharpened values of the image
+   * sharpened values of the image
    */
   @Override
   protected double[][] getFilter() {

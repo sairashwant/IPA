@@ -1,6 +1,10 @@
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import model.EnhancedImage;
@@ -8,11 +12,6 @@ import model.EnhancedImageModel;
 import model.colorscheme.Pixels;
 import model.imagetransformation.basicoperation.Flip.Direction;
 import view.ImageProcessorGUI;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  * Controller for handling the GUI interactions of the image processor application. This class

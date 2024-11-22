@@ -22,9 +22,10 @@ public interface Transformation {
    * transformation, and returns a new 2D array with the transformed image.</p>
    *
    * @param pixels a 2D array of {@link Pixels} representing the image data to be transformed. Each
-   *        {@link Pixels} object represents a pixel, and the array represents the entire image.
+   *               {@link Pixels} object represents a pixel, and the array represents the entire
+   *               image.
    * @return a 2D array of {@link RGBPixel} representing the transformed image. This array holds the
-   *        resulting RGB pixel data after the transformation has been applied.
+   * resulting RGB pixel data after the transformation has been applied.
    * @throws IllegalArgumentException if the input pixel data is invalid or cannot be processed.
    */
 

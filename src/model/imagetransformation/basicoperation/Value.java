@@ -22,11 +22,11 @@ public class Value extends AbstractBasicOperation {
    * <p>The value is commonly used in operations like converting an image to grayscale, where
    * the pixel's brightness is based on the brightest of the three RGB channels.</p>
    *
-   * @param r  the red component of the pixel (0-255)
-   * @param g  the green component of the pixel (0-255)
-   * @param b  the blue component of the pixel (0-255)
-   * @return   the maximum value among the red, green, and blue components, representing the "value"
-   *           or brightness of the pixel
+   * @param r the red component of the pixel (0-255)
+   * @param g the green component of the pixel (0-255)
+   * @param b the blue component of the pixel (0-255)
+   * @return the maximum value among the red, green, and blue components, representing the "value"
+   * or brightness of the pixel
    */
 
   @Override

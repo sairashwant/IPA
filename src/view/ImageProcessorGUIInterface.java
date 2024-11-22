@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.image.BufferedImage;
-import model.Image;
 
 /**
  * Interface representing the GUI functionality for an image processor application. This interface

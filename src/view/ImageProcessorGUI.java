@@ -11,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Objects;
 import javax.swing.ImageIcon;
@@ -25,9 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import model.imagetransformation.basicoperation.Flip.Direction;
-
-
-import java.awt.image.BufferedImage;
 
 /**
  * A GUI-based image processor application that allows users to load, edit, and save images. This
@@ -627,12 +625,15 @@ public class ImageProcessorGUI extends JFrame implements ImageProcessorGUIInterf
     JFileChooser fileChooser = new JFileChooser();
     fileChooser.setDialogTitle("Save Image");
 
-    javax.swing.filechooser.FileFilter pngFilter = new javax.swing.filechooser.FileNameExtensionFilter(
-        "PNG Images", "png");
-    javax.swing.filechooser.FileFilter jpgFilter = new javax.swing.filechooser.FileNameExtensionFilter(
-        "JPG Images", "jpg");
-    javax.swing.filechooser.FileFilter ppmFilter = new javax.swing.filechooser.FileNameExtensionFilter(
-        "PPM Images", "ppm");
+    javax.swing.filechooser.FileFilter pngFilter =
+        new javax.swing.filechooser.FileNameExtensionFilter(
+            "PNG Images", "png");
+    javax.swing.filechooser.FileFilter jpgFilter =
+        new javax.swing.filechooser.FileNameExtensionFilter(
+            "JPG Images", "jpg");
+    javax.swing.filechooser.FileFilter ppmFilter =
+        new javax.swing.filechooser.FileNameExtensionFilter(
+            "PPM Images", "ppm");
 
     fileChooser.addChoosableFileFilter(pngFilter);
     fileChooser.addChoosableFileFilter(jpgFilter);
