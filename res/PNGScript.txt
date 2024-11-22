@@ -1,5 +1,5 @@
 #Loading a PNG image
-load test/Test_Image/Landscape.png l1
+load res/SampleImages/Landscape.png l1
 
 #getting just the Red-component
 red-component l1 l1-red-component
@@ -171,11 +171,15 @@ levels-adjust 20 100 255 l1 l1-split-levels-adjust split 50
 #Save the split
 save res/Script_Output/landscape-split-levels-adjust.png l1-split-levels-adjust
 
+#DOWNSCALE
+
 #Downscale the image
 downscale l1 100 100 l1-downscale
 
 #Save the downscale
 save res/Script_Output/landscape-downscale-100X100.png l1-downscale
+
+# MASKING OPERATION
 
 #Load masking Image
 load res/Landscape-L-shaped-masked-image.png l1-mask

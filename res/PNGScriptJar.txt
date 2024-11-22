@@ -1,177 +1,247 @@
 #Loading a PNG image
-load Sample_Images/Wildlife.png l1
+load SampleImages/Landscape.png l1
 
 #getting just the Red-component
 red-component l1 l1-red-component
 
 #Saving the red component
-save res/Script_Output/manhattan-red-component.png l1-red-component
+save Script_Output/landscape-red-component.png l1-red-component
 
 #getting just the Green-component
 green-component l1 l1-green-component
 
 #Saving the green component
-save Script_Output/manhattan-green-component.png l1-green-component
+save Script_Output/landscape-green-component.png l1-green-component
 
 #getting just the Blue-component
 blue-component l1 l1-blue-component
 
 #Saving the blue component
-save Script_Output/manhattan-blue-component.png l1-blue-component
+save Script_Output/landscape-blue-component.png l1-blue-component
 
 #Blurring the image
 blur l1 l1-blur
 
 #Savnig the blurred image
-save Script_Output/manhattan-blur.png l1-blur
+save Script_Output/landscape-blur.png l1-blur
 
 #Sharpening the image
 sharpen l1 l1-sharper
 
 #save the sharper image
-save Script_Output/manhattan-sharper.png l1-sharper
+save Script_Output/landscape-sharper.png l1-sharper
 
 #Brighten the image
 brighten 20 l1 l1-brighter
 
 #Saving the brighter image
-save Script_Output/manhattan-brighter.png  l1-brighter
+save Script_Output/landscape-brighter.png  l1-brighter
 
 #Splitting the image into three i.e. red green and blue components
 rgb-split l1 l1-red-split l1-green-split l1-blue-split
 
 #Save the 3 split images
-save Script_Output/manhattan-red-split.png l1-red-split
-save Script_Output/manhattan-green-split.png l1-green-split
-save Script_Output/manhattan-blue-split.png l1-blue-split
+save Script_Output/landscape-red-split.png l1-red-split
+save Script_Output/landscape-green-split.png l1-green-split
+save Script_Output/landscape-blue-split.png l1-blue-split
 
 #Combine the 3 color components
 rgb-combine l1-combine l1-red-split l1-green-split l1-blue-split
 
 #Save the combined image
-save Script_Output/manhattan-combine.png l1-combine
+save Script_Output/landscape-combine.png l1-combine
 
 #Flip the image vertically
 vertical-flip l1 l1-vertical-flip
 
 #Save the vertically flipped image
-save Script_Output/manhattan-vertical-flip.png l1-vertical-flip
+save Script_Output/landscape-vertical-flip.png l1-vertical-flip
 
 #Flip the image horizontally
 horizontal-flip l1 l1-horizontal-flip
 
 #Save the vertically flipped image
-save Script_Output/manhattan-horizontal-flip.png l1-horizontal-flip
+save Script_Output/landscape-horizontal-flip.png l1-horizontal-flip
 
 #Convert the image into greyscale
 greyscale l1 l1-greyscale
 
 #Save the greyscale
-save Script_Output/manhattan-greyscale.png l1-greyscale
+save Script_Output/landscape-greyscale.png l1-greyscale
 
 #Convert the image into sepia
 sepia l1 l1-sepia
 
 #Save the sepia
-save Script_Output/manhattan-sepia.png l1-sepia
+save Script_Output/landscape-sepia.png l1-sepia
 
 #Convert the image into luma
 luma-component l1 l1-luma
 
 #Save the luma
-save Script_Output/manhattan-luma.png l1-luma
+save Script_Output/landscape-luma.png l1-luma
 
 #Convert the image into value
 value-component l1 l1-value
 
 #Save the greyscale
-save Script_Output/manhattan-value.png l1-value
+save Script_Output/landscape-value.png l1-value
 
 #Convert the image into intensity
 intensity-component l1 l1-intensity
 
 #Save the intensity
-save Script_Output/manhattan-intensity.png l1-intensity
+save Script_Output/landscape-intensity.png l1-intensity
 
 #Generate the histogram of the image
 histogram l1 l1-histogram
 
 #Save the histogram
-save Script_Output/manhattan-histogram.png l1-histogram
+save Script_Output/landscape-histogram.png l1-histogram
 
 #Apply color-correction to the image
 color-correction l1 l1-color-correction
 
 #Save the color-correction
-save Script_Output/manhattan-color-correction.png l1-color-correction
+save Script_Output/landscape-color-correction.png l1-color-correction
 
 #Generate the histogram of the color-correction image
 histogram l1-color-correction l1-color-correction-histogram
 
 #Save the histogram
-save Script_Output/manhattan-color-correction-histogram.png l1-color-correction-histogram
+save Script_Output/landscape-color-correction-histogram.png l1-color-correction-histogram
 
 #Apply level adjustment to the image
 levels-adjust 20 100 255 l1 l1-levels-adjust
 
 #Save the levels-adjust
-save Script_Output/manhattan-levels-adjust.png l1-levels-adjust
+save Script_Output/landscape-levels-adjust.png l1-levels-adjust
 
 #Generate the histogram of the levels-adjust image
 histogram l1-levels-adjust l1-levels-adjust-histogram
 
 #Save the histogram
-save Script_Output/manhattan-levels-adjust-histogram.png l1-levels-adjust-histogram
+save Script_Output/landscape-levels-adjust-histogram.png l1-levels-adjust-histogram
 
 #Compress the image by 50%
 compress 50 l1 l1-compress
 
 #Save the compression
-save Script_Output/manhattan-compress.png l1-compress
+save Script_Output/landscape-compress.png l1-compress
 
 #Generate the histogram of the compressed image
 histogram l1-compress l1-compress-histogram
 
 #Save the histogram
-save Script_Output/manhattan-compress-histogram.png l1-compress-histogram
+save Script_Output/landscape-compress-histogram.png l1-compress-histogram
 
 #Split and perform blur operation on the image only on 50% of the image
 blur l1 l1-split-blur split 50
 
 #Save the split blur
-save Script_Output/manhattan-split-blur.png l1-split-blur
+save Script_Output/landscape-split-blur.png l1-split-blur
 
 #Split and perform sharpen operation on the image only on 50% of the image
 sharpen l1 l1-split-sharpen split 50
 
 #Save the split sharpen
-save Script_Output/manhattan-split-sharpen.png l1-split-sharpen
+save Script_Output/landscape-split-sharpen.png l1-split-sharpen
 
 #Split and perform sepia operation on the image only on 50% of the image
 sepia l1 l1-split-sepia split 50
 
 #Save the split sepia
-save Script_Output/manhattan-split-sepia.png l1-split-sepia
+save Script_Output/landscape-split-sepia.png l1-split-sepia
 
 #Split and perform greyscale operation on the image only on 50% of the image
 greyscale l1 l1-split-greyscale split 50
 
 #Save the split greyscale
-save Script_Output/manhattan-split-greyscale.png l1-split-greyscale
+save Script_Output/landscape-split-greyscale.png l1-split-greyscale
 
 #Split and perform color-correction operation on the image only on 50% of the image
 color-correction l1 l1-split-color-correction split 50
 
 #Save the split color-correction
-save Script_Output/manhattan-split-color-correction.png l1-split-color-correction
+save Script_Output/landscape-split-color-correction.png l1-split-color-correction
 
 #Split and perform levels-adjust operation on the image only on 50% of the image
 levels-adjust 20 100 255 l1 l1-split-levels-adjust split 50
 
 #Save the split
-save Script_Output/manhattan-split-levels-adjust.png l1-split-levels-adjust
+save Script_Output/landscape-split-levels-adjust.png l1-split-levels-adjust
 
+#DOWNSCALE
 
+#Downscale the image
+downscale l1 100 100 l1-downscale
 
+#Save the downscale
+save Script_Output/landscape-downscale-100X100.png l1-downscale
+
+#MASKING OPERATION
+
+#Load masking Image
+load SampleImages/Landscape-L-shaped-masked-image.png l1-mask
+
+#Mask Operation for blur
+blur l1 l1-mask l1-blur-mask
+
+#Save the blur mask image
+save Script_Output/Landscape-mask-blur.png l1-blur-mask
+
+#Mask Operation for sharpen
+sharpen l1 l1-mask l1-sharpen-mask
+
+#Save the sharpen mask image
+save Script_Output/Landscape-mask-sharpen.png l1-sharpen-mask
+
+#Mask Operation for greyscale
+greyscale l1 l1-mask l1-greyscale-mask
+
+#Save the greyscale mask image
+save Script_Output/Landscape-mask-greyscale.png l1-greyscale-mask
+
+#Mask Operation for sepia
+sepia l1 l1-mask l1-sepia-mask
+
+#Save the sepia mask image
+save Script_Output/Landscape-mask-sepia.png l1-sepia-mask
+
+#Mask Operation for luma-component
+luma-component l1 l1-mask l1-luma-component-mask
+
+#Save the luma-component mask image
+save Script_Output/Landscape-mask-luma-component.png l1-luma-component-mask
+
+#Mask Operation for value-component
+value-component l1 l1-mask l1-value-component-mask
+
+#Save the value-component mask image
+save Script_Output/Landscape-mask-value-component.png l1-value-component-mask
+
+#Mask Operation for intensity-component
+intensity-component l1 l1-mask l1-intensity-component-mask
+
+#Save the intensity-component mask image
+save Script_Output/Landscape-mask-intensity-component.png l1-intensity-component-mask
+
+#Mask Operation for red-component
+red-component l1 l1-mask l1-red-component-mask
+
+#Save the red-component mask image
+save Script_Output/Landscape-mask-red-component.png l1-red-component-mask
+
+#Mask Operation for green-component
+green-component l1 l1-mask l1-green-component-mask
+
+#Save the green-component mask image
+save Script_Output/Landscape-mask-green-component.png l1-green-component-mask
+
+#Mask Operation for blue-component
+blue-component l1 l1-mask l1-blue-component-mask
+
+#Save the green-component mask image
+save Script_Output/Landscape-mask-blue-component.png l1-blue-component-mask
 
 

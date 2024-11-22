@@ -2,6 +2,14 @@
 
 This document outlines all supported commands and their usage in our image processing application.
 
+## RUNNING OF JAR FILE
+- `GUI`
+  - java -jar Assignment_4_v2.jar
+- `Text Based Interactive Mode`
+  - java -jar Assignment_4_v2.jar -text
+- `Running Script`
+  - java -jar Assignment_4_v2.jar -file PNGScriptJar.txt
+
 ## TABLE OF CONTENTS
 - [GUI Screenshots](#gui-screenshots)
 - [Using the GUI](#using-the-gui)
