@@ -304,6 +304,14 @@ public class ImageController implements ImageControllerInterface {
     }
   }
 
+  /**
+   * Converts a 2D array of Pixels into a BufferedImage.
+   *
+   * @param pixels a 2D array of Pixels representing the image
+   * @return a BufferedImage constructed from the provided pixels
+   * @throws IllegalArgumentException if the pixels array is null or empty
+   */
+
   public BufferedImage convertPixelsToBufferedImage(Pixels[][] pixels) {
     if (pixels == null || pixels.length == 0) {
       throw new IllegalArgumentException("No pixels to convert.");
@@ -367,7 +375,8 @@ public class ImageController implements ImageControllerInterface {
       int black = Integer.parseInt(args[1]);
       int mid = Integer.parseInt(args[2]);
       int white = Integer.parseInt(args[3]);
-      imageModel.splitAndTransform(args[4], args[5], split, "levels-adjust", black, mid, white);
+      imageModel.splitAndTransform(args[4], args[5], split, "levels-adjust",
+          black, mid, white);
       System.out.println("Adjusting levels for " + args[4]);
     } else if (args.length == 6) {
       try {
@@ -452,12 +461,17 @@ public class ImageController implements ImageControllerInterface {
         int newHeight = Integer.parseInt(args[3]);
         String destKey = args[4];
         imageModel.downscale(srcKey, newWidth, newHeight, destKey);
-        System.out.println("Downscaled image " + srcKey + " to " + newWidth + "x" + newHeight + " and saved as " + destKey);
+        System.out.println(
+            "Downscaled image " + srcKey + " to " + newWidth + "x" + newHeight + " and saved as "
+                + destKey);
       } catch (NumberFormatException e) {
-        System.out.println("Invalid dimensions for downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
+        System.out.println(
+            "Invalid dimensions for downscale command. Usage: downscale <srcKey> <newWidth> "
+                + "<newHeight> <destKey>");
       }
     } else {
-        System.out.println("Invalid downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
+      System.out.println(
+          "Invalid downscale command. Usage: downscale <srcKey> <newWidth> <newHeight> <destKey>");
     }
   }
 
@@ -474,13 +488,17 @@ public class ImageController implements ImageControllerInterface {
       String destKey = args[3];
 
       imageModel.maskedOperation(srcKey, operation, maskKey, destKey);
-      System.out.println("Applied masked operation " + operation + " on " + srcKey + " using mask " + maskKey + " and saved as " + destKey);
+      System.out.println(
+          "Applied masked operation " + operation + " on " + srcKey + " using mask " + maskKey
+              + " and saved as " + destKey);
     } else {
-      System.out.println("Invalid masked-operation command. Usage: masked-operation <srcKey> <operation> <maskKey> <destKey>");
+      System.out.println(
+          "Invalid masked-operation command. Usage: masked-operation <srcKey> <operation>"
+              + " <maskKey> <destKey>");
     }
   }
 
-  public String getLatestKey(){
+  public String getLatestKey() {
     String key = imageModel.getLatestKey();
     return key;
   }
